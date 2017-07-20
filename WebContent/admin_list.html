@@ -57,8 +57,8 @@
 			{{# }); }}
 		</script>
 		<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
-		<script type="text/javascript"src="/MyMicroFinance/lib/js/jquery-3.2.1.min.js"></script>
-		<script type="text/javascript"src="/MyMicroFinance/lib/js/jquery.cookie.js"></script>
+		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
 		<script>
 			layui.config({
 				base: './lib/js/'
@@ -101,10 +101,22 @@
 								form.render('checkbox');
 							});
 						});
+						//绑定删除按钮时间
+					
 						//绑定所有编辑按钮事件	
 						var addBoxIndex = -1;
 						$('#content').children('tr').each(function() {
 							var $that = $(this);
+							$that.children('td:last-child').children('a[data-opt=del]').on('click', function() {
+								layer.open({
+									title:'确认删除',
+									content:'你确定要删除:'+ $that.children('td:nth-child(4)').text().trim()+ ' 吗,该操作不可逆',
+									btn: ['确认', '取消'],
+									yes:function(index){
+										
+									}
+								});
+							});
 							$that.children('td:last-child').children('a[data-opt=edit]').on('click', function() {
 								if(addBoxIndex !== -1)
 									return;
@@ -117,7 +129,7 @@
 										btn: ['保存', '取消'],
 										shade: false,
 										offset: ['100px', '30%'],
-										area: ['600px', '400px'],
+										area: ['600px', '500px'],
 										zIndex: 19950924,
 										maxmin: true,
 										yes: function(index) {
@@ -142,7 +154,7 @@
 												
 												$.ajax({
 													type:'get',
-													url:'/MyMicroFinance/user_edit',
+													url:'/user_edit',
 													data:'id='+$that.children('td:nth-child(2)').text().trim(),
 													dataType:"json",
 														success: function (result) {
@@ -151,15 +163,12 @@
 																layer.close(index);
 											                	layui.layer.msg("公司主账号请在设置里修改");
 															} else{
-																$("input[name='username']:eq(0)").val($that.children('td:nth-child(3)').text());
-																$("input[name='nickname']:eq(0)").val($that.children('td:nth-child(4)').text());
-																
-																$("input[name='email']:eq(0)").val(result['email']);
-																$("input[name='stuats'][title='"+$that.children('td:nth-child(7)').text().trim()+"']:eq(0)").prop("checked", "checked");
-																
+																$("input[name='username']").val($that.children('td:nth-child(3)').text());
+																$("input[name='nickname']").val($that.children('td:nth-child(4)').text());
+																$("input[name='email']").val(result['email']);
+																$("input[type='radio'][title='"+$that.children('td:nth-child(7)').text().trim() +"']:eq(0)").prop("checked","checked");
 																$("select[name='role']").val(result['role']);
-																$("input[name='company']:eq(0)").val(result['company']);
-															
+																$("input[name='company']").val(result['company']);
 																form.render();
 															}
 															
@@ -217,6 +226,7 @@
 					},
 				});
 				//获取所有选择的列
+					
 				$('#getSelected').on('click', function() {
 					var names = '';
 					$('#content').children('tr').each(function() {
