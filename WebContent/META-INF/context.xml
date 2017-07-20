@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resource   name="jdbc/myDB"
+              auth="Container"
+               description="DB Connection"    
+               driverClass="com.mysql.jdbc.Driver"
+               user="test"
+               password="ready2go"
+               type="com.mchange.v2.c3p0.ComboPooledDataSource"
+             jdbcUrl="jdbc:mysql://localhost:3306/test" 
+             acquireIncrement="1"
+               maxPoolSize="50"
+               minPoolSize="10"
+               initialPoolSize="10"
+               automaticTestTable="C3P0TestTable"
+               idleConnectionTestPeriod="60"
+               maxIdleTime="60"
+               checkoutTimeout="30000"/>

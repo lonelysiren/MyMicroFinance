@@ -1,0 +1,4 @@
+2017-07-13 at 10:43:53 CST DEBUG com.mf.utils.Log4jUtil 11 main - debug message
+2017-07-13 at 10:43:53 CST INFO  com.mf.utils.Log4jUtil 12 main - info message
+2017-07-13 at 10:46:22 CST DEBUG com.mf.utils.Log4jUtil 11 main - debug message
+2017-07-13 at 10:46:22 CST INFO  com.mf.utils.Log4jUtil 12 main - info message

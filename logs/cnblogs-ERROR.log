@@ -1,0 +1,4 @@
+2017-07-13 at 10:43:53 CST WARN  com.mf.utils.Log4jUtil 13 main - warn message
+2017-07-13 at 10:43:53 CST ERROR com.mf.utils.Log4jUtil 14 main - error message
+2017-07-13 at 10:46:22 CST WARN  com.mf.utils.Log4jUtil 13 main - warn message
+2017-07-13 at 10:46:22 CST ERROR com.mf.utils.Log4jUtil 14 main - error message
