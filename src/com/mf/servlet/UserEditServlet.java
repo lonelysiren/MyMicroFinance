@@ -51,34 +51,58 @@ public class UserEditServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String nickname = request.getParameter("nickname");
-		String email = request.getParameter("email");
-		String stauts = request.getParameter("stauts");
-		String role = request.getParameter("role");
-		String company = request.getParameter("company");
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setNickname(nickname);
-		user.setEmail(email);
-		user.setStauts(stauts);
-		user.setRole(role);
-		user.setCompany(company);
+		String del_id = request.getParameter("del");
 		
+		boolean result = false;
 		UserDao userDao = new UserDao();
-		boolean result;
-		try {
-			 result  = userDao.updateByUserName(user);
-			 if(result) {
-				 response.getWriter().write("ok");
-			 }
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(del_id == null) {
+			String id = request.getParameter("id");
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			String nickname = request.getParameter("nickname");
+			String email = request.getParameter("email");
+			String stauts = request.getParameter("stauts");
+			String role = request.getParameter("role");
+			String company = request.getParameter("company");
+			User user = new User();
+			user.setId(Integer.parseInt(id));
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setNickname(nickname);
+			user.setEmail(email);
+			user.setStauts(stauts);
+			user.setRole(role);
+			user.setCompany(company);
+			try 
+			{
+				if((Integer.parseInt(id))==0) {
+					System.out.println("tianjia");
+					result = userDao.addUser(user);
+				}else {
+					 result  = userDao.updateByUserId(user);
+				}
+				
+				 if(result) {
+					 response.getWriter().write("ok");
+				 }
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				result = userDao.deleteById(del_id);
+				if(result) {
+					 response.getWriter().write("ok");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
+		
 		
 		
 		

@@ -44,7 +44,7 @@
 					
 					<ul class="layui-nav admin-header-item">
 					<li class="layui-nav-item">
-					<span><%out.write(company); %></span>
+					<span id="company"><%out.write(company); %></span>
 					</li>					
 						<li class="layui-nav-item">
 						
@@ -129,7 +129,7 @@
 				layui.use('layer', function() {
 					var $ = layui.jquery,
 						layer = layui.layer;
-console.log('session' )
+
 					
 
 

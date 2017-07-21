@@ -57,8 +57,9 @@ public class LoginServlet extends HttpServlet {
 			if(user_info != null) {
 
 				HttpSession session=request.getSession();
-				 session.setAttribute("userName",user_info.get("username"));
+				 session.setAttribute("userName",user_info.get("nickname"));
 				session.setAttribute("company",user_info.get("company"));
+				session.setAttribute("role",user_info.get("role"));
 				 String company=URLEncoder.encode((String) user_info.get("company"), "utf-8"); 
 				 Cookie cookie = new Cookie("company",company);
 				 cookie.setPath("/");

@@ -17,17 +17,32 @@ import org.apache.logging.log4j.Logger;
 
 public class UserDao {
 	
+	 private JdbcUtil jdbcUtil = new JdbcUtil();
+	 private String sql = null;
+	 private  List<Object> params = new ArrayList<Object>();  
+	 
+	 
+	 
+	public UserDao() {
+		super();
 
-	
+			 try {
+				jdbcUtil.getConnection();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+		 
+	}
+
 	public Map<String, Object> login(String userName,String passWord) throws Exception{
-		 JdbcUtil jdbcUtil = new JdbcUtil();  
-	        jdbcUtil.getConnection();  
-	        String sql = "select * from user_info where username = ? and password = ?";
-	        List<Object> params = new ArrayList<Object>();  
+		 
+	        
+	        sql = "select * from user_info where username = ? and password = ?";
 	        params.add(userName); 
 	        params.add(passWord);  
 	        Map<String, Object> map = jdbcUtil.findSimpleResult(sql, params); 
-	       
+	        params.clear();
 	        if(map.size() !=0) {	        	
 	        	return map;
 	        } else {
@@ -40,14 +55,11 @@ public class UserDao {
 	}
 	 
 	  public JSONObject findUserByCompany(String company,int pageIndex,int pageSize) throws SQLException {
-		  JdbcUtil jdbcUtil = new JdbcUtil();
-		  String sql = null;
+		
 		  Map<String,Object> maps = new LinkedHashMap<String,Object>(); 
 		  Map<String,Object> map = new LinkedHashMap<String,Object>(); 
-	        jdbcUtil.getConnection();  
 	        
 	        	  sql = "select id,username,nickname,stauts from user_info where company = ? limit ? , ? ";
-	        	  List<Object> params = new ArrayList<Object>();  
 	  	        params.add(company); 
 	  	        if(pageIndex==1) {
 	  	        	params.add(0);
@@ -73,47 +85,67 @@ public class UserDao {
 	       
 	       
 			   JSONObject jsonObject = JSONObject.fromObject(maps);
+			   params.clear();
 	        return jsonObject;
 		  
 	   }
 	  
 	  public JSONObject findUserById(String id) throws SQLException {
-		  JdbcUtil jdbcUtil = new JdbcUtil();
-		  jdbcUtil.getConnection(); 
-		  String sql = "select email,role,company from user_info where id = ? ";
-		  List<Object> params = new ArrayList<Object>();
+	
+		   sql = "select email,role,company from user_info where id = ? ";
 		  params.add(id); 
 		  Map<String, Object> user_info = jdbcUtil.findSimpleResult(sql, params );
 		  JSONObject jsonObject = JSONObject.fromObject(user_info);
-	        
+		  params.clear();
 		  return jsonObject;
 		}
 	  
-	  public Boolean updateByUserName(User user) throws SQLException {
+	  public Boolean updateByUserId(User user) throws SQLException {
 			// TODO Auto-generated method stub
-		  JdbcUtil jdbcUtil = new JdbcUtil();
-		  jdbcUtil.getConnection(); 
-		  String sql = "UPDATE user_info SET password = ?,nickname = ?,email = ?,stauts = ?,role = ?,company = ? where username = ?  ";
-		  List<Object> params = new ArrayList<Object>();
+		
+		 
+		  sql = "UPDATE user_info SET username = ?, password = ?,nickname = ?,email = ?,stauts = ?,role = ?,company = ? where id = ?  ";
+		  params.add(user.getUsername());
 		  params.add(user.getPassword());
 		  params.add(user.getNickname());
 		  params.add(user.getEmail());
 		  params.add(user.getStauts());
 		  params.add(user.getRole());
 		  params.add(user.getCompany());
-		  params.add(user.getUsername());
+		  params.add(user.getId());
 		  Boolean flag =jdbcUtil.updateByPreparedStatement(sql, params);
+		  params.clear();
 			return flag;
 		}
-	  
+	  public boolean deleteById(String id) throws SQLException {
+		  sql = "delete from user_info where id = ?";
+		  params.add(id);
+		  Boolean flag = jdbcUtil.updateByPreparedStatement(sql, params);
+		  params.clear();
+			return flag;
+		}
 	 public static void main(String[] args) throws SQLException {
 	 
 		UserDao userDao = new UserDao();
-		JSONObject findUserByCompany = userDao.findUserByCompany("xxx¹«Ë¾",1,2);
-		System.out.println(findUserByCompany);
-		   
+		userDao.deleteById("5");
 		
 	 }
+
+	public boolean addUser(User user) throws SQLException {
+		  sql = "insert into user_info values(?,?,?,?,?,?,?)";
+		  params.add(user.getUsername());
+		  params.add(user.getPassword());
+		  params.add(user.getNickname());
+		  params.add(user.getEmail());
+		  params.add(user.getStauts());
+		  params.add(user.getRole());
+		  params.add(user.getCompany());
+		  Boolean flag =jdbcUtil.updateByPreparedStatement(sql, params);
+		  params.clear();
+			return flag;
+	}
+
+	
 
 	
 

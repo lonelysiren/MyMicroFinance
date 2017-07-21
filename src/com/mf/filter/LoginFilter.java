@@ -1,6 +1,7 @@
 package com.mf.filter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
@@ -58,9 +59,15 @@ public class LoginFilter implements Filter {
 		Object sessionObj = request.getSession().getAttribute(sessionKey);
 
 		if (sessionObj == null) {
-			String contextPath = request.getContextPath();
+			//String contextPath = request.getContextPath();
 			//String redirect = servletPath + "?" + StringUtils.defaultString(request.getQueryString());
-			response.sendRedirect(contextPath + StringUtils.defaultIfEmpty(redirectUrl, "/") );
+			System.out.println("÷ÿ∂®œÚ∞°");
+			  PrintWriter out = response.getWriter();  
+		        out.println("<html>");      
+		        out.println("<script>");      
+		        out.println("window.open ('/login.html','_top')");      
+		        out.println("</script>");      
+		        out.println("</html>");
 		} else {
 			chain.doFilter(req, resp);
 		}
