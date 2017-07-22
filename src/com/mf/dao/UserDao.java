@@ -132,7 +132,7 @@ public class UserDao {
 	 }
 
 	public boolean addUser(User user) throws SQLException {
-		  sql = "insert into user_info values(?,?,?,?,?,?,?)";
+		  sql = "insert into user_info values(null,?,?,?,?,?,?,?)";
 		  params.add(user.getUsername());
 		  params.add(user.getPassword());
 		  params.add(user.getNickname());
