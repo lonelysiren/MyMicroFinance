@@ -9,12 +9,12 @@ var navs = [{
 	},{
 		"title": "添加管理员",
 		"icon": "fa-github",
-		"href": "admin_add.html"
+		"href": "#"
 	}]
 },{
 	"title": "客户管理",
 	"icon": "fa-stop-circle",
-	"href": "customer_list.html",
+	"href": "#",
 	"spread": false,
 	"children": [{
 		"title": "客户列表",
