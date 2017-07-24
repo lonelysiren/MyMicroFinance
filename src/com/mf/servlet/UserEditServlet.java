@@ -76,7 +76,7 @@ public class UserEditServlet extends HttpServlet {
 			try 
 			{
 				if((Integer.parseInt(id))==0) {
-					System.out.println("tianjia");
+				
 					result = userDao.addUser(user);
 				}else {
 					 result  = userDao.updateByUserId(user);

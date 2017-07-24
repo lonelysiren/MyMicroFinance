@@ -14,12 +14,11 @@ var navs = [{
 },{
 	"title": "客户管理",
 	"icon": "fa-stop-circle",
-	"href": "customer_list.html",
 	"spread": false,
 	"children": [{
 		"title": "客户列表",
 		"icon": "fa-github",
-		"href": "#"
+		"href": "customer_list.html"
 	},{
 		"title": "添加客户",
 		"icon": "fa-github",

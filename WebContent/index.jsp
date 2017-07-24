@@ -42,14 +42,12 @@
 						</div>
 					</div>
 					
-					<ul class="layui-nav admin-header-item">
+					<ul class="layui-nav admin-header-item" >
 					<li class="layui-nav-item">
 					<span id="company"><%out.write(company); %></span>
 					</li>					
-						<li class="layui-nav-item">
-						
+						<li class="layui-nav-item"  >
 							<a href="javascript:;" class="admin-header-user">
-								
 								<span><%out.write(userName); %></span>
 							</a>
 							<dl class="layui-nav-child">
