@@ -19,7 +19,7 @@ var navs = [{
 	"children": [{
 		"title": "客户列表",
 		"icon": "fa-github",
-		"href": "#"
+		"href": "admin_list.html"
 	},{
 		"title": "添加客户",
 		"icon": "fa-github",

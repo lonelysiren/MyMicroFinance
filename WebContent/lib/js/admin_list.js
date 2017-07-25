@@ -1,8 +1,9 @@
 			layui.config({
 				base: './lib/js/'
 			});
-			layui.use(['paging', 'form'], function() {
+			layui.use(['paging', 'form','element'], function() {
 				var $ = layui.jquery,
+					element = layui.element(),
 					paging = layui.paging(),
 					layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
 					layer = layui.layer, //获取当前窗口的layer对象

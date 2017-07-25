@@ -1,72 +1,95 @@
-[
-{
-	"title": "è´¦å·ç®¡ç†",
+[{
+	"title": "ÕËºÅ¹ÜÀí",
+	"icon": "fa-stop-circle",
+	"spread": false,
+	"children": [{
+		"title": "¹ÜÀíÔ±ÁĞ±í",
+		"icon": "fa-github",
+		"href": "admin_list.html"
+	},{
+		"title": "Ìí¼Ó¹ÜÀíÔ±",
+		"icon": "fa-github",
+		"href": "#"
+	}]
+},{
+	"title": "¿Í»§¹ÜÀí",
 	"icon": "fa-stop-circle",
 	"href": "#",
 	"spread": false,
 	"children": [{
-		"title": "ç®¡ç†å‘˜åˆ—è¡¨",
+		"title": "¿Í»§ÁĞ±í",
 		"icon": "fa-github",
-		"href": "admin_list.html"
+		"href": "#"
 	},{
-		"title": "æ·»åŠ ç®¡ç†å‘˜",
+		"title": "Ìí¼Ó¿Í»§",
 		"icon": "fa-github",
 		"href": "#"
 	}]
-}, {
-		"title": "ç»„ä»¶",
-		"icon": "fa-cogs",
-		"spread": false,
-		"children": [
-			{
-				"title": "Datatable",
-				"icon": "fa-table",
-				"href": "begtable.html"
-			}, {
-				"title": "Navbarç»„ä»¶",
-				"icon": "fa-navicon",
-				"href": "navbar.html"
-			}
-		]
-	}, {
-		"title": "ç¬¬ä¸‰æ–¹ç»„ä»¶",
-		"icon": "&#x1002;",
-		"spread": false,
-		"children": [
-			{
-				"title": "iCheckç»„ä»¶",
-				"icon": "fa-check-square-o",
-				"href": "icheck.html"
-			}
-		]
-	}, {
-		"title": "åœ°å€æœ¬",
-		"icon": "fa-address-book",
-		"href": "",
-		"spread": false,
-		"children": [
-			{
-				"title": "Github",
-				"icon": "fa-github",
-				"href": "https://www.github.com/"
-			}, {
-				"title": "QQ",
-				"icon": "fa-qq",
-				"href": "http://www.qq.com/"
-			}, {
-				"title": "Flyç¤¾åŒº",
-				"icon": "&#xe609;",
-				"href": "http://fly.layui.com/"
-			}, {
-				"title": "æ–°æµªå¾®åš",
-				"icon": "fa-weibo",
-				"href": "http://weibo.com/"
-			}
-		]
-	}, {
-		"title": "è¿™æ˜¯ä¸€çº§å¯¼èˆª",
-		"icon": "fa-stop-circle",
-		"href": "https://www.baidu.com",
-		"spread": false
-	}
+},{
+	"title": "²úÆ·¹ÜÀí",
+	"icon": "fa-stop-circle",
+	"href": "#",
+	"spread": false,
+	"children": [{
+		"title": "²úÆ·ÁĞ±í",
+		"icon": "fa-github",
+		"href": "#"
+	},{
+		"title": "Ìí¼Ó²úÆ·",
+		"icon": "fa-github",
+		"href": "#"
+	}]
+},{
+	"title": "¶ÌĞÅ¹ÜÀí",
+	"icon": "fa-stop-circle",
+	"href": "#",
+	"spread": false,
+	"children": [{
+		"title": "×Ô¶¯·¢ËÍ",
+		"icon": "fa-github",
+		"href": "#"
+	},{
+		"title": "ÊÖ¶¯·¢ËÍ",
+		"icon": "fa-github",
+		"href": "#"
+	}]
+},{
+	"title": "Êı¾İ¹ÜÀí",
+	"icon": "fa-stop-circle",
+	"href": "#",
+	"spread": false,
+	"children": [{
+		"title": "Êı¾İÍ³¼Æ",
+		"icon": "fa-github",
+		"href": "#"
+	},{
+		"title": "¿Í»§¾­ÀíÍ³¼Æ",
+		"icon": "fa-github",
+		"href": "#"
+	}]
+},{
+	"title": "Í¨Ñ¶Â¼¹ÜÀí",
+	"icon": "fa-stop-circle",
+	"href": "#",
+	"spread": false,
+	"children": [{
+		"title": "Í¨Ñ¶Â¼ÁĞ±í",
+		"icon": "fa-github",
+		"href": "#"
+	},{
+		"title": "Ìí¼ÓÍ¨Ñ¶Â¼",
+		"icon": "fa-github",
+		"href": "#"
+	}]
+},{
+	"title": "´ßÊÕ¹ÜÀí",
+	"icon": "fa-stop-circle",
+	"href": "#",
+	"spread": false
+},{
+	"title": "¶ÔÕË¹ÜÀí",
+	"icon": "fa-stop-circle",
+	"href": "#",
+	"spread": false
+}
 ]

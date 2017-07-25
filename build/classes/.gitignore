@@ -1,4 +1,10 @@
 /com/
+/commons-beanutils-1.7.0.jar
+/commons-collections-3.2.jar
+/commons-lang-2.4.jar
+/commons-logging-1.1.jar
+/ezmorph-1.0.4.jar
+/jdom.jar
 /json-lib-2.2.2-jdk15.jar
 /json-lib-2.2.3-jdk13.jar
 /log4j-api-2.8.2.jar
