@@ -32,7 +32,7 @@ public class NavDao {
 		List<Map<String, Object>> navs = null;
 		try {
 			navs = jdbcUtil.findModeResult(sql, params);
-		
+			System.out.println(navs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

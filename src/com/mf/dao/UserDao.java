@@ -71,7 +71,7 @@ public class UserDao {
 	  	        List<Map<String, Object>> list = jdbcUtil.findModeResult(sql, params);	
 	  	        
 	  			 maps.put("rel", true);
-	  			 maps.put("msg", "获取成功");
+	  			 maps.put("msg", "鑾峰彇鎴愬姛");
 	  			 maps.put("list", list);
 	  			 
 	  			sql = " select count(1)  from user_info where company = ? ";

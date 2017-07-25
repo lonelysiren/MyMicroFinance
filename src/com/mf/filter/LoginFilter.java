@@ -51,7 +51,7 @@ public class LoginFilter implements Filter {
  
 		
 		if (servletPath.equals("/login") ||servletPath.equals(redirectUrl) || excepUrlPattern.matcher(servletPath).lookingAt()) {
-			System.out.println(servletPath);
+			//System.out.println(servletPath);
 			chain.doFilter(req, resp);
 			return;
 		}
@@ -61,7 +61,7 @@ public class LoginFilter implements Filter {
 		if (sessionObj == null) {
 			//String contextPath = request.getContextPath();
 			//String redirect = servletPath + "?" + StringUtils.defaultString(request.getQueryString());
-			System.out.println("÷ÿ∂®œÚ∞°");
+			System.out.println(servletPath);
 			  PrintWriter out = response.getWriter();  
 		        out.println("<html>");      
 		        out.println("<script>");      

@@ -20,11 +20,14 @@ layui.define(['element', 'common'], function (exports) {
             spreadOne: false //设置是否只展开一个二级菜单
         };
         this.v = '1.0.0';
+     
     };
+
     //渲染
     Navbar.prototype.render = function () {
         var _that = this;
         var _config = _that.config;
+       
         if (typeof (_config.elem) !== 'string' && typeof (_config.elem) !== 'object') {
             common.throwError('Navbar error: elem参数未定义或设置出错，具体设置格式请参考文档API.');
         }

@@ -30,13 +30,21 @@
     <servlet-name>UserListServlet</servlet-name>
     <url-pattern>/user_list</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>UserEditServlet</servlet-name>
     <servlet-class>com.mf.servlet.UserEditServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UserEditServlet</servlet-name>
     <url-pattern>/user_edit</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>NavServlet</servlet-name>
+    <servlet-class>com.mf.servlet.NavServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NavServlet</servlet-name>
+    <url-pattern>/nav</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>LoginFilter</filter-name>
