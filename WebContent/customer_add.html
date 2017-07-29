@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="./lib/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="./lib/css/main.css" />
+	</head>
+
+	<body>
+		<div class="admin-main">
+<form class="layui-form" action="">
+<fieldset class="layui-elem-field">
+  <legend>客戶信息录入</legend>
+  <div class="layui-field-box">
+  <div class="layui-inline">
+  <label class="layui-form-label">客户经理:</label>
+  <div class="layui-input-inline">
+  <select name="" >
+  <option value="010">北京</option>
+  <option value="021">上海</option>
+  <option value="0571">杭州</option>
+	</select> 
+  </div>
+  </div>
+  </div>
+</fieldset>
+<hr>
+<div class="layui-tab layui-tab-card "  lay-filter="customer" >
+  <ul class="layui-tab-title">
+    <li class="layui-this">客户信息</li>
+    <li lay-id="个人信息">个人信息</li>
+    <li>联系人信息</li>
+    <li>公司信息</li>
+    <li>负债信息</li>
+    <li>云数据认真</li>
+  </ul>
+  <div class="layui-tab-content"style="height: auto;">
+    <div class="layui-tab-item layui-show"> 
+     <div class="layui-form-item ">
+    <label class="layui-form-label">身份证号</label>
+    <div class="layui-input-inline">
+      <input type="text" name="idcard" required  lay-verify="identity" placeholder="请输入身份证" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">必填</div>
+    <div class="layui-input-inline">
+    <button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
+    </div>
+  </div>
+    </div>
+    <div class="layui-tab-item" >2</div>
+    <div class="layui-tab-item">3</div>
+    <div class="layui-tab-item">4</div>
+    <div class="layui-tab-item">5</div>
+    <div class="layui-tab-item">6</div>
+  </div>
+</div>
+</form>
+			</div>
+		<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
+		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
+		<script>
+layui.use(['form','element'], function(){
+  var form = layui.form(),
+  element = layui.element();
+ 
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+	  element.tabChange('customer', '个人信息');
+	 
+    return false;
+  });
+});
+</script>
+	</body>
+
+</html>

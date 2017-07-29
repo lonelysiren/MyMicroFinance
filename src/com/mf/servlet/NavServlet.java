@@ -1,6 +1,7 @@
 package com.mf.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ import net.sf.json.JSONObject;
 @WebServlet("/NavServlet")
 public class NavServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	     
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -37,7 +38,29 @@ public class NavServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		NavDao Dao = new NavDao();
 		List<Map<String, Object>> navBar = Dao.NavBar();
+		List<Map<String, Object>> delList = new ArrayList<Map<String, Object>>();
+	
+		for (Map<String, Object> parent : navBar) {
+			List<Map<String, Object>> children = new ArrayList<Map<String, Object>>();
+			Boolean isParent = 
+			  parent.get("pid").toString().isEmpty();
+			if(isParent) {
+				parent.put("spread", false);
+				for (Map<String, Object> child : navBar) {
+					
+					if(child.get("pid") == parent.get("id")) {
+						children.add(child);
+						parent.put("children", children);
+						child.remove("spread");
+						delList.add(child);
+					}
+				}
+			}
+		}
+		
+		navBar.removeAll(delList);
 		JSONArray nav = JSONArray.fromObject(navBar);
+		System.out.println(nav);
 		 Object sessionObj = request.getSession().getAttribute("role");
 		 System.out.println(sessionObj.toString());
 		response.getWriter().write(nav.toString());

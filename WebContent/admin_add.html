@@ -9,20 +9,21 @@
 	</head>
 
 	<body>
-	<blockquote class="layui-elem-quote">
-				<p>添加管理员</p>
-			</blockquote>
-			<fieldset class="layui-elem-field">
-			</fieldset>
-	<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
-	<script>
-		layui.config({
-			base: './lib/js/'
-		});
-		layui.use(['form'],function(){
-			
-		});
-	</script>
-	</body>
+		<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+				添加客户
 	
+				 <button type="button" class="layui-btn layui-btn-small" style="float:right;margin:0;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
+				
+			</blockquote>
+			</div>
+		<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
+		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src ="./lib/js/list.js"></script>
+		<script type="text/javascript">
+		render_list('customer_list','./lib/temp/edit-customer.html','customer_edit','编辑用户','customer_edit');
+		</script>
+	</body>
+
 </html>

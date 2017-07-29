@@ -8,6 +8,8 @@ import java.util.Map;
 import com.mf.entity.Nav;
 import com.mf.utils.JdbcUtil;
 
+import net.sf.json.JSONArray;
+
 public class NavDao {
 	private JdbcUtil jdbcUtil = new JdbcUtil();
 	 private String sql = null;
@@ -32,7 +34,6 @@ public class NavDao {
 		List<Map<String, Object>> navs = null;
 		try {
 			navs = jdbcUtil.findModeResult(sql, params);
-			System.out.println(navs);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,7 +43,14 @@ public class NavDao {
 		
 	}
 	public static void main(String[] args) {
-		NavDao navDao = new NavDao();
-		navDao.NavBar();
+		NavDao Dao = new NavDao();
+		List<Map<String, Object>> navBar = Dao.NavBar();
+		List<Map<String, Object>> delList = new ArrayList<Map<String, Object>>();
+	
+		
+		//System.out.println(navBar.toString());
+		navBar.removeAll(delList);
+		JSONArray nav = JSONArray.fromObject(navBar);
+	
 	}
 }

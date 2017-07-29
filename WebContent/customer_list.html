@@ -12,9 +12,7 @@
 		<div class="admin-main">
 			<blockquote class="layui-elem-quote">
 				客户列表
-	
 				 <button type="button" class="layui-btn layui-btn-small" style="float:right;margin:0;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
-				
 			</blockquote>
 			<blockquote class="layui-elem-quote layui-quote-nm">
 						<div class="layui-collapse">
@@ -23,25 +21,84 @@
     <div class="layui-colla-content layui-show">
     <form class="layui-form layui-form-pane" action="">
     <div class="layui-form-item">
- 
-  <div class="layui-inline">
-    <label class="layui-form-label">范围</label>
-    <div class="layui-input-inline" style="width: 100px;">
-      <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
+ <div class="layui-inline" style="width:25%" >
+    <label class="layui-form-label">姓名</label>
+    <div class="layui-input-inline" style="width:55%" >
+      <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+    </div>
+  </div>
+   <div class="layui-inline " style="width:25%"  >
+      <label class="layui-form-label">客户经理</label>
+    <div class="layui-input-inline" style="width:55%" >
+      <select name="username">
+        <option value=""></option>
+        <option value="0">北京</option>
+        <option value="1">上海</option>
+        <option value="2">广州</option>
+        <option value="3">深圳</option>
+        <option value="4">杭州</option>
+      </select>
+    </div>
+  </div>
+   <div class="layui-inline" style="width:45%"  >
+    <label class="layui-form-label">最低金额</label>
+    <div class="layui-input-inline" style="width:35%"  >
+      <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input ">
     </div>
     <div class="layui-form-mid">-</div>
-    <div class="layui-input-inline" style="width: 100px;">
+   
+    <div class="layui-input-inline" style="width:35%">
       <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
     </div>
   </div>
-  
-  <div class="layui-inline">
-    <label class="layui-form-label">密码</label>
-    <div class="layui-input-inline" style="width: 100px;">
-      <input type="password" name="" autocomplete="off" class="layui-input">
+  <div class="layui-inline" style="width:25%"  >
+    <label class="layui-form-label">身份证号</label>
+    <div class="layui-input-inline" style="width:55%"  >
+      <input type="text" name="name" autocomplete="off" class="layui-input">
     </div>
   </div>
-  
+   <div class="layui-inline " style="width:25%" >
+      <label class="layui-form-label">还款状态</label>
+    <div class="layui-input-inline" style="width:55%"  >
+      <select name="username">
+        <option value=""></option>
+        <option value="0">北京</option>
+        <option value="1">上海</option>
+        <option value="2">广州</option>
+        <option value="3">深圳</option>
+        <option value="4">杭州</option>
+      </select>
+    </div>
+  </div>
+   <div class="layui-inline" style="width:45%"  >
+    <label class="layui-form-label">借款时间</label>
+    <div class="layui-input-inline" style="width:35%">
+      <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid">-</div>
+    <div class="layui-input-inline" style="width:35%">
+      <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+ <div class="layui-inline"  style="width:39%"  >
+    <label class="layui-form-label">选择地区</label>
+    <div class="layui-input-block"  >
+      <input type="text" name="name" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+   <div class="layui-inline" style="width:39%"  >
+    <label class="layui-form-label">所属公司</label>
+    <div class="layui-input-block"  >
+      <input type="text" name="name" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-inline" style="width:15%"  >
+
+<div clase="laui-input-inline">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+</div>
+  </div>
 </div>
     </form>
     </div>
@@ -101,7 +158,10 @@
 		<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
-		<script type="text/javascript" src ="./lib/js/admin_list.js"></script>
+		<script type="text/javascript" src ="./lib/js/list.js"></script>
+		<script type="text/javascript">
+		render_list('customer_list','./lib/temp/edit-customer.html','customer_edit','编辑用户','customer_edit');
+		</script>
 	</body>
 
 </html>
