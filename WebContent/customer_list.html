@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" href="./lib/plugins/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="./lib/plugins/gird-system/css/bootstrap.css" />
 		<link rel="stylesheet" href="./lib/plugins/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" href="./lib/css/main.css" />
 	</head>
@@ -22,22 +22,114 @@
     <div class="layui-colla-content layui-show">
     <form class="layui-form layui-form-pane" action="">
  <div class="row">
-   <div class="col-md-3">
+  	 <div class="col-md-3">
+  	 <div class="layui-form-item" style="margin-bottom: 0px">
+  	 <div class="layui-inline">
    		<label class="layui-form-label">姓名</label>
-      <input type="text" name="name" autocomplete="off" class="layui-inline" placeholder="请输入客户姓名"></div>
-
+   		<div class="layui-input-block">
+   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+   		</div>
+      </div>
+      </div>
+      </div>
+      
   <div class="col-md-3">
-
-  
-    <div class="layui-input-inline"  >
-      <input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+   <label class="layui-form-label">客户经理</label>
+       <div class="layui-input-block">
+      <select name="city" >
+        <option value=""></option>
+        <option value="0">北京</option>
+        <option value="1">上海</option>
+        <option value="2">广州</option>
+        <option value="3">深圳</option>
+        <option value="4">杭州</option>
+      </select>
     </div>
   </div>
    <div class="col-md-6">
+  <div class="layui-form-item" style="margin-bottom: 0px">
+  <div class="layui-inline">
+    <label class="layui-form-label">金额</label>
+    <div class="layui-input-inline" >
+      <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid">-</div>
+    <div class="layui-input-inline" >
+      <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
   </div>
- </div>
+</div>
+  </div>
+  </div>
+ <div class="row">
+  	 <div class="col-md-3">
+  	 <div class="layui-form-item" style="margin-bottom: 0px">
+  	 <div class="layui-inline">
+   		<label class="layui-form-label">身份证号</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入身份证号">
+   		</div>
+      </div>
+      </div>
+      </div>
+      
+  <div class="col-md-3">
+   <label class="layui-form-label">还款状态</label>
+       <div class="layui-input-block">
+      <select name="city" >
+        <option value=""></option>
+        <option value="0">北京</option>
+        <option value="1">上海</option>
+        <option value="2">广州</option>
+        <option value="3">深圳</option>
+        <option value="4">杭州</option>
+      </select>
+    </div>
+  </div>
+   <div class="col-md-6">
+  <div class="layui-form-item" style="margin-bottom: 0px">
+  <div class="layui-inline">
+    <label class="layui-form-label">时间</label>
+    <div class="layui-input-inline" >
+      <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid">-</div>
+    <div class="layui-input-inline" >
+      <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
+    </div>
+  </div>
  
- 
+</div>
+  </div>
+  </div>
+  <div class="row">
+  	 <div class="col-md-5">
+  	 <div class="layui-form-item" style="margin-bottom: 0px">
+   		<label class="layui-form-label">选择地区</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="area" id="city" autocomplete="off" class="layui-input" placeholder="请选择地区">
+   		</div>
+      </div>
+      </div>
+      <div class="col-md-5">
+  	
+  	 <div class="layui-form-item" style="margin-bottom: 0px">
+   		<label class="layui-form-label">所属公司</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+   		</div>
+      </div>
+      </div>
+      <div class="col-md-2">
+  	
+  	 <div class="layui-form-item " style="margin-bottom: 0px">
+   		<div  class="layui-btn-group">
+  <button lay-submit lay-filter="check" class="layui-btn">查询</button>
+  <button type="reset" class="layui-btn">重置</button>
+	</div>
+      </div>
+  </div>
+  </div>
     </form>
     </div>
   </div>
@@ -100,6 +192,7 @@
 		<script type="text/javascript">
 		render_list('customer_list','./lib/temp/edit-customer.html','customer_edit','编辑用户','customer_edit');
 		</script>
+	
 	</body>
 
 </html>
