@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://v3.bootcss.com/customize/?id=1b1a7ef57101cfd3974c065800bd23cc)
- * Config saved to config.json and https://gist.github.com/1b1a7ef57101cfd3974c065800bd23cc
+ * Generated using the Bootstrap Customizer (http://v3.bootcss.com/customize/?id=b589d0559ef5faaa4ebe142569dfde01)
+ * Config saved to config.json and https://gist.github.com/b589d0559ef5faaa4ebe142569dfde01
  */
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
@@ -197,7 +197,17 @@ td,
 th {
   padding: 0;
 }
-
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 html {
   font-size: 10px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);

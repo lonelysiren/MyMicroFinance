@@ -6,6 +6,7 @@
 		<title></title>
 		<link rel="stylesheet" href="./lib/plugins/gird-system/css/bootstrap.css" />
 		<link rel="stylesheet" href="./lib/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="./lib/plugins/city/css/city.css" media="all" />
 		<link rel="stylesheet" href="./lib/css/main.css" />
 	</head>
 
@@ -24,11 +25,9 @@
  <div class="row">
   	 <div class="col-md-3">
   	 <div class="layui-form-item" style="margin-bottom: 0px">
-  	 <div class="layui-inline">
    		<label class="layui-form-label">姓名</label>
    		<div class="layui-input-block">
    		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-   		</div>
       </div>
       </div>
       </div>
@@ -64,11 +63,9 @@
  <div class="row">
   	 <div class="col-md-3">
   	 <div class="layui-form-item" style="margin-bottom: 0px">
-  	 <div class="layui-inline">
    		<label class="layui-form-label">身份证号</label>
    		<div class="layui-input-block">
    		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入身份证号">
-   		</div>
       </div>
       </div>
       </div>
@@ -189,10 +186,19 @@
 		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
 		<script type="text/javascript" src ="./lib/js/list.js"></script>
+		<script src="./lib/plugins/city/Popt.js"></script>
+		<script src="./lib/plugins/city/cityJson.js"></script>
+		<script src="./lib/plugins/city/citySet.js"></script>
+		
 		<script type="text/javascript">
 		render_list('customer_list','./lib/temp/edit-customer.html','customer_edit','编辑用户','customer_edit');
 		</script>
-	
+		<script type="text/javascript">
+			$("#city").click(function (e) {
+			SelCity(this,e);
+			});
+</script>
+		
 	</body>
 
 </html>
