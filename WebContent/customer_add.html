@@ -16,10 +16,8 @@
   <div class="layui-inline">
   <label class="layui-form-label" >客户经理:</label>
   <div class="layui-input-inline">
-  <select name="" >
-  <option value="010">北京</option>
-  <option value="021">上海</option>
-  <option value="0571">杭州</option>
+  <select id="sales_account_manager" name="sales_account_manager" required>
+  <option value="">请选择客户经理</option>
 	</select> 
   </div>
   </div>
@@ -80,11 +78,8 @@
  <div class="layui-form-item">
    		<label class="layui-form-label">婚姻状况</label>
    		<div class="layui-input-block">
-   		<select name="city" >
- 			 <option value="">请选择一个城市</option>
-  			<option value="010">北京</option>
- 			 <option value="021">上海</option>
- 			 <option value="0571">杭州</option>
+   		<select id="marriage_status" name="marriage_status" >
+   		 <option value="">请选择婚姻状况</option>
 		</select>     
       </div>
       </div>
@@ -97,11 +92,9 @@
  <div class="layui-form-item" >
    		<label class="layui-form-label">证件类型</label>
    		<div class="layui-input-block">
-   		<select name="city" lay-verify="">
-  	<option value="">请选择一个城市</option>
-  <option value="010">北京</option>
-  <option value="021">上海</option>
-  <option value="0571">杭州</option>
+   		<select name="idcard_type" id="idcard_type">
+  	<option value="">请选择证件类型</option>
+  
 </select>    
       </div>
       </div>
@@ -155,11 +148,8 @@
  <div class="layui-form-item" >
    		<label class="layui-form-label">住宅状况</label>
    		<div class="layui-input-block">
-   		<select name="city" lay-verify="">
-  <option value="">请选择一个城市</option>
-  <option value="010">北京</option>
-  <option value="021">上海</option>
-  <option value="0571">杭州</option>
+   		<select name="house_status" id="house_status" lay-verify="">
+ <option value="">请选择住宅状况</option>
 </select>     
       </div>
       </div>
@@ -199,12 +189,8 @@
  <div class="layui-form-item">
    		<label class="layui-form-label">地域区分</label>
    		<div class="layui-input-block">
-   		<select name="city" lay-verify="">
-  <option value="">请选择一个城市</option>
-  <option value="010">北京</option>
-  <option value="021">上海</option>
-  <option value="0571">杭州</option>
-</select>     
+   		<input type="radio" name="native_type" value="0" title="本地" checked>
+   		<input type="radio" name="native_type" value="1" title="外地" >
       </div>
       </div>
 </div>
@@ -254,7 +240,9 @@
  <div class="layui-form-item" >
    		<label class="layui-form-label">教育程度</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+   		<select name="education" id="education" >
+   		 <option value="">请选择教育程度</option>
+		</select>     
       </div>
       </div>
 </div>
@@ -314,21 +302,8 @@
      <div class="layui-form-item">
    		<label class="layui-form-label">联系人</label>
    		<div class="layui-input-block">
-   		<select name="relation" >
- 			 <option value="">请选择关系</option>
-  			<option value="010">北京</option>
- 			 <option value="021">上海</option>
- 			 <option value="05712">杭州</option>
- 			  <option value="05713">杭州</option>
- 			   <option value="05714">杭州</option>
- 			    <option value="05715">杭州</option>
- 			     <option value="05716">杭州</option>
- 			      <option value="05717">杭州</option>
- 			       <option value="05718">杭州</option>
- 			        <option value="05719">杭州</option>
- 			         <option value="05710">杭州</option>
- 			          <option value="057111">杭州</option>
- 			           <option value="057122">杭州</option>
+   		<select id="relationship" name="relationship" >
+ <option value="">请选择关系</option>
 		</select>     
       </div>
       </div>
@@ -343,207 +318,14 @@
     </div>
      <div class="col-md-3">
      <div class="layui-form-item" >
-   		<label class="layui-form-label">练习电话</label>
+   		<label class="layui-form-label">联系电话</label>
    		<div class="layui-input-block">
    		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
       </div>
       </div>
     </div>
     </div>
-     <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">工作单位</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-    </div>
-    </div>
-      <div class="row">
-    <div class="col-md-3">
-     <div class="layui-form-item">
-   		<label class="layui-form-label">联系人</label>
-   		<div class="layui-input-block">
-   		<select name="relation" >
- 			 <option value="">请选择关系</option>
-  			<option value="010">北京</option>
- 			 <option value="021">上海</option>
- 			 <option value="0571">杭州</option>
-		</select>     
-      </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">姓名</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-     <div class="layui-form-item" >
-   		<label class="layui-form-label">练习电话</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-    </div>
-     <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">工作单位</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-    </div>
-    </div>
-      <div class="row">
-    <div class="col-md-3">
-     <div class="layui-form-item">
-   		<label class="layui-form-label">联系人</label>
-   		<div class="layui-input-block">
-   		<select name="relation" >
- 			 <option value="">请选择关系</option>
-  			<option value="010">北京</option>
- 			 <option value="021">上海</option>
- 			 <option value="0571">杭州</option>
-		</select>     
-      </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">姓名</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-     <div class="layui-form-item" >
-   		<label class="layui-form-label">练习电话</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-    </div>
-     <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">工作单位</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-    </div>
-    </div>
-      <div class="row">
-    <div class="col-md-3">
-     <div class="layui-form-item">
-   		<label class="layui-form-label">联系人</label>
-   		<div class="layui-input-block">
-   		<select name="relation" >
- 			 <option value="">请选择关系</option>
-  			<option value="010">北京</option>
- 			 <option value="021">上海</option>
- 			 <option value="0571">杭州</option>
-		</select>     
-      </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">姓名</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-     <div class="layui-form-item" >
-   		<label class="layui-form-label">练习电话</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-    </div>
-     <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">工作单位</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-    </div>
-    </div>
-      <div class="row">
-    <div class="col-md-3">
-     <div class="layui-form-item">
-   		<label class="layui-form-label">联系人</label>
-   		<div class="layui-input-block">
-   		<select name="relation" >
- 			 <option value="">请选择关系</option>
-  			<option value="010">北京</option>
- 			 <option value="021">上海</option>
- 			 <option value="0571">杭州</option>
-		</select>     
-      </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">姓名</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-     <div class="layui-form-item" >
-   		<label class="layui-form-label">练习电话</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-    </div>
-     <div class="row">
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-6">
-    <div class="layui-form-item" >
-   		<label class="layui-form-label">工作单位</label>
-   		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
-      </div>
-      </div>
-    </div>
-     <div class="col-md-3">
-    </div>
-    </div>
+     
     <div class="row">
     <div class="col-md-3">
      <div class="layui-form-item" >
@@ -658,11 +440,9 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">公司性质：</label>
    		<div class="layui-input-block">
-   		<select name="city" lay-verify="">
-  <option value="">请选择一个城市</option>
-  <option value="010">北京</option>
-  <option value="021">上海</option>
-  <option value="0571">杭州</option>
+   		<select id="company_type"name="company_type" lay-verify="">
+  <option value="">请选择公司性质</option>
+  
 </select>    
       </div></div>
     </div>
@@ -751,19 +531,8 @@
 		<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
-		<script>
-layui.use(['form','element'], function(){
-  var form = layui.form(),
-  element = layui.element();
-  
-  //监听提交
-  form.on('submit(formDemo)', function(data){
-	  element.tabChange('customer', '个人信息');
-	 
-    return false;
-  });
-});
-</script>
+		<script type="text/javascript"src="./lib/js/customer.js"></script>
+		<script type="text/javascript"src="./lib/js/select.js"></script>
 	</body>
 
 </html>

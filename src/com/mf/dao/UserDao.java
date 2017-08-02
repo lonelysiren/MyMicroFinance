@@ -2,6 +2,7 @@ package com.mf.dao;
 
 import com.mf.utils.*;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.mf.entity.*;
@@ -53,8 +54,15 @@ public class UserDao {
 	 
 		
 	}
-	 
-	  public JSONObject findUserByCompany(String company,int pageIndex,int pageSize) throws SQLException {
+	
+	public JSONArray findUserByCompany(String company) throws SQLException {
+		sql = "select id,nickname from user_info where company = ?";
+		params.add(company);
+		List<Map<String, Object>> list = jdbcUtil.findModeResult(sql, params);
+		JSONArray jsonObject = JSONArray.fromObject(list);
+		return jsonObject;
+	}
+	public JSONObject findUserByCompany(String company,int pageIndex,int pageSize) throws SQLException {
 		
 		  Map<String,Object> maps = new LinkedHashMap<String,Object>(); 
 		  Map<String,Object> map = new LinkedHashMap<String,Object>(); 
