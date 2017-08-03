@@ -46,13 +46,21 @@
     <servlet-name>NavServlet</servlet-name>
     <url-pattern>/nav</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>SelectServlet</servlet-name>
     <servlet-class>com.mf.servlet.SelectServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>SelectServlet</servlet-name>
     <url-pattern>/select</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>CustoemrEditServlet</servlet-name>
+    <servlet-class>com.mf.servlet.CustoemrEditServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustoemrEditServlet</servlet-name>
+    <url-pattern>/customer_edit</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>LoginFilter</filter-name>

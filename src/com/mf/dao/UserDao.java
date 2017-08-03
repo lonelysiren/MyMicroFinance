@@ -37,8 +37,6 @@ public class UserDao {
 	}
 
 	public Map<String, Object> login(String userName,String passWord) throws Exception{
-		 
-	        
 	        sql = "select * from user_info where username = ? and password = ?";
 	        params.add(userName); 
 	        params.add(passWord);  
@@ -62,6 +60,7 @@ public class UserDao {
 		JSONArray jsonObject = JSONArray.fromObject(list);
 		return jsonObject;
 	}
+	
 	public JSONObject findUserByCompany(String company,int pageIndex,int pageSize) throws SQLException {
 		
 		  Map<String,Object> maps = new LinkedHashMap<String,Object>(); 
@@ -99,7 +98,6 @@ public class UserDao {
 	   }
 	  
 	  public JSONObject findUserById(String id) throws SQLException {
-	
 		   sql = "select email,role,company from user_info where id = ? ";
 		  params.add(id); 
 		  Map<String, Object> user_info = jdbcUtil.findSimpleResult(sql, params );
@@ -110,8 +108,6 @@ public class UserDao {
 	  
 	  public Boolean updateByUserId(User user) throws SQLException {
 			// TODO Auto-generated method stub
-		
-		 
 		  sql = "UPDATE user_info SET username = ?, password = ?,nickname = ?,email = ?,stauts = ?,role = ?,company = ? where id = ?  ";
 		  params.add(user.getUsername());
 		  params.add(user.getPassword());
@@ -125,6 +121,7 @@ public class UserDao {
 		  params.clear();
 			return flag;
 		}
+	  
 	  public boolean deleteById(String id) throws SQLException {
 		  sql = "delete from user_info where id = ?";
 		  params.add(id);
@@ -132,6 +129,10 @@ public class UserDao {
 		  params.clear();
 			return flag;
 		}
+	  
+	  public void CheckId(String idcard_number) {
+		  
+	  }
 	 public static void main(String[] args) throws SQLException {
 	 
 		UserDao userDao = new UserDao();

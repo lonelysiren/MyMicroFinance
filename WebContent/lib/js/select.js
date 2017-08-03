@@ -1,5 +1,4 @@
 function select( id) {
-	console.log(id)
 	$.ajax({
 		timeout : 3000,
 		async : false,
@@ -16,7 +15,6 @@ function select( id) {
 			}
 		},
 		error:     function(XMLHttpRequest, textStatus, errorThrown){
-			console.log(textStatus)
 	       }
 	});
 }
