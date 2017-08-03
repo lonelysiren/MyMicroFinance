@@ -4,29 +4,34 @@
 layui.config({
 base: './lib/js/'
 });
-layui.use(['form','element','layer'], function(){
+layui.use(['form','layer'], function(){
   var form = layui.form(),
-  layer = parent.layer === undefined ? layui.layer : parent.layer,
-  element = layui.element();
+  layer = parent.layer === undefined ? layui.layer : parent.layer
 $("select").each(function(index,dom){
 	select($(dom).attr("id"));
 
 });
   form.render();
   //tab切换验证
+  $(document).on('click', '.layui-tab-title li', function(e, index, liElem){
+	  console.log('tab');
+	  var othis = liElem || $(this)
+      ,index = index || othis.parent().children('li').index(othis)
+      ,parents = othis.parents('.layui-tab').eq(0)
+      ,item = parents.children('.layui-tab-content').children('.layui-tab-item')
+      ,filter = parents.attr('lay-filter')
+      ,THIS = 'layui-this'
+      ,SHOW = 'layui-show';
+      othis.addClass(THIS).siblings().removeClass(THIS);
+      item.eq(index).addClass(SHOW).siblings().removeClass(SHOW);
+  });
  var item = $('.layui-tab').eq(0).children('.layui-tab-content').children('.layui-tab-item').eq(0).children('.layui-form-item').eq(0);
  console.log(item);
-  element.on('tab', function(data){
-	 if(data.index !=0){
-		 var item = data.elem.children('.layui-tab-content').children('.layui-tab-item').eq(data.index-1);
-		 
-		
-	
-		  //element.tabChange('customer',data.index-1);
-	 }
-  });
+ 
+
   //身份证验证
   $("button[lay-filter='check_id']").click(function() {
+		
 		var idcard = $("#idcard").val(),
 		sales_account_manager = $("#sales_account_manager").val();
 		if(!sales_account_manager){
@@ -49,8 +54,9 @@ $("select").each(function(index,dom){
 	});
   //监听提交
   form.on('submit(formDemo)', function(data){
-	  element.tabChange('customer', '个人信息');
+
 	 
     return false;
   });
 });
+
