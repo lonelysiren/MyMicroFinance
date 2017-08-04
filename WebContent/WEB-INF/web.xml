@@ -55,11 +55,11 @@
     <url-pattern>/select</url-pattern>
   </servlet-mapping>
    <servlet>
-    <servlet-name>CustoemrEditServlet</servlet-name>
-    <servlet-class>com.mf.servlet.CustoemrEditServlet</servlet-class>
+    <servlet-name>CustomerEditServlet</servlet-name>
+    <servlet-class>com.mf.servlet.CustomerEditServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>CustoemrEditServlet</servlet-name>
+    <servlet-name>CustomerEditServlet</servlet-name>
     <url-pattern>/customer_edit</url-pattern>
   </servlet-mapping>
   <filter>

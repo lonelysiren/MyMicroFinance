@@ -130,13 +130,29 @@ public class UserDao {
 			return flag;
 		}
 	  
-	  public void CheckId(String idcard_number) {
-		  
+	  public String CheckId(String idcard_number, String sales_account_manager, String company) throws SQLException {
+		  sql = "select sales_account_manager_id from manager_relation where idcard_number = ? and company = ?";
+		  params.add(idcard_number);
+		  params.add(company);
+		  String result = "0";
+		
+			List<Map<String, Object>> findModeResult = jdbcUtil.findModeResult(sql, params);
+			if(!findModeResult.isEmpty()) {
+				result = "1";
+				for (Map<String, Object> map : findModeResult) {
+					if(!map.get("sales_account_manager_id").toString().equals(sales_account_manager)) {
+						result = "2";
+						break;
+					}
+				}
+			}
+			return result;
 	  }
 	 public static void main(String[] args) throws SQLException {
 	 
 		UserDao userDao = new UserDao();
-		userDao.deleteById("5");
+		String checkId = userDao.CheckId("431003199408136018","1","xxx公司");
+		System.out.println(checkId);
 		
 	 }
 

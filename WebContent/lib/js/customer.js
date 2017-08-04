@@ -4,34 +4,37 @@
 layui.config({
 base: './lib/js/'
 });
-layui.use(['form','layer'], function(){
+layui.use(['form', 'jquery','layer'], function(){
   var form = layui.form(),
   layer = parent.layer === undefined ? layui.layer : parent.layer
+		  
 $("select").each(function(index,dom){
 	select($(dom).attr("id"));
 
 });
   form.render();
-  //tab切换验证
-  $(document).on('click', '.layui-tab-title li', function(e, index, liElem){
-	  console.log('tab');
-	  var othis = liElem || $(this)
-      ,index = index || othis.parent().children('li').index(othis)
-      ,parents = othis.parents('.layui-tab').eq(0)
-      ,item = parents.children('.layui-tab-content').children('.layui-tab-item')
-      ,filter = parents.attr('lay-filter')
-      ,THIS = 'layui-this'
-      ,SHOW = 'layui-show';
-      othis.addClass(THIS).siblings().removeClass(THIS);
-      item.eq(index).addClass(SHOW).siblings().removeClass(SHOW);
-  });
- var item = $('.layui-tab').eq(0).children('.layui-tab-content').children('.layui-tab-item').eq(0).children('.layui-form-item').eq(0);
- console.log(item);
- 
-
+  //向导式表单
+  var call = {
+		//Tab点击
+		    tabClick: function(e, index, liElem){
+		      var othis = liElem || $(this)
+		      ,index = index || othis.parent().children('li').index(othis)
+		      ,parents = othis.parents('.layui-tab').eq(0)
+		      ,item = parents.children('.layui-tab-content').children('.layui-tab-item')
+		      ,filter = parents.attr('lay-filter')
+		      ,THIS = 'layui-this'
+		      , SHOW = 'layui-show';
+		      
+		      othis.addClass(THIS).siblings().removeClass(THIS);
+		      item.eq(index).addClass(SHOW).siblings().removeClass(SHOW);
+		    }
+  ,addClick : function(){
+		$(document).off('click','.layui-tab-title li:lt(2)')
+		$(document).on('click','.layui-tab-title li:lt(2)',call.tabClick)
+  }
+  };
   //身份证验证
   $("button[lay-filter='check_id']").click(function() {
-		
 		var idcard = $("#idcard").val(),
 		sales_account_manager = $("#sales_account_manager").val();
 		if(!sales_account_manager){
@@ -45,18 +48,14 @@ $("select").each(function(index,dom){
 	    	$.ajax({
 	    		type:'post',
 				url:'/customer_edit',
-				data:{'action':'check_id','idcard_number':idacrd,'sales_account_manager':sales_account_manager},
+				data:{'action':'check_id','idcard_number':idcard,'sales_account_manager':sales_account_manager},
 				success: function (result) {
+					
 	                },
 	            error: function (result, status) { }
 	    	});
 	    
 	});
   //监听提交
-  form.on('submit(formDemo)', function(data){
-
-	 
-    return false;
-  });
 });
 
