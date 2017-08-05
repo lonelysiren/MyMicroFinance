@@ -37,7 +37,7 @@ public class UserDao {
 	}
 
 	public Map<String, Object> login(String userName,String passWord) throws Exception{
-	        sql = "select * from user_info where username = ? and password = ?";
+	        sql = "SELECT nickname,role,stauts,company_id,name FROM company_info INNER JOIN user_info ON user_info.company_id = company_info.id where username = ? and password = ?";
 	        params.add(userName); 
 	        params.add(passWord);  
 	        Map<String, Object> map = jdbcUtil.findSimpleResult(sql, params); 
@@ -45,29 +45,24 @@ public class UserDao {
 	        if(map.size() !=0) {	        	
 	        	return map;
 	        } else {
-
 	        	return null;
 	        }
 	        
-	 
-		
 	}
 	
 	public JSONArray findUserByCompany(String company) throws SQLException {
-		sql = "select id,nickname from user_info where company = ?";
+		sql = "select id,nickname from user_info INNER JOIN company_info ON user_info.company_id = company_info.id where name = ?";
 		params.add(company);
 		List<Map<String, Object>> list = jdbcUtil.findModeResult(sql, params);
 		JSONArray jsonObject = JSONArray.fromObject(list);
 		return jsonObject;
 	}
 	
-	public JSONObject findUserByCompany(String company,int pageIndex,int pageSize) throws SQLException {
-		
+	public JSONObject findUserByCompany(int company_id,int pageIndex,int pageSize) throws SQLException {
 		  Map<String,Object> maps = new LinkedHashMap<String,Object>(); 
 		  Map<String,Object> map = new LinkedHashMap<String,Object>(); 
-	        
-	        	  sql = "select id,username,nickname,stauts from user_info where company = ? limit ? , ? ";
-	  	        params.add(company); 
+	        	  sql = "select user_info.id,username,nickname,stauts from user_info where company_id = ? limit ? , ? ";
+	  	        params.add(company_id); 
 	  	        if(pageIndex==1) {
 	  	        	params.add(0);
 	  	        	params.add(pageSize); 
@@ -76,12 +71,10 @@ public class UserDao {
 	  	        		params.add(pageSize); 
 	  	        }
 	  	        List<Map<String, Object>> list = jdbcUtil.findModeResult(sql, params);	
-	  	        
 	  			 maps.put("rel", true);
 	  			 maps.put("msg", "获取成功");
 	  			 maps.put("list", list);
-	  			 
-	  			sql = " select count(1)  from user_info where company = ? ";
+	  			sql = " select count(1)  from user_info where company_id = ? ";
 	  			System.out.println(params.size());
 	  			params.remove(1);
 	  			params.remove(1);
@@ -98,7 +91,7 @@ public class UserDao {
 	   }
 	  
 	  public JSONObject findUserById(String id) throws SQLException {
-		   sql = "select email,role,company from user_info where id = ? ";
+		   sql = "select email,role from user_info where id = ? ";
 		  params.add(id); 
 		  Map<String, Object> user_info = jdbcUtil.findSimpleResult(sql, params );
 		  JSONObject jsonObject = JSONObject.fromObject(user_info);
@@ -130,10 +123,10 @@ public class UserDao {
 			return flag;
 		}
 	  
-	  public String CheckId(String idcard_number, String sales_account_manager, String company) throws SQLException {
-		  sql = "select sales_account_manager_id from manager_relation where idcard_number = ? and company = ?";
+	  public String CheckId(String idcard_number, String sales_account_manager, String company_id) throws SQLException {
+		  sql = "select sales_account_manager_id from manager_relation where idcard_number = ? and company_id = ?";
 		  params.add(idcard_number);
-		  params.add(company);
+		  params.add(company_id);
 		  String result = "0";
 		
 			List<Map<String, Object>> findModeResult = jdbcUtil.findModeResult(sql, params);

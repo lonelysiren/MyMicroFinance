@@ -28,7 +28,6 @@ public class UserEditServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -43,16 +42,13 @@ public class UserEditServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String del_id = request.getParameter("del");
-		
 		boolean result = false;
 		UserDao userDao = new UserDao();
 		if(del_id == null) {
@@ -76,16 +72,13 @@ public class UserEditServlet extends HttpServlet {
 			try 
 			{
 				if((Integer.parseInt(id))==0) {
-				
 					result = userDao.addUser(user);
 				}else {
 					 result  = userDao.updateByUserId(user);
 				}
-				
 				 if(result) {
 					 response.getWriter().write("ok");
 				 }
-				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

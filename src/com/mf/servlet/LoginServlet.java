@@ -44,27 +44,21 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
-
-
 		String userName = request.getParameter("userName");
 		String passWord = request.getParameter("passWord");
-
-		
 		UserDao userDao = new UserDao();
 		try {
 			Map<String, Object> user_info = userDao.login(userName,passWord);
-			if(user_info != null) {
-
+			if(user_info != null && user_info.get("stauts").toString().equals("0")) {
 				HttpSession session=request.getSession();
-				 session.setAttribute("userName",user_info.get("nickname"));
-				session.setAttribute("company",user_info.get("company"));
 				session.setAttribute("role",user_info.get("role"));
-				 String company=URLEncoder.encode((String) user_info.get("company"), "utf-8"); 
-				 Cookie cookie = new Cookie("company",company);
-				 cookie.setPath("/");
-				 response.addCookie(cookie);
-
+				session.setAttribute("company_id",user_info.get("company_id"));
+				 String company=URLEncoder.encode((String) user_info.get("name"), "utf-8"); 
+				 String nickname=URLEncoder.encode((String) user_info.get("nickname"), "utf-8"); 
+				 Cookie c_company = new Cookie("company",company);
+				 Cookie c_nickname = new Cookie("name",nickname);
+				 response.addCookie(c_company);
+				 response.addCookie(c_nickname);
 			}else {
 				 response.getWriter().write("error");
 			}
@@ -72,12 +66,6 @@ public class LoginServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-		
-		
-		
-		
 	}
 
 }

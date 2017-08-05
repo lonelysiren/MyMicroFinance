@@ -67,7 +67,7 @@
     <filter-class>com.mf.filter.LoginFilter</filter-class>
     <init-param>
       <param-name>sessionKey</param-name>
-      <param-value>userName</param-value>
+      <param-value>role</param-value>
     </init-param>
     <init-param>
       <param-name>redirectUrl</param-name>

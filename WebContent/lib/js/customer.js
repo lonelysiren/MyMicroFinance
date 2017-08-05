@@ -50,7 +50,24 @@ $("select").each(function(index,dom){
 				url:'/customer_edit',
 				data:{'action':'check_id','idcard_number':idcard,'sales_account_manager':sales_account_manager},
 				success: function (result) {
-					
+						switch(result)
+						{
+						case 0:
+							layer.open({
+								title:'查询结果',
+								content:'不存在该客户,点击下一步继续',
+								btn:['下一步'],
+								yes: function(index, layero){
+									call.addClick;
+								  }
+							})
+						  break;
+						case 1:
+						  break;
+						case 2 :
+						  break;
+						default:
+						}
 	                },
 	            error: function (result, status) { }
 	    	});

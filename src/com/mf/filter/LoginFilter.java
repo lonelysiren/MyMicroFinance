@@ -46,10 +46,6 @@ public class LoginFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 		response.setCharacterEncoding("UTF-8"); 
 		String servletPath = request.getServletPath();
-
-		
- 
-		
 		if (servletPath.equals("/login") ||servletPath.equals(redirectUrl) || excepUrlPattern.matcher(servletPath).lookingAt()) {
 			//System.out.println(servletPath);
 			chain.doFilter(req, resp);

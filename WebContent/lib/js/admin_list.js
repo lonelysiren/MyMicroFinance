@@ -26,10 +26,8 @@
 						pageSize: 10 //分页大小
 					},
 					success: function() { //渲染成功的回调
-						
 					},
 					fail: function(msg) { //获取数据失败的回调
-						
 					},
 					complate: function() { //完成的回调
 						//alert('处理完成');
@@ -57,15 +55,11 @@
 								id=$that.children('td:nth-child(2)').text().trim();
 								edit_page($that,layer,id);
 								//本表单通过ajax加载 --以模板的形式，当然你也可以直接写在页面上读取
-								
 							});
 						});
-
 					},
 				});
 				//获取所有选择的列
-					
-				
 			});
 			//打开编辑页面
 			function edit_page($that,layer,id){
@@ -99,14 +93,12 @@
 							//弹出窗口成功后渲染表单
 							//console.log(layero, index);
 								var form = layui.form();
-								
 								$.ajax({
 									type:'get',
 									url:'/user_edit',
 									data:'id='+id,
 									dataType:"json",
 										success: function (result) {
-										
 											if(result['role'] ==  '1'	){
 												layer.close(index);
 							                	layui.layer.msg("公司主账号请在设置里修改");
@@ -116,22 +108,19 @@
 												$("input[name='email']").val(result['email']);
 												$("input[type='radio'][title='"+$that.children('td:nth-child(7)').text().trim() +"']:eq(0)").prop("checked","checked");
 												$("select[name='role']").val(result['role']);
-												
-												$("input[name='company']").val(id=='0'?$("#company",parent.document).html():result['company']);
+												$("input[name='company']").val($("#company",parent.document).html());
+												//result['company_name'];
+												//$("input[name='company']").val(id=='0'?$("#company",parent.document).html():result['company']);
 												form.render();
 											}
-											
 										                },
 						                error: function (result, status) {
 						                	layerTips.close(index);
 						                	layui.layer.msg("链接服务器失败,请重试");
-						                	
 						                }
 								});	
-								
 							form.on('submit(edit)', function(data) {
 							data.field.id=id;
-					
 								//调用父窗口的layer对象
 								$.ajax({
 									type:'post',
@@ -140,8 +129,6 @@
 									success: function (result) {
 										if(result == "ok"){
 											parent.layer.msg("修改成功");
-											
-											
 										}else{
 											parent.layer.msg("修改失败");
 										}
@@ -152,7 +139,6 @@
 								//这里可以写ajax方法提交表单
 								return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。									
 							});
-							//
 						},
 						end: function() {
 							addBoxIndex = -1;

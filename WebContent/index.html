@@ -1,8 +1,4 @@
-﻿<%@page import="java.io.Writer"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
- <% String userName = (String)session.getAttribute("userName");
-  String company = (String)session.getAttribute("company");%>
+﻿
 <!DOCTYPE html>
 
 <html>
@@ -44,17 +40,19 @@
 					
 					<ul class="layui-nav admin-header-item" >
 					<li class="layui-nav-item">
-					<span id="company"><%out.write(company); %></span>
+					<span >积分：100</span>
+					</li>	
+					<li class="layui-nav-item">
+					<span id="company">公司：</span>
 					</li>					
 						<li class="layui-nav-item"  >
 							<a href="javascript:;" class="admin-header-user">
-								<span><%out.write(userName); %></span>
+								<span id="name">666</span>
 							</a>
 							<dl class="layui-nav-child">
 								<dd>
 									<a href="javascript:;"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
 								</dd>
-
 								<dd id="lock">
 									<a href="javascript:;">
 										<i class="fa fa-lock" aria-hidden="true" style="padding-right: 3px;padding-left: 1px;"></i> 锁屏 (Alt+L)
@@ -122,15 +120,15 @@
 			
 			<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
 			<script type="text/javascript" src="./lib/datas/nav.js"></script>
+			<script type="text/javascript"src="/lib/js/jquery-3.2.1.min.js"></script>
+			<script type="text/javascript"src="/lib/js/jquery.cookie.js"></script>
 			<script src="./lib/js/index.js"></script>
 			<script>
+			
 				layui.use('layer', function() {
-					var $ = layui.jquery,
-						layer = layui.layer;
-
-					
-
-
+					var layer = layui.layer;
+					 $("#company").text(　$.cookie("company"));
+					 $("#name").text(　$.cookie("name"));
 				});
 			</script>
 		</div>

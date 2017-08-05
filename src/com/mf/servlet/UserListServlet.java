@@ -12,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import com.mf.dao.UserDao;
 
@@ -45,21 +47,17 @@ public class UserListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
-		String company = request.getParameter("company");
+		HttpSession session = request.getSession();
+		int company_id = (int) session.getAttribute("company_id");
+		String company_name = (String) request.getAttribute("company");
 		int pageIndex = Integer.parseInt(request.getParameter("pageIndex")) ;
 		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
 		UserDao dao = new UserDao();
 		PrintWriter out = null;
 		try {
-			JSONObject user_info = dao.findUserByCompany(company,pageIndex,pageSize);
-		
-			
-		
+			JSONObject user_info = dao.findUserByCompany(company_id,pageIndex,pageSize);
 			  out = response.getWriter();
 			  out.write(user_info.toString());
-			
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
