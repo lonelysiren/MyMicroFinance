@@ -46,8 +46,7 @@ public class CustomerEditServlet extends HttpServlet {
 		case "check_id":
 			String idcard_number = request.getParameter("idcard_number");
 			String sales_account_manager = request.getParameter("sales_account_manager");
-			System.out.println(sales_account_manager);
-			String company = (String) session.getAttribute("company");
+			int company = (int) session.getAttribute("company_id");
 			try {
 				String result = userDao.CheckId(idcard_number,sales_account_manager,company);
 				response.getWriter().write(result);

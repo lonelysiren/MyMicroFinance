@@ -93,32 +93,40 @@
 							//弹出窗口成功后渲染表单
 							//console.log(layero, index);
 								var form = layui.form();
-								$.ajax({
-									type:'get',
-									url:'/user_edit',
-									data:'id='+id,
-									dataType:"json",
-										success: function (result) {
-											if(result['role'] ==  '1'	){
-												layer.close(index);
-							                	layui.layer.msg("公司主账号请在设置里修改");
-											} else{
-												$("input[name='username']").val($that.children('td:nth-child(3)').text());
-												$("input[name='nickname']").val($that.children('td:nth-child(4)').text());
-												$("input[name='email']").val(result['email']);
-												$("input[type='radio'][title='"+$that.children('td:nth-child(7)').text().trim() +"']:eq(0)").prop("checked","checked");
-												$("select[name='role']").val(result['role']);
-												$("input[name='company']").val($("#company",parent.document).html());
-												//result['company_name'];
-												//$("input[name='company']").val(id=='0'?$("#company",parent.document).html():result['company']);
-												form.render();
-											}
-										                },
-						                error: function (result, status) {
-						                	layerTips.close(index);
-						                	layui.layer.msg("链接服务器失败,请重试");
-						                }
-								});	
+								if(id != '0'){
+									$.ajax({
+										type:'get',
+										url:'/user_edit',
+										data:'id='+id,
+										dataType:"json",
+											success: function (result) {
+												if(result['role'] ==  '1'	){
+													layer.close(index);
+								                	layui.layer.msg("公司主账号请在设置里修改");
+												} else{
+													$("input[name='username']").val($that.children('td:nth-child(3)').text());
+													$("input[name='nickname']").val($that.children('td:nth-child(4)').text());
+													$("input[name='email']").val(result['email']);
+													$("input[type='radio'][title='"+$that.children('td:nth-child(7)').text().trim() +"']:eq(0)").prop("checked","checked");
+													$("select[name='role']").val(result['role']);
+													$("input[name='company']").val($("#company",parent.document).html());
+													$("input[name='company']").append('<input type="hidden" name="company_id" value="'+result['company_id'] +'"/>');
+													//result['company_name'];
+													//$("input[name='company']").val(id=='0'?$("#company",parent.document).html():result['company']);
+													form.render();
+												}
+											                },
+							                error: function (result, status) {
+							                	layerTips.close(index);
+							                	layui.layer.msg("链接服务器失败,请重试");
+							                }
+									});
+								} else {
+									$("input[name='company']").val($("#company",parent.document).html());
+									$("input[name='company']").append('<input type="hidden" name="company_id" value="'+$("#company_id",parent.document).val() +'"/>');
+									
+								}
+								form.render();
 							form.on('submit(edit)', function(data) {
 							data.field.id=id;
 								//调用父窗口的layer对象

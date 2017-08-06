@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="./lib/plugins/gird-system/css/bootstrap.css" media="all" />
 		<link rel="stylesheet" href="./lib/plugins/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" href="./lib/css/main.css" />
+			<link rel="stylesheet" href="./lib/plugins/city/css/city.css" media="all" />
 	</head>
 	<body>
 		<div class="admin-main">
@@ -62,8 +63,8 @@
  <div class="layui-form-item" pane="" >
    		<label class="layui-form-label">性别</label>
    		<div class="layui-input-block">
-   		<input type="radio" name="sex" value="nan" title="男" >
-		<input type="radio" name="sex" value="nv" title="女" checked>
+   		<input type="radio" name="sex" value="0" title="男" checked>
+		<input type="radio" name="sex" value="1" title="女" >
       </div>
       </div>
 </div>
@@ -95,7 +96,6 @@
    		<div class="layui-input-block">
    		<select name="idcard_type" id="idcard_type">
   	<option value="">请选择证件类型</option>
-  
 </select>    
       </div>
       </div>
@@ -105,7 +105,7 @@
  <div class="layui-form-item" >
    		<label class="layui-form-label">证件号码</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-verify="required|identity"name="idcard_number" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+   		<input type="text" lay-verify="required|identity" id ="idcard_number" name="idcard_number" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
       </div>
       </div>
 </div>
@@ -535,6 +535,15 @@
 		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
 		<script type="text/javascript"src="./lib/js/customer.js"></script>
 		<script type="text/javascript"src="./lib/js/select.js"></script>
+	<script src="./lib/plugins/city/Popt.js"></script>
+		<script src="./lib/plugins/city/citySet.js"></script>
+		<script src="./lib/plugins/city/cityJson.js"></script>
+		
+		<script type="text/javascript">
+			$("[name='census_register']").click(function (e) {
+			SelCity(this,e);
+			});
+		</script>
 	</body>
 
 </html>

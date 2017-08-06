@@ -1,4 +1,8 @@
-﻿
+﻿<%@ page language="java" contentType="text/html; charset=Utf-8"
+    pageEncoding="Utf-8"%>
+<%@ taglib prefix="c" 
+    uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 
 <html>
@@ -43,11 +47,12 @@
 					<span >积分：100</span>
 					</li>	
 					<li class="layui-nav-item">
-					<span id="company">公司：</span>
+					公司：<span id="company">${ sessionScope.company_name} </span>
+					<input id="company_id" type="hidden" value=${ sessionScope.company_id}>
 					</li>					
 						<li class="layui-nav-item"  >
 							<a href="javascript:;" class="admin-header-user">
-								<span id="name">666</span>
+								<span id="name">${ sessionScope.nickname} </span>
 							</a>
 							<dl class="layui-nav-child">
 								<dd>
@@ -120,15 +125,12 @@
 			
 			<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
 			<script type="text/javascript" src="./lib/datas/nav.js"></script>
-			<script type="text/javascript"src="/lib/js/jquery-3.2.1.min.js"></script>
-			<script type="text/javascript"src="/lib/js/jquery.cookie.js"></script>
 			<script src="./lib/js/index.js"></script>
 			<script>
 			
 				layui.use('layer', function() {
 					var layer = layui.layer;
-					 $("#company").text(　$.cookie("company"));
-					 $("#name").text(　$.cookie("name"));
+
 				});
 			</script>
 		</div>

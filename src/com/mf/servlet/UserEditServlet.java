@@ -37,6 +37,7 @@ public class UserEditServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		try {
 			JSONObject info = userDao.findUserById(id);
+			System.out.println(info.toString());
 			response.getWriter().write(info.toString());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -59,7 +60,7 @@ public class UserEditServlet extends HttpServlet {
 			String email = request.getParameter("email");
 			String stauts = request.getParameter("stauts");
 			String role = request.getParameter("role");
-			String company = request.getParameter("company");
+			String company_id = request.getParameter("company_id");
 			User user = new User();
 			user.setId(Integer.parseInt(id));
 			user.setUsername(username);
@@ -68,7 +69,7 @@ public class UserEditServlet extends HttpServlet {
 			user.setEmail(email);
 			user.setStauts(stauts);
 			user.setRole(role);
-			user.setCompany(company);
+			user.setCompany(company_id);
 			try 
 			{
 				if((Integer.parseInt(id))==0) {

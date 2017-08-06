@@ -48,19 +48,15 @@ public class SelectServlet extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String data = request.getParameter("data");
-		System.out.println(data);
 		switch (data) {
 		case "sales_account_manager":
 			HttpSession session = request.getSession();
-			String attribute = (String) session.getAttribute("company");
-			System.out.println(attribute);
+			int company_id = (int) session.getAttribute("company_id");
 			UserDao userDao = new UserDao();
 			try {
-				JSONArray findUserByCompany = userDao.findUserByCompany(attribute);
-				System.out.println(findUserByCompany.toString());
+				JSONArray findUserByCompany = userDao.findUserByCompany(company_id);
 				response.getWriter().write(findUserByCompany.toString());
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;

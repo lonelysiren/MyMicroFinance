@@ -53,12 +53,8 @@ public class LoginServlet extends HttpServlet {
 				HttpSession session=request.getSession();
 				session.setAttribute("role",user_info.get("role"));
 				session.setAttribute("company_id",user_info.get("company_id"));
-				 String company=URLEncoder.encode((String) user_info.get("name"), "utf-8"); 
-				 String nickname=URLEncoder.encode((String) user_info.get("nickname"), "utf-8"); 
-				 Cookie c_company = new Cookie("company",company);
-				 Cookie c_nickname = new Cookie("name",nickname);
-				 response.addCookie(c_company);
-				 response.addCookie(c_nickname);
+				session.setAttribute("company_name",user_info.get("name"));
+				session.setAttribute("nickname",user_info.get("nickname"));
 			}else {
 				 response.getWriter().write("error");
 			}

@@ -50,15 +50,15 @@ public class UserDao {
 	        
 	}
 	
-	public JSONArray findUserByCompany(String company) throws SQLException {
-		sql = "select id,nickname from user_info INNER JOIN company_info ON user_info.company_id = company_info.id where name = ?";
-		params.add(company);
+	public JSONArray findUserByCompany(int company_id) throws SQLException {
+		sql = "select id,nickname from user_info where company_id = ?";
+		params.add(company_id);
 		List<Map<String, Object>> list = jdbcUtil.findModeResult(sql, params);
 		JSONArray jsonObject = JSONArray.fromObject(list);
 		return jsonObject;
 	}
 	
-	public JSONObject findUserByCompany(int company_id,int pageIndex,int pageSize) throws SQLException {
+	public JSONObject findUserByCompanyId(int company_id,int pageIndex,int pageSize) throws SQLException {
 		  Map<String,Object> maps = new LinkedHashMap<String,Object>(); 
 		  Map<String,Object> map = new LinkedHashMap<String,Object>(); 
 	        	  sql = "select user_info.id,username,nickname,stauts from user_info where company_id = ? limit ? , ? ";
@@ -79,19 +79,14 @@ public class UserDao {
 	  			params.remove(1);
 	  			params.remove(1);
 	  			map = jdbcUtil.findSimpleResult(sql,params);	
-	  			
 	  			 maps.put("count", map.get("count(1)"));
-	       
-	       
-	       
 			   JSONObject jsonObject = JSONObject.fromObject(maps);
 			   params.clear();
 	        return jsonObject;
-		  
 	   }
 	  
 	  public JSONObject findUserById(String id) throws SQLException {
-		   sql = "select email,role from user_info where id = ? ";
+		   sql = "select email,role,company_id from user_info where id = ? ";
 		  params.add(id); 
 		  Map<String, Object> user_info = jdbcUtil.findSimpleResult(sql, params );
 		  JSONObject jsonObject = JSONObject.fromObject(user_info);
@@ -123,7 +118,7 @@ public class UserDao {
 			return flag;
 		}
 	  
-	  public String CheckId(String idcard_number, String sales_account_manager, String company_id) throws SQLException {
+	  public String CheckId(String idcard_number, String sales_account_manager, int company_id) throws SQLException {
 		  sql = "select sales_account_manager_id from manager_relation where idcard_number = ? and company_id = ?";
 		  params.add(idcard_number);
 		  params.add(company_id);
@@ -143,9 +138,7 @@ public class UserDao {
 	  }
 	 public static void main(String[] args) throws SQLException {
 	 
-		UserDao userDao = new UserDao();
-		String checkId = userDao.CheckId("431003199408136018","1","xxx公司");
-		System.out.println(checkId);
+	
 		
 	 }
 
