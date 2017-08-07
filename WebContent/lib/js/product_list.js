@@ -14,7 +14,7 @@
 				});
                 paging.init({
                     openWait: true,
-                    url: './user_list', //地址
+                    url: './product_list', //地址
 					elem: '#content', //内容容器
 					params: { //发送到服务端的参数
 						company:$.cookie('company')
@@ -63,7 +63,7 @@
 			});
 			//打开编辑页面
 			function edit_page($that,layer,id){
-				$.get('./lib/temp/edit-admin.html', null, function(form) {
+				$.get('./lib/temp/edit-product.html', null, function(form) {
 					addBoxIndex = layer.open({
 						type: 1,
 						title: '编辑管理员',
