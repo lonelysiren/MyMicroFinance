@@ -156,6 +156,10 @@ public class UserDao {
 			return flag;
 	}
 
+	public void addCustomer() {
+		sql = "insert into user_info valuese(null,)";
+	}
+
 	
 
 	

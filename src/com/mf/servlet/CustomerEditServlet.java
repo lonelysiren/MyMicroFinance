@@ -2,6 +2,7 @@ package com.mf.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,18 +45,20 @@ public class CustomerEditServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		switch (action) {
 		case "check_id":
-			String idcard_number = request.getParameter("idcard_number");
+			String idcard_number = request.getParameter("idcard");
 			String sales_account_manager = request.getParameter("sales_account_manager");
 			int company = (int) session.getAttribute("company_id");
 			try {
 				String result = userDao.CheckId(idcard_number,sales_account_manager,company);
 				response.getWriter().write(result);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			break;
-
+		case "customer_info":
+			String parameter = request.getParameter("customer_info");
+			userDao.addCustomer();
+			break;
 		default:
 			break;
 		}
