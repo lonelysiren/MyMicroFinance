@@ -43,6 +43,8 @@ public class CustomerEditServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		HttpSession session=request.getSession();
 		UserDao userDao = new UserDao();
+		String parameter;
+		int id;
 		switch (action) {
 		case "check_id":
 			String idcard_number = request.getParameter("idcard");
@@ -52,8 +54,18 @@ public class CustomerEditServlet extends HttpServlet {
 			response.getWriter().write(result);
 			break;
 		case "customer_info":
-			String parameter = request.getParameter("customer_info");
-			int id = userDao.addCustomer(parameter);
+			 parameter = request.getParameter("customer_info");
+			 id = userDao.addCustomer(parameter);
+			response.getWriter().print(id);
+			break;
+		case "customer_relation_info":
+			 parameter = request.getParameter("customer_info");
+			 id = userDao.addCustomer(parameter);
+			response.getWriter().print(id);
+			break;
+		case "customer_company_info":
+			 parameter = request.getParameter("customer_info");
+			 id = userDao.addCustomer(parameter);
 			response.getWriter().print(id);
 			break;
 		default:

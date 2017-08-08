@@ -1,20 +1,19 @@
 package com.mf.servlet;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mf.dao.UserDao;
-import com.mf.entity.User;
-import com.mf.utils.JsonUtil;
 
 /**
  * Servlet implementation class LoginServlet
@@ -22,7 +21,8 @@ import com.mf.utils.JsonUtil;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+ 
+	  static Logger logger = LogManager.getLogger(LoginServlet.class.getName());
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -51,7 +51,6 @@ public class LoginServlet extends HttpServlet {
 		String userName = request.getParameter("userName");
 		String passWord = request.getParameter("passWord");
 		UserDao userDao = new UserDao();
-
 		Map<String, Object> user_info = userDao.login(userName, passWord);
 		if (user_info != null && user_info.get("stauts").toString().equals("0")) {
 			HttpSession session = request.getSession();
