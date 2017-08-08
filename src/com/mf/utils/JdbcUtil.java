@@ -2,7 +2,6 @@ package com.mf.utils;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -15,7 +14,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mf.entity.User;
+import com.mysql.jdbc.Statement;
 
 public class JdbcUtil {
 
@@ -23,40 +22,38 @@ public class JdbcUtil {
 	private PreparedStatement pstmt;
 	private ResultSet resultSet;
 
-	public static void releaseConnection(Connection connection) {
-		try {
-			if (connection != null) {
-				connection.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
+	 public  void close(){  
+         if(resultSet!=null){  
+             try {  
+            	 resultSet.close();  
+             } catch (SQLException e) {  
+             }  
+         }  
+         if(pstmt!=null){  
+             try {  
+            	 pstmt.close();  
+             } catch (SQLException e) {  
+             }  
+         }  
+   
+         if(connection!=null){  
+             try {  
+            	 connection.close();  
+             } catch (SQLException e) {  
+             }  
+         }  
+     }  
 	private static DataSource dataSource = null;
 	static {
-		// dataSource×ÊÔ´Ö»ÄÜ³õÊ¼»¯Ò»´Î
 		dataSource = new ComboPooledDataSource("mvcApp");
 	}
 
-	/**
-	 * »ñµÃÊý¾Ý¿âµÄÁ¬½Ó
-	 * @return 
-	 * 
-	 * @return
-	 */
+
 	public void getConnection() throws SQLException {
 		connection = dataSource.getConnection();
 	}
 
-	/**
-	 * Ôö¼Ó¡¢É¾³ý¡¢¸Ä
-	 * 
-	 * @param sql
-	 * @param params
-	 * @return
-	 * @throws SQLException
-	 */
 	public boolean updateByPreparedStatement(String sql, List<Object> params) throws SQLException {
 		boolean flag = false;
 		int result = -1;
@@ -68,20 +65,30 @@ public class JdbcUtil {
 				pstmt.setObject(index++, params.get(i));
 			}
 		}
-		System.out.println(pstmt.toString());
 		result = pstmt.executeUpdate();
 		flag = result > 0 ? true : false;
 		return flag;
 	}
-
-	/**
-	 * ²éÑ¯µ¥Ìõ¼ÇÂ¼
-	 * 
-	 * @param sql
-	 * @param params
-	 * @return
-	 * @throws SQLException
-	 */
+	
+	public int addByPreparedStatement(String sql, List<Object> params) throws SQLException {
+		int id = 0 ;
+		pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		
+		int index = 1;
+		if (params != null && !params.isEmpty()) {
+			for (int i = 0; i < params.size(); i++) {
+				
+				pstmt.setObject(index++, params.get(i));
+			}
+		}
+		System.out.println(pstmt.toString());
+		 pstmt.executeUpdate();
+		 resultSet = pstmt.getGeneratedKeys(); 
+		if(resultSet.next()){  
+            id = resultSet.getInt(1);  
+        }  
+		return id;
+	}
 	public Map<String, Object> findSimpleResult(String sql, List<Object> params) throws SQLException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int index = 1;
@@ -92,7 +99,7 @@ public class JdbcUtil {
 			}
 		}
 		
-		resultSet = pstmt.executeQuery();// ·µ»Ø²éÑ¯½á¹û
+		resultSet = pstmt.executeQuery();// ï¿½ï¿½ï¿½Ø²ï¿½Ñ¯ï¿½ï¿½ï¿½
 		ResultSetMetaData metaData = resultSet.getMetaData();
 		int col_len = metaData.getColumnCount();
 		while (resultSet.next()) {
@@ -108,14 +115,6 @@ public class JdbcUtil {
 		return map;
 	}
 
-	/**
-	 * ²éÑ¯¶àÌõ¼ÇÂ¼
-	 * 
-	 * @param sql
-	 * @param params
-	 * @return
-	 * @throws SQLException
-	 */
 	public List<Map<String, Object>> findModeResult(String sql, List<Object> params) throws SQLException {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		int index = 1;
@@ -125,8 +124,6 @@ public class JdbcUtil {
 				pstmt.setObject(index++, params.get(i));
 			}
 		}
-		
-		System.out.println(pstmt.toString());
 		resultSet = pstmt.executeQuery();
 		ResultSetMetaData metaData = resultSet.getMetaData();
 		int cols_len = metaData.getColumnCount();
@@ -142,19 +139,9 @@ public class JdbcUtil {
 			}
 			list.add(map);
 		}
-		
 		return list;
 	}
 
-	/**
-	 * Í¨¹ý·´Éä»úÖÆ²éÑ¯µ¥Ìõ¼ÇÂ¼
-	 * 
-	 * @param sql
-	 * @param params
-	 * @param cls
-	 * @return
-	 * @throws Exception
-	 */
 	public <T> T findSimpleRefResult(String sql, List<Object> params, Class<T> cls) throws Exception {
 		T resultObject = null;
 		int index = 1;
@@ -168,7 +155,7 @@ public class JdbcUtil {
 		ResultSetMetaData metaData = resultSet.getMetaData();
 		int cols_len = metaData.getColumnCount();
 		while (resultSet.next()) {
-			// Í¨¹ý·´Éä»úÖÆ´´½¨Ò»¸öÊµÀý
+			// Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ´ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Êµï¿½ï¿½
 			resultObject = cls.newInstance();
 			for (int i = 0; i < cols_len; i++) {
 				String cols_name = metaData.getColumnName(i + 1);
@@ -177,7 +164,7 @@ public class JdbcUtil {
 					cols_value = "";
 				}
 				Field field = cls.getDeclaredField(cols_name);
-				field.setAccessible(true); // ´ò¿ªjavabeanµÄ·ÃÎÊÈ¨ÏÞ
+				field.setAccessible(true); // ï¿½ï¿½javabeanï¿½Ä·ï¿½ï¿½ï¿½È¨ï¿½ï¿½
 				field.set(resultObject, cols_value);
 			}
 		}
@@ -185,15 +172,6 @@ public class JdbcUtil {
 
 	}
 
-	/**
-	 * Í¨¹ý·´Éä»úÖÆ²éÑ¯¶àÌõ¼ÇÂ¼
-	 * 
-	 * @param sql
-	 * @param params
-	 * @param cls
-	 * @return
-	 * @throws Exception
-	 */
 	public <T> List<T> findMoreRefResult(String sql, List<Object> params, Class<T> cls) throws Exception {
 		List<T> list = new ArrayList<T>();
 		int index = 1;
@@ -207,7 +185,7 @@ public class JdbcUtil {
 		ResultSetMetaData metaData = resultSet.getMetaData();
 		int cols_len = metaData.getColumnCount();
 		while (resultSet.next()) {
-			// Í¨¹ý·´Éä»úÖÆ´´½¨Ò»¸öÊµÀý
+			// Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ´ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Êµï¿½ï¿½
 			T resultObject = cls.newInstance();
 			for (int i = 0; i < cols_len; i++) {
 				String cols_name = metaData.getColumnName(i + 1);
@@ -216,7 +194,7 @@ public class JdbcUtil {
 					cols_value = "";
 				}
 				Field field = cls.getDeclaredField(cols_name);
-				field.setAccessible(true); // ´ò¿ªjavabeanµÄ·ÃÎÊÈ¨ÏÞ
+				field.setAccessible(true); // ï¿½ï¿½javabeanï¿½Ä·ï¿½ï¿½ï¿½È¨ï¿½ï¿½
 				field.set(resultObject, cols_value);
 			}
 			list.add(resultObject);
@@ -224,18 +202,7 @@ public class JdbcUtil {
 		return list;
 	}
 
-	/**
-	 * ÊÍ·ÅÊý¾Ý¿âÁ¬½Ó
-	 */
-	public void releaseConn() {
-		if (resultSet != null) {
-			try {
-				resultSet.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+
 
 	/**
 	 * @param args
@@ -245,43 +212,43 @@ public class JdbcUtil {
 		JdbcUtil jdbcUtils = new JdbcUtil();
 		jdbcUtils.getConnection();
 
-		/******************* Ôö *********************/
+		/******************* ï¿½ï¿½ *********************/
 		/*
 		 * String sql =
 		 * "insert into userinfo (username, pswd) values (?, ?), (?, ?), (?, ?)";
-		 * List<Object> params = new ArrayList<Object>(); params.add("Ð¡Ã÷");
-		 * params.add("123xiaoming"); params.add("ÕÅÈý"); params.add("zhangsan");
-		 * params.add("ÀîËÄ"); params.add("lisi000"); try { boolean flag =
+		 * List<Object> params = new ArrayList<Object>(); params.add("Ð¡ï¿½ï¿½");
+		 * params.add("123xiaoming"); params.add("ï¿½ï¿½ï¿½ï¿½"); params.add("zhangsan");
+		 * params.add("ï¿½ï¿½ï¿½ï¿½"); params.add("lisi000"); try { boolean flag =
 		 * jdbcUtils.updateByPreparedStatement(sql, params); System.out.println(flag); }
 		 * catch (SQLException e) { // TODO Auto-generated catch block
 		 * e.printStackTrace(); }
 		 */
 
 		/******************* É¾ *********************/
-		// É¾³ýÃû×ÖÎªÕÅÈýµÄ¼ÇÂ¼
+		// É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Â¼
 		/*
 		 * String sql = "delete from userinfo where username = ?"; List<Object> params =
-		 * new ArrayList<Object>(); params.add("Ð¡Ã÷"); boolean flag =
+		 * new ArrayList<Object>(); params.add("Ð¡ï¿½ï¿½"); boolean flag =
 		 * jdbcUtils.updateByPreparedStatement(sql, params);
 		 */
 
-		/******************* ¸Ä *********************/
-		// ½«Ãû×ÖÎªÀîËÄµÄÃÜÂë¸ÄÁË
+		/******************* ï¿½ï¿½ *********************/
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		/*
 		 * String sql = "update userinfo set pswd = ? where username = ? "; List<Object>
-		 * params = new ArrayList<Object>(); params.add("lisi88888"); params.add("ÀîËÄ");
+		 * params = new ArrayList<Object>(); params.add("lisi88888"); params.add("ï¿½ï¿½ï¿½ï¿½");
 		 * boolean flag = jdbcUtils.updateByPreparedStatement(sql, params);
 		 * System.out.println(flag);
 		 */
 
-		/******************* ²é *********************/
-		// ²»ÀûÓÃ·´Éä²éÑ¯¶à¸ö¼ÇÂ¼
+		/******************* ï¿½ï¿½ *********************/
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Â¼
 		/*
 		 * String sql2 = "select * from userinfo "; List<Map<String, Object>> list =
 		 * jdbcUtils.findModeResult(sql2, null); System.out.println(list);
 		 */
 
-		// ÀûÓÃ·´Éä²éÑ¯ µ¥Ìõ¼ÇÂ¼
+		// ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½Ñ¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼
 		/*
 		 * String sql = "select * from user_info where username = ? "; List<Object>
 		 * params = new ArrayList<Object>(); params.add("6666"); User user; try { user =

@@ -48,16 +48,13 @@ public class CustomerEditServlet extends HttpServlet {
 			String idcard_number = request.getParameter("idcard");
 			String sales_account_manager = request.getParameter("sales_account_manager");
 			int company = (int) session.getAttribute("company_id");
-			try {
-				String result = userDao.CheckId(idcard_number,sales_account_manager,company);
-				response.getWriter().write(result);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			String result = userDao.CheckId(idcard_number,sales_account_manager,company);
+			response.getWriter().write(result);
 			break;
 		case "customer_info":
 			String parameter = request.getParameter("customer_info");
-			userDao.addCustomer();
+			int id = userDao.addCustomer(parameter);
+			response.getWriter().print(id);
 			break;
 		default:
 			break;

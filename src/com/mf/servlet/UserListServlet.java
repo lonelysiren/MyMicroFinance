@@ -25,45 +25,43 @@ import net.sf.json.JSONObject;
 @WebServlet("/UserListServlet")
 public class UserListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public UserListServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public UserListServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		int company_id = (int) session.getAttribute("company_id");
-		//String company_name = (String) request.getAttribute("company");
-		int pageIndex = Integer.parseInt(request.getParameter("pageIndex")) ;
+		// String company_name = (String) request.getAttribute("company");
+		int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
 		int pageSize = Integer.parseInt(request.getParameter("pageSize"));
 		UserDao dao = new UserDao();
 		PrintWriter out = null;
-		try {
-			JSONObject user_info = dao.findUserByCompanyId(company_id,pageIndex,pageSize);
-			  out = response.getWriter();
-			  out.write(user_info.toString());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+		JSONObject user_info = dao.findUserByCompanyId(company_id, pageIndex, pageSize);
+		out = response.getWriter();
+		out.write(user_info.toString());
+
 	}
 
 }

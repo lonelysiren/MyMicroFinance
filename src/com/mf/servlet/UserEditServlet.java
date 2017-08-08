@@ -35,14 +35,9 @@ public class UserEditServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		UserDao userDao = new UserDao();
 		String id = request.getParameter("id");
-		try {
-			JSONObject info = userDao.findUserById(id);
-			System.out.println(info.toString());
-			response.getWriter().write(info.toString());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		JSONObject info = userDao.findUserById(id);
+		System.out.println(info.toString());
+		response.getWriter().write(info.toString());
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -70,29 +65,18 @@ public class UserEditServlet extends HttpServlet {
 			user.setStauts(stauts);
 			user.setRole(role);
 			user.setCompany(company_id);
-			try 
-			{
-				if((Integer.parseInt(id))==0) {
-					result = userDao.addUser(user);
-				}else {
-					 result  = userDao.updateByUserId(user);
-				}
-				 if(result) {
-					 response.getWriter().write("ok");
-				 }
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if((Integer.parseInt(id))==0) {
+				result = userDao.addUser(user);
+			}else {
+				 result  = userDao.updateByUserId(user);
 			}
+			 if(result) {
+				 response.getWriter().write("ok");
+			 }
 		} else {
-			try {
-				result = userDao.deleteById(del_id);
-				if(result) {
-					 response.getWriter().write("ok");
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			result = userDao.deleteById(del_id);
+			if(result) {
+				 response.getWriter().write("ok");
 			}
 		}
 		

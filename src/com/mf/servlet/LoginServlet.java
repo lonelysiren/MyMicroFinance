@@ -22,46 +22,47 @@ import com.mf.utils.JsonUtil;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public LoginServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String userName = request.getParameter("userName");
 		String passWord = request.getParameter("passWord");
 		UserDao userDao = new UserDao();
-		try {
-			Map<String, Object> user_info = userDao.login(userName,passWord);
-			if(user_info != null && user_info.get("stauts").toString().equals("0")) {
-				HttpSession session=request.getSession();
-				session.setAttribute("role",user_info.get("role"));
-				session.setAttribute("company_id",user_info.get("company_id"));
-				session.setAttribute("company_name",user_info.get("name"));
-				session.setAttribute("nickname",user_info.get("nickname"));
-			}else {
-				 response.getWriter().write("error");
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		Map<String, Object> user_info = userDao.login(userName, passWord);
+		if (user_info != null && user_info.get("stauts").toString().equals("0")) {
+			HttpSession session = request.getSession();
+			session.setAttribute("role", user_info.get("role"));
+			session.setAttribute("company_id", user_info.get("company_id"));
+			session.setAttribute("company_name", user_info.get("name"));
+			session.setAttribute("nickname", user_info.get("nickname"));
+		} else {
+			response.getWriter().write("error");
 		}
+
 	}
 
 }

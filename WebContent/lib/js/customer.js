@@ -151,13 +151,16 @@ $("select").each(function(index,dom){
 	  call.submit({
 		  dom:$(this),
 		  yes:function(data){
-			
 			  $.ajax({
 				  type:'post',
 				  url:'/customer_edit',
 				  data:{'action' : 'customer_info','customer_info' :JSON.stringify(data) },
 				  success:function(result){
-					  console.log(data);
+					  if(result != '0'){
+					  $('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
+					  }else {
+						  layer.msg('客户添加失败');
+					  }
 				  }
 			  })
 		  }

@@ -53,12 +53,8 @@ public class SelectServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			int company_id = (int) session.getAttribute("company_id");
 			UserDao userDao = new UserDao();
-			try {
-				JSONArray findUserByCompany = userDao.findUserByCompany(company_id);
-				response.getWriter().write(findUserByCompany.toString());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			JSONArray findUserByCompany = userDao.findUserByCompany(company_id);
+			response.getWriter().write(findUserByCompany.toString());
 			break;
 		case "marriage_status":
 			response.sendRedirect("lib/datas/marriage_status.json");
