@@ -7,9 +7,22 @@ base: './lib/js/'
 layui.use(['form', 'jquery','layer'], function(){
   var form = layui.form(),
   layer = parent.layer === undefined ? layui.layer : parent.layer
+
 $("select").each(function(index,dom){
 	select($(dom).attr("id"));
 });
+  //
+  $("#relation_add").click(function(){
+	  
+  });
+  form.on('select(house_status)', function(data){
+	  console.log(data.elem); //得到select原始DOM对象
+	  console.log(data.value); //得到被选中的值
+	  console.log(data.othis); //得到美化后的DOM对象
+	  if(data.value == '1'){
+		  $("#current_residence").val($("#census_register").val()+"-"+$("#census_register_detail").val());
+	  }
+	});      
   form.render();
   //向导式表单
   var call = {
@@ -65,9 +78,10 @@ $("select").each(function(index,dom){
 		            call.tabClick(null, null, liElem);
 		          },
 		      //绑定点击    
-			  addClick : function(idcard){
+			  addClick : function(){
 					$(document).off('click','.layui-tab-title li:lt(2)')
 					$(document).on('click','.layui-tab-title li:lt(2)',call.tabClick)
+					idcard = $('#idcard').val();
 					call.tabChange('customer','1');
 					if (!(parseInt(idcard.substr(16, 1)) % 2 == 1)) { 
 						$('#famale').attr('checked','true');
@@ -130,105 +144,122 @@ $("select").each(function(index,dom){
 			      });
 			      if(stop) return stop;
 			    });
-			    
 			    if(stop) return false;
-			    
+			    options.before()
 			    layui.each(fieldElem, function(_, item){
 			      if(!item.name) return;
 			      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
 			      field[item.name] = item.value;
 			    });
 			    field['sales_account_manager'] = $("#sales_account_manager").val();
-			    console.log(field);
-			    options.yes(field);
+					  var load = layer.load(1);
+					  $.ajax({
+						  type:'post',
+						  url:options.url,
+						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':$("#customer_id").val() },
+						  success:function(result){
+							  layer.close(load);
+							  options.yes(result);	 //请求成功的回调函数						  
+						  }, error: function (result, status) {
+				            	layer.close(load); 
+				            	layer.msg('请求失败');
+				          }
+					  })
 			}
   };
-
   //测试用代码
   $(document).on('click','.layui-tab-title li ',call.tabClick)
    //提交用户
   $('#cusotmer_info_commit').click(function(){
 	  call.submit({
 		  dom:$(this),
-		  yes:function(data){
-			  $.ajax({
-				  type:'post',
-				  url:'/customer_edit',
-				  data:{'action' : 'customer_info','customer_info' :JSON.stringify(data) },
-				  success:function(result){
-					  if(result != '0'){
-					  $('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
-					  }else {
-						  layer.msg('客户添加失败');
-					  }
-				  }
-			  })
+		  url:'/customer_edit',
+		  action:'customer_info',
+		  yes:function(result){
+			  var load = layer.load(1);
+			  if(result != '0'){
+				$('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
+				$(document).on('click','.layui-tab-title li:eq(2)',call.tabClick)
+				call.tabChange('customer','2');
+			  }else {
+				  layer.msg('客户添加失败');
+			  }
 		  }
 	  })
   });
   //提交用户
-    //身份证验证
-  $("button[lay-filter='check_id']").click(function(){
-	   call.submit({
-		dom:$(this),
-		yes:function(data){
-			var load = layer.load(1);
-			data['idcard'] = call.changeFivteenToEighteen(data.idcard);
-			data['action'] = 'check_id';
-	    	$.ajax({
-	    		type:'post',
-				url:'/customer_edit',
-				data:data,
-				success: function (result) {
-					layer.close(load); 
-						switch(result)
-						{
-						case '0':
-							layer.open({
-								title:'查询结果',
-								content:'不存在该客户,点击下一步继续',
-								btn:['下一步'],
-								yes: function(index, layero){
-									 call.addClick(data.idcard);
-									 layer.close(index); 
-								  }
-							})
-						  break;
-						case '1':
-							layer.open({
-								title:'查询结果',
-								content:'该客户已经存在是否继续,点击下一步继续',
-								btn:['复制账号','下一步'],
-								yes: function(index, layero){
-									 layer.close(index); 
-								  } ,btn2: function(index, layero){
-									  	 call.addClick(data.idcard);
-										 layer.close(index); 
-								  }
-							})
-						  break;
-						case '2' :
-							layer.open({
-								title:'查询结果',
-								content:'公司其他员工已有此客户',
-								btn:['确定'],
-								yes: function(index, layero){
-									 layer.close(index); 
-								  }
-							})
-						  break;
-						default:
-							  break;
-						}
-	                },
-	            error: function (result, status) {
-	            	layer.close(load); 
-	            }
-	    	});
-			}
-	})
+  //提交联系人
+  $('#custoemr_contact_commit').click(function(){
+	  call.submit({
+		  dom:$(this),
+		  url:'/customer_edit',
+		  action:$('#custoemr_contact_commit').attr('lay-verify'),
+		  yes:function(result){
+			  var load = layer.load(1);
+			  if(result != '0'){
+				$('#custoemr_contact_commit').attr("lay-verify",'custoemr_contact_commit_edit')
+				$(document).on('click','.layui-tab-title li:eq(3)',call.tabClick)
+				call.tabChange('customer','3');
+			  }else {
+				  layer.msg('客户添加失败');
+			  }
+		  }
+	  })
   });
-
-  //身份证验证
+  //提交联系人
+  //查重验证
+  $("#check_id").click(function(){
+	call.submit({
+		dom:$(this),
+		url:'/customer_edit',
+		action:'check_id',
+		before:function(){
+			$("#idcard").val(call.changeFivteenToEighteen($("#idcard").val()));
+		},
+		yes:function(result){
+			switch(result)
+			{
+			case '0':
+				layer.open({
+					title:'查询结果',
+					content:'不存在该客户,点击下一步继续',
+					btn:['下一步'],
+					yes: function(index, layero){
+						 call.addClick();
+						 layer.close(index); 
+					  }
+				})
+			  break;
+			case '1':
+				layer.open({
+					title:'查询结果',
+					content:'该客户已经存在是否继续,点击下一步继续',
+					btn:['复制账号','下一步'],
+					yes: function(index, layero){
+						 layer.close(index); 
+					  } ,btn2: function(index, layero){
+						  	 call.addClick();
+							 layer.close(index); 
+					  }
+				})
+			  break;
+			case '2' :
+				layer.open({
+					title:'查询结果',
+					content:'公司其他员工已有此客户',
+					btn:['确定'],
+					yes: function(index, layero){
+						 layer.close(index); 
+					  }
+				})
+			  break;
+			default:
+				  break;
+			}
+		}
+	})  
+  })
+    //身份证验证
+ 
 });
 

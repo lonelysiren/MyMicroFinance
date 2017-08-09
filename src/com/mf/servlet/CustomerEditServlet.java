@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.mf.dao.UserDao;
 
 /**
@@ -19,7 +22,7 @@ import com.mf.dao.UserDao;
 @WebServlet("/CustomerEditServlet")
 public class CustomerEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	 static Logger logger = LogManager.getLogger(CustomerEditServlet.class.getName());
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -41,35 +44,35 @@ public class CustomerEditServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
+		String customer_id = request.getParameter("customer_id");
 		HttpSession session=request.getSession();
 		UserDao userDao = new UserDao();
 		String parameter;
 		int id;
 		switch (action) {
-		case "check_id":
-			String idcard_number = request.getParameter("idcard");
-			String sales_account_manager = request.getParameter("sales_account_manager");
-			int company = (int) session.getAttribute("company_id");
-			String result = userDao.CheckId(idcard_number,sales_account_manager,company);
-			response.getWriter().write(result);
-			break;
-		case "customer_info":
-			 parameter = request.getParameter("customer_info");
-			 id = userDao.addCustomer(parameter);
-			response.getWriter().print(id);
-			break;
-		case "customer_relation_info":
-			 parameter = request.getParameter("customer_info");
-			 id = userDao.addCustomer(parameter);
-			response.getWriter().print(id);
-			break;
-		case "customer_company_info":
-			 parameter = request.getParameter("customer_info");
-			 id = userDao.addCustomer(parameter);
-			response.getWriter().print(id);
-			break;
-		default:
-			break;
+			case "check_id":
+				 parameter = request.getParameter("data");
+				int company = (int) session.getAttribute("company_id");
+				String result = userDao.CheckId(parameter,company);
+				response.getWriter().write(result);
+				break;
+			case "customer_info":
+				 parameter = request.getParameter("data");
+				 id = userDao.addCustomer(parameter);
+				response.getWriter().print(id);
+				break;
+			case "customer_relation_info":
+				 parameter = request.getParameter("data");
+				 id = userDao.addCustomerRelation(parameter,customer_id);
+				response.getWriter().print(id);
+				break;
+			case "customer_company_info":
+				 parameter = request.getParameter("data");
+				 id = userDao.addCustomerCompany(parameter,customer_id);
+				response.getWriter().print(id);
+				break;
+			default:
+				break;
 		}
 		
 	}

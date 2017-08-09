@@ -60,9 +60,8 @@ public class NavServlet extends HttpServlet {
 		
 		navBar.removeAll(delList);
 		JSONArray nav = JSONArray.fromObject(navBar);
-		System.out.println(nav);
+		
 		 Object sessionObj = request.getSession().getAttribute("role");
-		 System.out.println(sessionObj.toString());
 		response.getWriter().write(nav.toString());
 	}
 

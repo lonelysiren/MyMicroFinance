@@ -81,7 +81,6 @@ public class JdbcUtil {
 				pstmt.setObject(index++, params.get(i));
 			}
 		}
-		System.out.println(pstmt.toString());
 		 pstmt.executeUpdate();
 		 resultSet = pstmt.getGeneratedKeys(); 
 		if(resultSet.next()){  
@@ -89,6 +88,7 @@ public class JdbcUtil {
         }  
 		return id;
 	}
+	
 	public Map<String, Object> findSimpleResult(String sql, List<Object> params) throws SQLException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		int index = 1;
@@ -201,8 +201,6 @@ public class JdbcUtil {
 		}
 		return list;
 	}
-
-
 
 	/**
 	 * @param args

@@ -42,7 +42,7 @@
       <input type="text" id="idcard" name="idcard" lay-verify="required|identity" placeholder="请输入身份证(必填)" autocomplete="off" class="layui-input">
     </div>
     <div class="layui-input-inline">
-    <button class="layui-btn" type="button" lay-filter="check_id">查询</button>
+    <button class="layui-btn" type="button" id="check_id" lay-filter="check_id">查询</button>
     </div>
   </div>
     </div>
@@ -117,12 +117,12 @@
  <div class="layui-form-item"  >
     <label class="layui-form-label">户籍地址</label>
     <div class="layui-input-block"  >
-      <input type="text" name="census_register" lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请选择户籍所在地(必选)">
+      <input type="text" id="census_register" name="census_register" lay-verify="required"  autocomplete="off" class="layui-input" placeholder="请选择户籍所在地(必选)">
   </div>
 </div>
 </div>
 <div class="col-md-5" style="padding-left: 0px">
-      <input type="text" name="census_register_detail" lay-verify="required" autocomplete="off" class="layui-input" placeholder="填写详细地址(必填)">
+      <input type="text" id="census_register_detail"name="census_register_detail" lay-verify="required" autocomplete="off" class="layui-input" placeholder="填写详细地址(必填)">
 </div>
 <div class="col-md-3">
  <div class="layui-form-item">
@@ -138,7 +138,7 @@
  <div class="layui-form-item" >
    		<label class="layui-form-label">住宅状况</label>
    		<div class="layui-input-block">
-   		<select name="house_status" id="house_status" lay-verify="required">
+   		<select name="house_status" id="house_status" lay-filter="house_status" lay-verify="required">
  <option value="">请选择住宅状况(必选)</option>
 </select>     
       </div>
@@ -167,7 +167,7 @@
  <div class="layui-form-item" >
    		<label class="layui-form-label">现住地址</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-verify="required" name="current_residence" autocomplete="off" class="layui-input" placeholder="请输入现住地址(必填)">
+   		<input type="text" lay-verify="required" id="current_residence" name="current_residence" autocomplete="off" class="layui-input" placeholder="请输入现住地址(必填)">
       </div>
       </div>
 </div>
@@ -278,7 +278,7 @@
      <div class="layui-form-item">
    		<label class="layui-form-label">联系人</label>
    		<div class="layui-input-block">
-   		<select id="relationship" name="relationship" >
+   		<select id="relationship_1" name="relationship_1" >
  <option value="">请选择关系</option>
 		</select>     
       </div>
@@ -288,7 +288,7 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">姓名</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+   		<input type="text" name="relationship_name_1" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
       </div>
       </div>
     </div>
@@ -296,12 +296,178 @@
      <div class="layui-form-item" >
    		<label class="layui-form-label">联系电话</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名">
+   		<input type="text" name="relationship_phone_1" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
       </div>
       </div>
     </div>
     </div>
-     
+     <div class="row">
+     <div class="col-md-3"></div>
+     <div class= "col-md-6">
+     <div class="layui-form-item" >
+        		<label class="layui-form-label">工作单位</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_company_1" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+     	</div>
+     	</div>
+     </div>
+     </div>
+         <div class="row">
+    <div class="col-md-3">
+     <div class="layui-form-item">
+   		<label class="layui-form-label">联系人</label>
+   		<div class="layui-input-block">
+   		<select id="relationship_2" name="relationship_2" >
+ <option value="">请选择关系</option>
+		</select>     
+      </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+    <div class="layui-form-item" >
+   		<label class="layui-form-label">姓名</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_name_2" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
+      </div>
+      </div>
+    </div>
+     <div class="col-md-3">
+     <div class="layui-form-item" >
+   		<label class="layui-form-label">联系电话</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_phone_2" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
+      </div>
+      </div>
+    </div>
+    </div>
+     <div class="row">
+     <div class="col-md-3"></div>
+     <div class= "col-md-6">
+     <div class="layui-form-item" >
+        		<label class="layui-form-label">工作单位</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_company_2" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+     	</div>
+     	</div>
+     </div>
+     </div>
+         <div class="row">
+    <div class="col-md-3">
+     <div class="layui-form-item">
+   		<label class="layui-form-label">联系人</label>
+   		<div class="layui-input-block">
+   		<select id="relationship_3" name="relationship_3" >
+ <option value="">请选择关系</option>
+		</select>     
+      </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+    <div class="layui-form-item" >
+   		<label class="layui-form-label">姓名</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_name_3" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
+      </div>
+      </div>
+    </div>
+     <div class="col-md-3">
+     <div class="layui-form-item" >
+   		<label class="layui-form-label">联系电话</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_phone_3" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
+      </div>
+      </div>
+    </div>
+    </div>
+     <div class="row">
+     <div class="col-md-3"></div>
+     <div class= "col-md-6">
+     <div class="layui-form-item" >
+        		<label class="layui-form-label">工作单位</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_company_3" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+     	</div>
+     	</div>
+     </div>
+     </div>
+         <div class="row">
+    <div class="col-md-3">
+     <div class="layui-form-item">
+   		<label class="layui-form-label">联系人</label>
+   		<div class="layui-input-block">
+   		<select id="relationship_4" name="relationship_4" >
+ <option value="">请选择关系</option>
+		</select>     
+      </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+    <div class="layui-form-item" >
+   		<label class="layui-form-label">姓名</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_name_4" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
+      </div>
+      </div>
+    </div>
+     <div class="col-md-3">
+     <div class="layui-form-item" >
+   		<label class="layui-form-label">联系电话</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_phone_4" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
+      </div>
+      </div>
+    </div>
+    </div>
+     <div class="row">
+     <div class="col-md-3"></div>
+     <div class= "col-md-6">
+     <div class="layui-form-item" >
+        		<label class="layui-form-label">工作单位</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_company_4" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+     	</div>
+     	</div>
+     </div>
+     </div>
+         <div class="row">
+    <div class="col-md-3">
+     <div class="layui-form-item">
+   		<label class="layui-form-label">联系人</label>
+   		<div class="layui-input-block">
+   		<select id="relationship_5" name="relationship_5" >
+ <option value="">请选择关系</option>
+		</select>     
+      </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+    <div class="layui-form-item" >
+   		<label class="layui-form-label">姓名</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_name_5" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
+      </div>
+      </div>
+    </div>
+     <div class="col-md-3">
+     <div class="layui-form-item" >
+   		<label class="layui-form-label">联系电话</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_phone_5" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
+      </div>
+      </div>
+    </div>
+    </div>
+     <div class="row">
+     <div class="col-md-3"></div>
+     <div class= "col-md-6">
+     <div class="layui-form-item" >
+        		<label class="layui-form-label">工作单位</label>
+   		<div class="layui-input-block">
+   		<input type="text" name="relationship_company_5" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+     	</div>
+     	</div>
+     </div>
+     </div>
     <div class="row">
     <div class="col-md-3">
      <div class="layui-form-item" >
@@ -317,7 +483,7 @@
    <div class="row">
 <div class="col-md-9"></div>
 <div class="col-md-3">
-<button class="layui-btn layui-btn-big" style="float: right">下一步</button>
+<button class="layui-btn layui-btn-big" lay-verify="customer_relation_info" id="custoemr_contact_commit"style="float: right">下一步</button>
 </div>
 </div>
     </div>

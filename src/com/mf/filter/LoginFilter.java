@@ -57,7 +57,7 @@ public class LoginFilter implements Filter {
 		if (sessionObj == null) {
 			//String contextPath = request.getContextPath();
 			//String redirect = servletPath + "?" + StringUtils.defaultString(request.getQueryString());
-			System.out.println(servletPath);
+			
 			  PrintWriter out = response.getWriter();  
 		        out.println("<html>");      
 		        out.println("<script>");      
