@@ -49,6 +49,7 @@ public class CustomerEditServlet extends HttpServlet {
 		UserDao userDao = new UserDao();
 		String parameter;
 		int id;
+		int[] id_array;
 		switch (action) {
 			case "check_id":
 				 parameter = request.getParameter("data");
@@ -63,13 +64,13 @@ public class CustomerEditServlet extends HttpServlet {
 				break;
 			case "customer_relation_info":
 				 parameter = request.getParameter("data");
-				 id = userDao.addCustomerRelation(parameter,customer_id);
-				response.getWriter().print(id);
+				 id_array = userDao.addCustomerRelation(parameter,customer_id);
+				response.getWriter().print(id_array);
 				break;
 			case "customer_company_info":
 				 parameter = request.getParameter("data");
-				 id = userDao.addCustomerCompany(parameter,customer_id);
-				response.getWriter().print(id);
+				 id_array = userDao.addCustomerCompany(parameter,customer_id);
+				response.getWriter().print(id_array);
 				break;
 			default:
 				break;

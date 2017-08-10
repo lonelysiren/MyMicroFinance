@@ -9,6 +9,7 @@ layui.use(['form', 'jquery','layer'], function(){
   layer = parent.layer === undefined ? layui.layer : parent.layer
 
 $("select").each(function(index,dom){
+	console.log(dom.length);
 	select($(dom).attr("id"));
 });
   //
@@ -16,9 +17,6 @@ $("select").each(function(index,dom){
 	  
   });
   form.on('select(house_status)', function(data){
-	  console.log(data.elem); //得到select原始DOM对象
-	  console.log(data.value); //得到被选中的值
-	  console.log(data.othis); //得到美化后的DOM对象
 	  if(data.value == '1'){
 		  $("#current_residence").val($("#census_register").val()+"-"+$("#census_register_detail").val());
 	  }
@@ -156,7 +154,7 @@ $("select").each(function(index,dom){
 					  $.ajax({
 						  type:'post',
 						  url:options.url,
-						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':$("#customer_id").val() },
+						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':'1' },
 						  success:function(result){
 							  layer.close(load);
 							  options.yes(result);	 //请求成功的回调函数						  

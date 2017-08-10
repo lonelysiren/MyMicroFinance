@@ -1,4 +1,4 @@
-function select( id) {
+function select(id) {
 	
 	$.ajax({
 		timeout : 3000,

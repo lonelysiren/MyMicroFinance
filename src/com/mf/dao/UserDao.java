@@ -9,6 +9,7 @@ import com.mf.entity.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -249,14 +250,40 @@ public class UserDao {
 		return id;
 	}
 
-	public int addCustomerRelation(String parameter, String customer_id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] addCustomerRelation(String parameter, String customer_id) {
+		JSONObject customer_relation = JSONObject.fromObject(parameter);
+		int[] id = null;
+		int relation_id = 1 ;
+		int parmas_id = 0;
+		sql = "insert into customer_info_contact values(null,?,?,?,?,?)";
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Iterator<?> iterator = customer_relation.keys();
+			while(iterator.hasNext()){
+			        String	key = (String) iterator.next();
+			        String value = customer_relation.getString(key);
+			        params.add(value);
+			        parmas_id++;
+			        if(parmas_id == 2 ) {
+			        	params.add(customer_id);
+			        	map.put("id_"+ relation_id, jdbcUtil.addByPreparedStatement(sql, params));
+			        	 parmas_id = 0;
+			        	 relation_id++;
+			        	 params.clear();
+			        }
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			jdbcUtil.close();
+		}
+		return id;
 	}
 
-	public int addCustomerCompany(String parameter, String customer_id) {
+	public int[] addCustomerCompany(String parameter, String customer_id) {
+		return null;
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }
