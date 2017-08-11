@@ -124,7 +124,6 @@
 			<!--锁屏模板 end -->
 			
 			<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
-			<script type="text/javascript" src="./lib/datas/nav.js"></script>
 			<script src="./lib/js/index.js"></script>
 			<script>
 			

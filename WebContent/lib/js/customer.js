@@ -7,9 +7,7 @@ base: './lib/js/'
 layui.use(['form', 'jquery','layer'], function(){
   var form = layui.form(),
   layer = parent.layer === undefined ? layui.layer : parent.layer
-
 $("select").each(function(index,dom){
-	console.log(dom.length);
 	select($(dom).attr("id"));
 });
   //
@@ -20,7 +18,10 @@ $("select").each(function(index,dom){
 	  if(data.value == '1'){
 		  $("#current_residence").val($("#census_register").val()+"-"+$("#census_register_detail").val());
 	  }
-	});      
+	});  
+  form.on('select(contact)', function(data){
+	  $("input[lay-filter= '"+data.elem.id+"']").attr("lay-verify","required")
+	});
   form.render();
   //向导式表单
   var call = {
@@ -143,18 +144,19 @@ $("select").each(function(index,dom){
 			      if(stop) return stop;
 			    });
 			    if(stop) return false;
-			    options.before()
+			   if(options.before) options.before()
 			    layui.each(fieldElem, function(_, item){
 			      if(!item.name) return;
 			      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
 			      field[item.name] = item.value;
 			    });
 			    field['sales_account_manager'] = $("#sales_account_manager").val();
+
 					  var load = layer.load(1);
 					  $.ajax({
 						  type:'post',
 						  url:options.url,
-						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':'1' },
+						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':$("#customer_id").val()},
 						  success:function(result){
 							  layer.close(load);
 							  options.yes(result);	 //请求成功的回调函数						  
@@ -174,7 +176,6 @@ $("select").each(function(index,dom){
 		  url:'/customer_edit',
 		  action:'customer_info',
 		  yes:function(result){
-			  var load = layer.load(1);
 			  if(result != '0'){
 				$('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
 				$(document).on('click','.layui-tab-title li:eq(2)',call.tabClick)
@@ -187,15 +188,17 @@ $("select").each(function(index,dom){
   });
   //提交用户
   //提交联系人
-  $('#custoemr_contact_commit').click(function(){
+  $('#customer_contact_commit').click(function(){
 	  call.submit({
 		  dom:$(this),
 		  url:'/customer_edit',
-		  action:$('#custoemr_contact_commit').attr('lay-verify'),
+		  action:'customer_relation_info',
 		  yes:function(result){
-			  var load = layer.load(1);
-			  if(result != '0'){
-				$('#custoemr_contact_commit').attr("lay-verify",'custoemr_contact_commit_edit')
+			  console.log(">>>>>>>>>>>");
+			  console.log(result)
+				console.log(result.length)
+			  if(!result){
+				
 				$(document).on('click','.layui-tab-title li:eq(3)',call.tabClick)
 				call.tabChange('customer','3');
 			  }else {

@@ -90,7 +90,6 @@ layui.define(['element', 'common'], function (exports) {
                     async: false, //_config.async,
                     dataType: 'json',
                     success: function (result, status, xhr) {
-                    	console.log(result)
                         var html = getHtml(result);
                         $container.html(html);
                         element.init();

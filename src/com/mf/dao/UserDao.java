@@ -6,7 +6,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.mf.entity.*;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 public class UserDao {
 
+	 static Logger logger = LogManager.getLogger(UserDao.class.getName());
 	private JdbcUtil jdbcUtil = new JdbcUtil();
 	private String sql = null;
 	private List<Object> params = new ArrayList<Object>();
@@ -191,8 +191,12 @@ public class UserDao {
 	public static void main(String[] args) throws SQLException {
   UserDao userDao = new UserDao();
 
-  String parameter = "{\"name\":\"吴一凡\",\"sex\":\"0\",\"age\":\"22\",\"marriage_status\":\"1\",\"idcard_type\":\"1\",\"idcard_number\":\"431003199408136018\",\"child_age\":\"23\",\"census_register\":\"安徽省-安庆市-大观区\",\"harea\":\"大观区\",\"hproper\":\"安庆市\",\"hcity\":\"安徽省\",\"census_register_detail\":\"家里\",\"house_number\":\"431003199408136018\",\"house_status\":\"1\",\"house_rent\":\"\",\"house_holder\":\"431003199408136018\",\"current_residence\":\"安徽省-安庆市-大观区-家里\",\"native_type\":\"0\",\"current_residence_phone\":\"\",\"mobile_phone\":\"13762567348\",\"mobile_phone_age\":\"\",\"mobile_phone_real_name\":\"0\",\"education\":\"1\",\"graduate_school\":\"家里\",\"account_number\":\"家里\",\"deposit_bank\":\"家里\",\"remark\":\"\",\"sales_account_manager\":\"1\"}";
-  userDao.addCustomer(parameter);
+  String parameter = "{\"relationship_1\":\"1\",\"relationship_name_1\":\"6666\",\"relationship_phone_1\":\"66\",\"relationship_company_1\":\"666\",\"relationship_2\":\"2\",\"relationship_name_2\":\"66\",\"relationship_phone_2\":\"666\",\"relationship_company_2\":\"6666\",\"relationship_3\":\"1\",\"relationship_name_3\":\"5555\",\"relationship_phone_3\":\"555\",\"relationship_company_3\":\"55\",\"relationship_4\":\"1\",\"relationship_name_4\":\"4444\",\"relationship_phone_4\":\"444\",\"relationship_company_4\":\"44\",\"relationship_5\":\"1\",\"relationship_name_5\":\"3333\",\"relationship_phone_5\":\"333\",\"relationship_company_5\":\"333\",\"relationship_other\":\"5555\",\"sales_account_manager\":\"1\"}";
+ Map<String, Object> ret = userDao.addCustomerRelation(parameter,"10");
+
+
+
+ logger.info(ret.toString());
 	}
 
 	public boolean addUser(User user)  {
@@ -250,38 +254,48 @@ public class UserDao {
 		return id;
 	}
 
-	public int[] addCustomerRelation(String parameter, String customer_id) {
+	public Map<String, Object> addCustomerRelation(String parameter, String customer_id) {
 		JSONObject customer_relation = JSONObject.fromObject(parameter);
-		int[] id = null;
+		logger.info(parameter);
 		int relation_id = 1 ;
 		int parmas_id = 0;
 		sql = "insert into customer_info_contact values(null,?,?,?,?,?)";
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		try {
 			Iterator<?> iterator = customer_relation.keys();
 			while(iterator.hasNext()){
 			        String	key = (String) iterator.next();
 			        String value = customer_relation.getString(key);
+			        logger.info(key+":"+value);
+			        if(value.trim().isEmpty()) {
+			        	continue;
+			        }
 			        params.add(value);
-			        parmas_id++;
-			        if(parmas_id == 2 ) {
+			       if(key.equals( "relationship_other") ) {
+			    	   String sql2 = "insert into customer_info_contact_other values(null,?,?)";
+			    	   params.add(customer_id);
+			    	 	map.put("id_"+ relation_id, jdbcUtil.addByPreparedStatement(sql2, params));
+			    	 	continue;
+			       }
+			        if(parmas_id == 3 ) {
 			        	params.add(customer_id);
 			        	map.put("id_"+ relation_id, jdbcUtil.addByPreparedStatement(sql, params));
 			        	 parmas_id = 0;
 			        	 relation_id++;
 			        	 params.clear();
+			        	 continue;
 			        }
+			        parmas_id++;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			jdbcUtil.close();
 		}
-		return id;
+		return map;
 	}
 
-	public int[] addCustomerCompany(String parameter, String customer_id) {
+	public Map<String, Object> addCustomerCompany(String parameter, String customer_id) {
 		return null;
 		// TODO Auto-generated method stub
 	}
