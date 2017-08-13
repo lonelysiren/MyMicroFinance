@@ -7,6 +7,8 @@ base: './lib/js/'
 layui.use(['form', 'jquery','layer'], function(){
   var form = layui.form(),
   layer = parent.layer === undefined ? layui.layer : parent.layer
+;
+	
 $("select").each(function(index,dom){
 	select($(dom).attr("id"));
 });
@@ -20,8 +22,8 @@ $("select").each(function(index,dom){
 	  }
 	});  
   form.on('select(contact)', function(data){
-	  $("input[lay-filter= '"+data.elem.id+"']").attr("lay-verify","required")
-	});
+	  $("input[lay-filter= '"+data.elem.id+"']").attr({"lay-verify":"required","disabled": false});
+  });
   form.render();
   //向导式表单
   var call = {
@@ -156,7 +158,7 @@ $("select").each(function(index,dom){
 					  $.ajax({
 						  type:'post',
 						  url:options.url,
-						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':$("#customer_id").val()},
+						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':'10'},//$("#customer_id").val()},
 						  success:function(result){
 							  layer.close(load);
 							  options.yes(result);	 //请求成功的回调函数						  
@@ -169,7 +171,7 @@ $("select").each(function(index,dom){
   };
   //测试用代码
   $(document).on('click','.layui-tab-title li ',call.tabClick)
-   //提交用户
+   //提交用户信息
   $('#cusotmer_info_commit').click(function(){
 	  call.submit({
 		  dom:$(this),
@@ -194,20 +196,39 @@ $("select").each(function(index,dom){
 		  url:'/customer_edit',
 		  action:'customer_relation_info',
 		  yes:function(result){
-			  console.log(">>>>>>>>>>>");
-			  console.log(result)
-				console.log(result.length)
-			  if(!result){
-				
-				$(document).on('click','.layui-tab-title li:eq(3)',call.tabClick)
-				call.tabChange('customer','3');
-			  }else {
-				  layer.msg('客户添加失败');
-			  }
+				 var dom=  $('#contact').find('.col-md-6'),i=0
+				 result = JSON.parse(result) ;
+				 $.each(result,function(key,value){
+					 if(key == 'id_6'){
+						 i = 5;
+					 }
+					 dom.eq(i).append('<input type="hidden" name='+key +' value='+result[key]+'>');
+					 i++;
+					 })
+					 $(document).on('click','.layui-tab-title li:eq(3)',call.tabClick)
+						call.tabChange('customer','3');
 		  }
 	  })
   });
   //提交联系人
+  //提交用户公司
+  $('#cusotmer_company_commit').click(function(){
+	  call.submit({
+		    dom:$(this),
+		  url:'/customer_edit',
+		  action:'customer_company_info',
+		  yes:function(result){
+			  if(result != '0'){
+					$('#cusotmer_company_commit').append("<input type='hidden' name='company_id' value="+ result +">")
+					$(document).on('click','.layui-tab-title li:eq(4)',call.tabClick)
+					call.tabChange('customer','4');
+				  }else {
+					  layer.msg('客户添加失败');
+				  }
+		  }
+	  })
+  })
+  //提交公司用户
   //查重验证
   $("#check_id").click(function(){
 	call.submit({

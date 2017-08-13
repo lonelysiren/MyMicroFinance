@@ -272,14 +272,14 @@
 </div>
 </div>
 	</div>  
-    <div class="layui-tab-item">
+    <div class="layui-tab-item" id="contact">
     <div class="row">
     <div class="col-md-3">
      <div class="layui-form-item">
    		<label class="layui-form-label">联系人</label>
    		<div class="layui-input-block">
    		<select id="relationship_1" lay-verify="required" name="relationship_1" lay-filter="contact" >
- <option value="">请选择关系</option>
+ <option value="">请选择关系(必选)</option>
 		</select>     
       </div>
       </div>
@@ -318,7 +318,7 @@
    		<label class="layui-form-label">联系人</label>
    		<div class="layui-input-block">
    		<select id="relationship_2" lay-verify="required"  name="relationship_2"  lay-filter="contact" >
- <option value="">请选择关系</option>
+ <option value="">请选择关系(必选)</option>
 		</select>     
       </div>
       </div>
@@ -366,7 +366,7 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">姓名</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-filter="relationship_3" name="relationship_name_3" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
+   		<input type="text" lay-filter="relationship_3" disabled name="relationship_name_3" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
       </div>
       </div>
     </div>
@@ -374,7 +374,7 @@
      <div class="layui-form-item" >
    		<label class="layui-form-label">联系电话</label>
    		<div class="layui-input-block">
-   		<input type="text"lay-filter="relationship_3"  name="relationship_phone_3" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
+   		<input type="text"lay-filter="relationship_3" disabled  name="relationship_phone_3" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
       </div>
       </div>
     </div>
@@ -385,7 +385,7 @@
      <div class="layui-form-item" >
         		<label class="layui-form-label">工作单位</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-filter="relationship_3"  name="relationship_company_3" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+   		<input type="text" lay-filter="relationship_3" disabled  name="relationship_company_3" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
      	</div>
      	</div>
      </div>
@@ -405,7 +405,7 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">姓名</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-filter="relationship_4"  name="relationship_name_4" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
+   		<input type="text" lay-filter="relationship_4" disabled name="relationship_name_4" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
       </div>
       </div>
     </div>
@@ -413,7 +413,7 @@
      <div class="layui-form-item" >
    		<label class="layui-form-label">联系电话</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-filter="relationship_4" name="relationship_phone_4" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
+   		<input type="text" lay-filter="relationship_4" disabled name="relationship_phone_4" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
       </div>
       </div>
     </div>
@@ -424,7 +424,7 @@
      <div class="layui-form-item" >
         		<label class="layui-form-label">工作单位</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-filter="relationship_4"  name="relationship_company_4" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+   		<input type="text" lay-filter="relationship_4" disabled  name="relationship_company_4" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
      	</div>
      	</div>
      </div>
@@ -444,7 +444,7 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">姓名</label>
    		<div class="layui-input-block">
-   		<input type="text"  lay-filter="relationship_5" name="relationship_name_5" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
+   		<input type="text"  lay-filter="relationship_5" disabled name="relationship_name_5" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名">
       </div>
       </div>
     </div>
@@ -452,7 +452,7 @@
      <div class="layui-form-item" >
    		<label class="layui-form-label">联系电话</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-filter="relationship_5"  name="relationship_phone_5" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
+   		<input type="text" lay-filter="relationship_5" disabled  name="relationship_phone_5" autocomplete="off" class="layui-input" placeholder="请输入联系人电话">
       </div>
       </div>
     </div>
@@ -463,7 +463,7 @@
      <div class="layui-form-item" >
         		<label class="layui-form-label">工作单位</label>
    		<div class="layui-input-block">
-   		<input type="text" lay-filter="relationship_5"  name="relationship_company_5" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
+   		<input type="text" lay-filter="relationship_5" disabled name="relationship_company_5" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位">
      	</div>
      	</div>
      </div>
@@ -492,19 +492,19 @@
     <div class="col-md-3"><div class="layui-form-item" >
    		<label class="layui-form-label">公司名称：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="company_name" autocomplete="off" class="layui-input" placeholder="请输入公司名称(必填)" lay-verify="required">
       </div>
       </div></div>
     <div class="col-md-3"><div class="layui-form-item" >
    		<label class="layui-form-label">部门名称：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="department" autocomplete="off" class="layui-input" placeholder="请输入部门名称 " >
       </div>
       </div></div>
     <div class="col-md-3"><div class="layui-form-item" >
    		<label class="layui-form-label">职位：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="position" autocomplete="off" class="layui-input" placeholder="请输入职位" >
       </div>
       </div></div>
     </div>
@@ -513,14 +513,14 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">公司地址：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="compnay_address" autocomplete="off" class="layui-input" placeholder="请输入公司地址" >
       </div>
       </div></div>
     <div class="col-md-3">
     <div class="layui-form-item" >
    		<label class="layui-form-label">邮编：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="postal_code" autocomplete="off" class="layui-input" placeholder="请输入邮编" >
       </div>
       </div></div>
     <div class="col-md-3"></div>
@@ -530,19 +530,19 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">公司电话：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="phone_number" autocomplete="off" class="layui-input" placeholder="请输入公司电话" >
       </div>
       </div></div>
     <div class="col-md-3"><div class="layui-form-item" >
    		<label class="layui-form-label">分机：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="phone_number_extension" autocomplete="off" class="layui-input" placeholder="请输入分机号码姓名" >
       </div>
       </div></div>
     <div class="col-md-3"><div class="layui-form-item" >
    		<label class="layui-form-label">人事电话：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="phone_number_hr" autocomplete="off" class="layui-input" placeholder="请输入人事电话" >
       </div>
       </div></div>
     </div>
@@ -550,14 +550,14 @@
     <div class="col-md-5"><div class="layui-form-item" >
    		<label class="layui-form-label">工作时间：</label>
    		<div class="layui-input-inline">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="work_year" autocomplete="off" class="layui-input" placeholder="请输入工作时间" >
       </div>
         <div class="layui-form-mid layui-word-aux">年</div>
       </div></div>
     <div class="col-md-5"><div class="layui-form-item" >
    		<label class="layui-form-label">月工资：</label>
    		<div class="layui-input-inline">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入客户姓名" lay-verify="required">
+   		<input type="text" name="salary" autocomplete="off" class="layui-input" placeholder="请输入月工资" >
       </div>
          <div class="layui-form-mid layui-word-aux">元</div>
       </div></div>
@@ -567,12 +567,12 @@
     <div class="col-md-5"><div class="layui-form-item" >
    		<label class="layui-form-label">公积金名：</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入公积金网员工名" lay-verify="required">
+   		<input type="text" name="accumulation_fund_account" autocomplete="off" class="layui-input" placeholder="请输入公积金网员工名" >
       </div></div></div>
     <div class="col-md-5"><div class="layui-form-item" >
    		<label class="layui-form-label">密码：</label>
    		<div class="layui-input-inline">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入密码" lay-verify="required">
+   		<input type="text" name="accumulation_fund_password" autocomplete="off" class="layui-input" placeholder="请输入密码" >
       </div></div>
     <div class="col-md-2"></div>
     </div>
@@ -582,9 +582,8 @@
     <div class="layui-form-item" >
    		<label class="layui-form-label">公司性质：</label>
    		<div class="layui-input-block">
-   		<select id="company_type"name="company_type" lay-verify="">
+   		<select id="company_type"name="company_type" lay-verify="required">
   <option value="">请选择公司性质</option>
-  
 </select>    
       </div></div>
     </div>
@@ -594,7 +593,7 @@
    <div class="row">
 <div class="col-md-9"></div>
 <div class="col-md-3">
-<button class="layui-btn layui-btn-big" style="float: right">下一步</button>
+<button class="layui-btn layui-btn-big" type="button" id="cusotmer_company_commit" style="float: right">下一步</button>
 </div>
 </div>
     </div>

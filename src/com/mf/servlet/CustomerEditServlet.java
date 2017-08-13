@@ -16,6 +16,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.mf.dao.UserDao;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 /**
  * Servlet implementation class CustomerEditServlet
  */
@@ -37,6 +40,7 @@ public class CustomerEditServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+
 	}
 
 	/**
@@ -63,15 +67,15 @@ public class CustomerEditServlet extends HttpServlet {
 				response.getWriter().print(id);
 				break;
 			case "customer_relation_info":
-				logger.info("添加联系人");
 				 parameter = request.getParameter("data");
 				 id_map = userDao.addCustomerRelation(parameter,customer_id);
-				response.getWriter().print(id_map.toString());
+				 JSONObject info = JSONObject.fromObject(id_map);
+				response.getWriter().print(info);
 				break;
 			case "customer_company_info":
 				 parameter = request.getParameter("data");
-				 id_map = userDao.addCustomerCompany(parameter,customer_id);
-				response.getWriter().print(id_map);
+				 int customer_company_id = userDao.addCustomerCompany(parameter,customer_id);
+				response.getWriter().print(customer_company_id);
 				break;
 			default:
 				break;

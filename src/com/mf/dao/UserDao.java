@@ -19,7 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 public class UserDao {
 
-	 static Logger logger = LogManager.getLogger(UserDao.class.getName());
+	static Logger logger = LogManager.getLogger(UserDao.class.getName());
 	private JdbcUtil jdbcUtil = new JdbcUtil();
 	private String sql = null;
 	private List<Object> params = new ArrayList<Object>();
@@ -143,7 +143,7 @@ public class UserDao {
 		return flag;
 	}
 
-	public boolean deleteById(String id)  {
+	public boolean deleteById(String id) {
 		sql = "delete from user_info where id = ?";
 		params.add(id);
 		Boolean flag = false;
@@ -171,7 +171,8 @@ public class UserDao {
 			if (!findModeResult.isEmpty()) {
 				result = "1";
 				for (Map<String, Object> map : findModeResult) {
-					if (!map.get("sales_account_manager_id").toString().equals(info.getString("sales_account_manager"))) {
+					if (!map.get("sales_account_manager_id").toString()
+							.equals(info.getString("sales_account_manager"))) {
 						result = "2";
 						break;
 					}
@@ -184,22 +185,20 @@ public class UserDao {
 		} finally {
 			jdbcUtil.close();
 		}
-		
+
 		return result;
 	}
 
 	public static void main(String[] args) throws SQLException {
-  UserDao userDao = new UserDao();
+		UserDao userDao = new UserDao();
 
-  String parameter = "{\"relationship_1\":\"1\",\"relationship_name_1\":\"6666\",\"relationship_phone_1\":\"66\",\"relationship_company_1\":\"666\",\"relationship_2\":\"2\",\"relationship_name_2\":\"66\",\"relationship_phone_2\":\"666\",\"relationship_company_2\":\"6666\",\"relationship_3\":\"1\",\"relationship_name_3\":\"5555\",\"relationship_phone_3\":\"555\",\"relationship_company_3\":\"55\",\"relationship_4\":\"1\",\"relationship_name_4\":\"4444\",\"relationship_phone_4\":\"444\",\"relationship_company_4\":\"44\",\"relationship_5\":\"1\",\"relationship_name_5\":\"3333\",\"relationship_phone_5\":\"333\",\"relationship_company_5\":\"333\",\"relationship_other\":\"5555\",\"sales_account_manager\":\"1\"}";
- Map<String, Object> ret = userDao.addCustomerRelation(parameter,"10");
-
-
-
- logger.info(ret.toString());
+		String parameter = "{\"name\":\"公司\"}";
+		JSONObject customer_relation = JSONObject.fromObject(parameter);
+		userDao.addCustomerCompany(parameter, "1");
+		logger.info(customer_relation.getString("id_1"));
 	}
 
-	public boolean addUser(User user)  {
+	public boolean addUser(User user) {
 		sql = "insert into user_info values(null,?,?,?,?,?,?,?)";
 		params.add(user.getUsername());
 		params.add(user.getPassword());
@@ -227,23 +226,18 @@ public class UserDao {
 		customer.remove("harea");
 		customer.remove("hproper");
 		customer.remove("hcity");
-		sql = "insert into customer_info values (null"
-				+ ",?,?,?,?,?"
-				+ ",?,?,?,?,?"
-				+ ",?,?,?,?,?"
-				+ ",?,?,?,?,?"
-				+ ",?,?,?,?,?"
-				+ ",now(),null)";
+		sql = "insert into customer_info values (null" + ",?,?,?,?,?" + ",?,?,?,?,?" + ",?,?,?,?,?" + ",?,?,?,?,?"
+				+ ",?,?,?,?,?" + ",now(),null)";
 		try {
 			Iterator<?> iterator = customer.keys();
-			while(iterator.hasNext()){
-			        String	key = (String) iterator.next();
-			        String value = customer.getString(key);
-			        params.add(value);
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				String value = customer.getString(key);
+				params.add(value);
 			}
-			
-			 id = jdbcUtil.addByPreparedStatement(sql, params);
-			
+
+			id = jdbcUtil.addByPreparedStatement(sql, params);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -256,36 +250,43 @@ public class UserDao {
 
 	public Map<String, Object> addCustomerRelation(String parameter, String customer_id) {
 		JSONObject customer_relation = JSONObject.fromObject(parameter);
-		logger.info(parameter);
-		int relation_id = 1 ;
+		int relation_id = 1;
 		int parmas_id = 0;
 		sql = "insert into customer_info_contact values(null,?,?,?,?,?)";
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		try {
 			Iterator<?> iterator = customer_relation.keys();
-			while(iterator.hasNext()){
-			        String	key = (String) iterator.next();
-			        String value = customer_relation.getString(key);
-			        logger.info(key+":"+value);
-			        if(value.trim().isEmpty()) {
-			        	continue;
-			        }
-			        params.add(value);
-			       if(key.equals( "relationship_other") ) {
-			    	   String sql2 = "insert into customer_info_contact_other values(null,?,?)";
-			    	   params.add(customer_id);
-			    	 	map.put("id_"+ relation_id, jdbcUtil.addByPreparedStatement(sql2, params));
-			    	 	continue;
-			       }
-			        if(parmas_id == 3 ) {
-			        	params.add(customer_id);
-			        	map.put("id_"+ relation_id, jdbcUtil.addByPreparedStatement(sql, params));
-			        	 parmas_id = 0;
-			        	 relation_id++;
-			        	 params.clear();
-			        	 continue;
-			        }
-			        parmas_id++;
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				String value = customer_relation.getString(key);
+				if (value.trim().isEmpty()) {
+					continue;
+				}
+				params.add(value);
+				if (key.equals("relationship_other") ) {
+					String sql2 = "insert into customer_info_contact_other values(null,?,?)";
+					params.add(customer_id);
+					map.put("id_6" , jdbcUtil.addByPreparedStatement(sql2, params));
+					break;
+				}
+				if(parmas_id == 4) {
+					parmas_id = 0;
+					params.clear();
+					relation_id++;
+					continue;
+				}
+				if (parmas_id == 3) {
+					if (customer_relation.has("id_" + relation_id)) {
+						 continue;
+					}
+					params.add(customer_id);
+					map.put("id_" + relation_id, jdbcUtil.addByPreparedStatement(sql, params));
+					parmas_id = 0;
+					relation_id++;
+					params.clear();
+					continue;
+				}
+				parmas_id++;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -295,9 +296,33 @@ public class UserDao {
 		return map;
 	}
 
-	public Map<String, Object> addCustomerCompany(String parameter, String customer_id) {
-		return null;
-		// TODO Auto-generated method stub
+	public int addCustomerCompany(String parameter, String customer_id) {
+		JSONObject customer_relation = JSONObject.fromObject(parameter);
+		Iterator<?> iterator = customer_relation.keys();
+		int CustomerCpmpany_id = 0;
+		sql = "insert into customer_info_company ";
+		String column_name = " (id";
+		String values =" values(null";
+		while (iterator.hasNext()) {
+			String key = (String) iterator.next();
+			String value = customer_relation.getString(key);
+			if (value.trim().isEmpty() || key.equals("sales_account_manager")) {
+				continue;
+			}
+			column_name = column_name +","+key;
+			values = values + ",?" ;
+			params.add(value);
+		}
+		column_name = column_name +",customer_id)";
+		values = values + ",?)" ;
+		sql = sql + column_name + values;
+		params.add(customer_id);
+		try {
+			 CustomerCpmpany_id = jdbcUtil.addByPreparedStatement(sql, params);
+			logger.info(CustomerCpmpany_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return CustomerCpmpany_id;
 	}
-
 }

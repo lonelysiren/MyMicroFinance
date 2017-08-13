@@ -53,6 +53,9 @@
 	<script type="text/javascript"src="/lib/js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript"src="/lib/js/jquery.cookie.js"></script>
 	<script>
+	if (top.location!=self.location) {
+		  top.location = 'login.html';  
+	}
 			$(':text').val( $.cookie('rememberMe'));
 			layui.use(['layer', 'form'], function() {
 				var layer = layui.layer,
