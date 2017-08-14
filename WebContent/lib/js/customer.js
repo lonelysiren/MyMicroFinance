@@ -4,18 +4,20 @@
 layui.config({
 base: './lib/js/'
 });
+function remove_input(obj){
+	 $(obj).parent().parent().parent().remove();
+	  return false;
+ }
 layui.use(['form', 'jquery','layer'], function(){
   var form = layui.form(),
   layer = parent.layer === undefined ? layui.layer : parent.layer
 ;
-	
+
 $("select").each(function(index,dom){
 	select($(dom).attr("id"));
 });
   //
-  $("#relation_add").click(function(){
-	  
-  });
+
   form.on('select(house_status)', function(data){
 	  if(data.value == '1'){
 		  $("#current_residence").val($("#census_register").val()+"-"+$("#census_register_detail").val());
@@ -78,7 +80,7 @@ $("select").each(function(index,dom){
 		            ,liElem = titElem.find('>li[lay-id="'+ layid +'"]');
 		            call.tabClick(null, null, liElem);
 		          },
-		      //绑定点击    
+		      //身份证校验点击    
 			  addClick : function(){
 					$(document).off('click','.layui-tab-title li:lt(2)')
 					$(document).on('click','.layui-tab-title li:lt(2)',call.tabClick)
@@ -147,44 +149,79 @@ $("select").each(function(index,dom){
 			    });
 			    if(stop) return false;
 			   if(options.before) options.before()
-			    layui.each(fieldElem, function(_, item){
+			 
+			   layui.each(fieldElem, function(_, item){
 			      if(!item.name) return;
 			      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
 			      field[item.name] = item.value;
 			    });
 			    field['sales_account_manager'] = $("#sales_account_manager").val();
-
-					  var load = layer.load(1);
-					  $.ajax({
+			    var sub_data = {},url=options.url,data = field,action=options.action;
+			    if(options.initdata) {
+			    	var length = 0;
+			    	    for (key in field)  
+			    	    {  
+			    	        if (field[key] != options.initdata[key])  
+			    	        {  
+			    	        	sub_data[key] = field[key];
+			    	        	console.log(key+":"+sub_data[key] );
+			    	        	length++;
+			    	        }  
+			    	    }  
+			    	    console.log(length);
+			    	    if(length == 1){
+			    	    	options.yes('next',field);
+			    	    	return 
+			    	    }
+			    	    if(sub_data){
+			    	    	data = sub_data;
+			    	    url = url.replace('add','edit');
+			    	    }
+			    }
+			    var load = layer.load(1);
+					  var xhr =$.ajax({
 						  type:'post',
-						  url:options.url,
-						  data:{'action' : options.action,'data' :JSON.stringify(field),'customer_id':'10'},//$("#customer_id").val()},
+						  url:url,
+						  timeout: 5000, 
+						  data:{'action' : action,'data' :JSON.stringify(data),'customer_id':'10'},//$("#customer_id").val()},
+						  beforeSend:function(xhr){
+						  },
 						  success:function(result){
-							  layer.close(load);
-							  options.yes(result);	 //请求成功的回调函数						  
+							  options.yes(result,field);	 //请求成功的回调函数						  
 						  }, error: function (result, status) {
-				            	layer.close(load); 
-				            	layer.msg('请求失败');
+							 alert("错误码:"+status)
+							 location.reload();
+						  },complete: function(XMLHttpRequest,status){
+				        	  layer.close(load); 
+				        	  if(status == 'timeout') {
+				                    xhr.abort();    // 超时后中断请求
+				                    $.alert("网络超时，请刷新", function () {
+				                        location.reload();
+				                    })}
 				          }
 					  })
 			}
   };
   //测试用代码
   $(document).on('click','.layui-tab-title li ',call.tabClick)
+  var initformdata = {'customer_info': null,'customer_contact':null,'customer_company':null}
+  var a = {};
    //提交用户信息
   $('#cusotmer_info_commit').click(function(){
 	  call.submit({
 		  dom:$(this),
-		  url:'/customer_edit',
+		  url:'/customer_add',
 		  action:'customer_info',
-		  yes:function(result){
-			  if(result != '0'){
-				$('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
-				$(document).on('click','.layui-tab-title li:eq(2)',call.tabClick)
-				call.tabChange('customer','2');
-			  }else {
-				  layer.msg('客户添加失败');
+		  initdata: initformdata['customer_info'],
+		  yes:function(result,field){
+			  if(result =='next'){
+				  
+			  }else{
+					$('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
+					$(document).on('click','.layui-tab-title li:eq(2)',call.tabClick)
 			  }
+			  	call.tabChange('customer','2');
+				initformdata['customer_info'] = field;
 		  }
 	  })
   });
@@ -193,7 +230,7 @@ $("select").each(function(index,dom){
   $('#customer_contact_commit').click(function(){
 	  call.submit({
 		  dom:$(this),
-		  url:'/customer_edit',
+		  url:'/customer_add',
 		  action:'customer_relation_info',
 		  yes:function(result){
 				 var dom=  $('#contact').find('.col-md-6'),i=0
@@ -212,19 +249,22 @@ $("select").each(function(index,dom){
   });
   //提交联系人
   //提交用户公司
-  $('#cusotmer_company_commit').click(function(){
+  $('#customer_company_commit').click(function(){
 	  call.submit({
 		    dom:$(this),
-		  url:'/customer_edit',
+		  url:'/customer_add',
 		  action:'customer_company_info',
-		  yes:function(result){
-			  if(result != '0'){
-					$('#cusotmer_company_commit').append("<input type='hidden' name='company_id' value="+ result +">")
-					$(document).on('click','.layui-tab-title li:eq(4)',call.tabClick)
-					call.tabChange('customer','4');
-				  }else {
-					  layer.msg('客户添加失败');
-				  }
+		  initdata: initformdata['customer_company'],
+		  yes:function(result,field){
+			  if(result == 'next'){
+			  }else if(result =='success'){
+			  }else{
+				  $('#customer_company_commit').append("<input type='hidden' name='customer_company_id' value="+ result +">")
+				  $(document).on('click','.layui-tab-title li:eq(4)',call.tabClick)
+			  }
+				call.tabChange('customer','4');
+				field['customer_company_id'] = '';
+				initformdata['customer_company']=field;
 		  }
 	  })
   })
@@ -233,7 +273,7 @@ $("select").each(function(index,dom){
   $("#check_id").click(function(){
 	call.submit({
 		dom:$(this),
-		url:'/customer_edit',
+		url:'/customer_add',
 		action:'check_id',
 		before:function(){
 			$("#idcard").val(call.changeFivteenToEighteen($("#idcard").val()));
@@ -281,7 +321,18 @@ $("select").each(function(index,dom){
 		}
 	})  
   })
+
     //身份证验证
- 
+  $("#credit_add").click(function(){
+	  var html = '<div class="row" ><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_name" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button" id="credit_del" onclick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
+	 $(this).parent().parent().parent().after(html)
+  });
+  $("#lingyong_add").click(function(){
+	  $(this).parent().parent().parent().after(html)
+  });
+  $("#other_add").click(function(){
+	  $(this).parent().parent().parent().after(html)
+  });
+
 });
 

@@ -1,7 +1,6 @@
 package com.mf.servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -16,20 +15,19 @@ import org.apache.logging.log4j.Logger;
 
 import com.mf.dao.UserDao;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * Servlet implementation class CustomerEditServlet
+ * Servlet implementation class CustomerAddAction
  */
-@WebServlet("/CustomerEditServlet")
-public class CustomerEditServlet extends HttpServlet {
+@WebServlet("/CustomerAddAction")
+public class CustomerAddAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	 static Logger logger = LogManager.getLogger(CustomerEditServlet.class.getName());
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CustomerEditServlet() {
+    public CustomerAddAction() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,7 +38,6 @@ public class CustomerEditServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-
 	}
 
 	/**
@@ -51,32 +48,36 @@ public class CustomerEditServlet extends HttpServlet {
 		String customer_id = request.getParameter("customer_id");
 		HttpSession session=request.getSession();
 		UserDao userDao = new UserDao();
-		String result = null;
 		String parameter;
 		int id;
 		Map<String, Object> id_map;
 		logger.info(action);
 		switch (action) {
+			case "check_id":
+				 parameter = request.getParameter("data");
+				int company = (int) session.getAttribute("company_id");
+				String result = userDao.CheckId(parameter,company);
+				response.getWriter().write(result);
+				break;
 			case "customer_info":
 				 parameter = request.getParameter("data");
-				 id = userDao.editCustomer(parameter);
+				 id = userDao.addCustomer(parameter);
 				response.getWriter().print(id);
 				break;
 			case "customer_relation_info":
 				 parameter = request.getParameter("data");
-				 id_map = userDao.editCustomerRelation(parameter,customer_id);
+				 id_map = userDao.addCustomerRelation(parameter,customer_id);
 				 JSONObject info = JSONObject.fromObject(id_map);
 				response.getWriter().print(info);
 				break;
 			case "customer_company_info":
 				 parameter = request.getParameter("data");
-				  result = userDao.editCustomerCompany(parameter,customer_id);
-				response.getWriter().print(result);
+				 int customer_company_id = userDao.addCustomerCompany(parameter,customer_id);
+				response.getWriter().print(customer_company_id);
 				break;
 			default:
 				break;
 		}
-		
 	}
 
 }

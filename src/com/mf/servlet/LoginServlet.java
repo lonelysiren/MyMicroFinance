@@ -52,15 +52,19 @@ public class LoginServlet extends HttpServlet {
 		String passWord = request.getParameter("passWord");
 		UserDao userDao = new UserDao();
 		Map<String, Object> user_info = userDao.login(userName, passWord);
-		if (user_info != null && user_info.get("stauts").toString().equals("0")) {
+		
+		if(user_info.isEmpty()) {
+			response.getWriter().write("error");
+		} else if(user_info.get("stauts").toString().equals("0")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("role", user_info.get("role"));
 			session.setAttribute("company_id", user_info.get("company_id"));
 			session.setAttribute("company_name", user_info.get("name"));
 			session.setAttribute("nickname", user_info.get("nickname"));
 		} else {
-			response.getWriter().write("error");
+			response.getWriter().write("stauts");
 		}
+	
 
 	}
 

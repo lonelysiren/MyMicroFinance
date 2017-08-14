@@ -301,12 +301,15 @@ public class UserDao {
 		Iterator<?> iterator = customer_relation.keys();
 		int CustomerCpmpany_id = 0;
 		sql = "insert into customer_info_company ";
-		String column_name = " (id";
+		String column_name = " (customer_company_id";
 		String values =" values(null";
 		while (iterator.hasNext()) {
 			String key = (String) iterator.next();
 			String value = customer_relation.getString(key);
 			if (value.trim().isEmpty() || key.equals("sales_account_manager")) {
+				continue;
+			}
+			if (key.equals("customer_company_id")) {
 				continue;
 			}
 			column_name = column_name +","+key;
@@ -324,5 +327,48 @@ public class UserDao {
 			e.printStackTrace();
 		}
 		return CustomerCpmpany_id;
+	}
+
+	public String editCustomerCompany(String parameter, String customer_id) {
+		JSONObject customer_relation = JSONObject.fromObject(parameter);
+		Iterator<?> iterator = customer_relation.keys();
+		Boolean isfirst = true;
+		Boolean isSuccess = false;
+		sql = "UPDATE customer_info_company  SET  ";
+		String column_name = " ";
+		String values ="where customer_company_id = ? ";
+		while (iterator.hasNext()) {
+			String key = (String) iterator.next();
+			String value = customer_relation.getString(key);
+			if (key.equals("customer_company_id")) {
+				params.add(value);
+				break;
+			}
+			column_name += key;
+			if(isfirst) {
+				column_name += "=?";
+			} else {
+				column_name += "=?,";
+			}
+			params.add(value);
+		}
+		sql = sql + column_name + values;
+		
+		try {
+			 isSuccess = jdbcUtil.updateByPreparedStatement(sql, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isSuccess?"success":"faild";
+	}
+
+	public Map<String, Object> editCustomerRelation(String parameter, String customer_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int editCustomer(String parameter) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
