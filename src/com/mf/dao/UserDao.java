@@ -159,35 +159,7 @@ public class UserDao {
 		return flag;
 	}
 
-	public String CheckId(String parameter, int company_id) {
-		sql = "select sales_account_manager_id from manager_relation where idcard_number = ? and company_id = ?";
-		JSONObject info = JSONObject.fromObject(parameter);
-		params.add(info.getString("idcard"));
-		params.add(company_id);
-		String result = "0";
-		List<Map<String, Object>> findModeResult = null;
-		try {
-			findModeResult = jdbcUtil.findModeResult(sql, params);
-			if (!findModeResult.isEmpty()) {
-				result = "1";
-				for (Map<String, Object> map : findModeResult) {
-					if (!map.get("sales_account_manager_id").toString()
-							.equals(info.getString("sales_account_manager"))) {
-						result = "2";
-						break;
-					}
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			result = "3";
-			e.printStackTrace();
-		} finally {
-			jdbcUtil.close();
-		}
-
-		return result;
-	}
+	
 
 	public static void main(String[] args) throws SQLException {
 		UserDao userDao = new UserDao();

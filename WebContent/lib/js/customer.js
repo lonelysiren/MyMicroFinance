@@ -12,12 +12,20 @@ layui.use(['form', 'jquery','layer'], function(){
   var form = layui.form(),
   layer = parent.layer === undefined ? layui.layer : parent.layer
 ;
-
+  var text = 'lay-verify="required"';
+  
+ 
+  var content = '<div class="row"><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">联系人</label><div class="layui-input-block"><select id="relationship"  name="relationship[]" lay-filter="contact"><option value="">请选择关系(必选)</option></select></div></div></div><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">姓名</label><div class="layui-input-block"><input type="text"  name="contact_name[]" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名"></div></div></div><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">联系电话</label><div class="layui-input-block"><input type="text"  name="contact_mobile_phone[]" autocomplete="off" class="layui-input" placeholder="请输入联系人电话"></div></div></div></div><div class="row"><div class="col-md-3"></div><div class="col-md-6"><div class="layui-form-item"><label class="layui-form-label">工作单位</label><div class="layui-input-block"><input type="text"  name="contact_company[]" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位"></div></div></div></div>';
+  for ( i = 0; i < 5; i++) {
+		$("#other_contact").before(content)
+	}
 $("select").each(function(index,dom){
-	select($(dom).attr("id"));
+	var str = select($(dom).attr("id"));
+	if(str){
+		$(dom).append(str);
+	}
 });
   //
-
   form.on('select(house_status)', function(data){
 	  if(data.value == '1'){
 		  $("#current_residence").val($("#census_register").val()+"-"+$("#census_register_detail").val());
@@ -81,9 +89,9 @@ $("select").each(function(index,dom){
 		            call.tabClick(null, null, liElem);
 		          },
 		      //身份证校验点击    
-			  addClick : function(){
-					$(document).off('click','.layui-tab-title li:lt(2)')
-					$(document).on('click','.layui-tab-title li:lt(2)',call.tabClick)
+			  calc : function(){
+				  $(document).off('click','.layui-tab-title li:eq(0)')
+				  $(document).on('click','.layui-tab-title li:eq(0)',call.tabClick)
 					idcard = $('#idcard').val();
 					call.tabChange('customer','1');
 					if (!(parseInt(idcard.substr(16, 1)) % 2 == 1)) { 
@@ -97,6 +105,8 @@ $("select").each(function(index,dom){
 					if (idcard.substring(10, 12) < month || idcard.substring(10, 12) == month && idcard.substring(12, 14) <= day) { 
 					age++; 
 					} 
+					$('#idcard_type').children("[value='1']").attr("selected",true);
+					form.render('select');
 					$('#age').val(age);
 					$('#idcard_number').val(idcard);
 			  },
@@ -149,14 +159,29 @@ $("select").each(function(index,dom){
 			    });
 			    if(stop) return false;
 			   if(options.before) options.before()
-			 
+			 var obj ={},objs = [] //
+			   
 			   layui.each(fieldElem, function(_, item){
 			      if(!item.name) return;
 			      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
+			      if(item.name.indexOf('[]') != -1){
+			    	  if(obj.hasOwnProperty(item.name)){
+			    		  objs.push(obj)
+			    		  obj = {}
+			    		  obj[item.name] = item.value
+			    		  return
+			    	  } 
+			    		  obj[item.name] = item.value
+			    		  return
+			      }
 			      field[item.name] = item.value;
 			    });
-			    field['sales_account_manager'] = $("#sales_account_manager").val();
-			    var sub_data = {},url=options.url,data = field,action=options.action;
+			   	  if(!($.isEmptyObject(obj))) objs.push(obj)
+			      if(objs.length != 0) field['Object'] = objs
+			    var sub_data = {},url=options.url,data = field,action=options.action,index = options.tab_index;
+			    if(action=='check_id' || action=='customer_info') {
+			    	field['sales_account_manager'] = $("#sales_account_manager").val();
+			    	}
 			    if(options.initdata) {
 			    	var length = 0;
 			    	    for (key in field)  
@@ -187,7 +212,18 @@ $("select").each(function(index,dom){
 						  beforeSend:function(xhr){
 						  },
 						  success:function(result){
-							  options.yes(result,field);	 //请求成功的回调函数						  
+							  if(result == 'next' || result =='success'){
+								  
+							  }else{
+								  options.yes(result,field);	 //请求成功的回调函数
+								  if(index){
+									  $(document).off('click','.layui-tab-title li:eq('+index+')')
+									  $(document).on('click','.layui-tab-title li:eq('+index+')',call.tabClick)
+								  }
+							  }
+								call.tabChange('customer',index);
+								field['customer_company_id'] = '';
+								initformdata[action] = field;
 						  }, error: function (result, status) {
 							 alert("错误码:"+status)
 							 location.reload();
@@ -204,7 +240,7 @@ $("select").each(function(index,dom){
   };
   //测试用代码
   $(document).on('click','.layui-tab-title li ',call.tabClick)
-  var initformdata = {'customer_info': null,'customer_contact':null,'customer_company':null}
+  var initformdata = {'customer_info': null,'customer_info_contact':null,'customer_company':null}
   var a = {};
    //提交用户信息
   $('#cusotmer_info_commit').click(function(){
@@ -213,34 +249,32 @@ $("select").each(function(index,dom){
 		  url:'/customer_add',
 		  action:'customer_info',
 		  initdata: initformdata['customer_info'],
+		  tab_index : '2',
 		  yes:function(result,field){
-			  if(result =='next'){
-				  
-			  }else{
 					$('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
-					$(document).on('click','.layui-tab-title li:eq(2)',call.tabClick)
 			  }
-			  	call.tabChange('customer','2');
-				initformdata['customer_info'] = field;
-		  }
 	  })
   });
   //提交用户
   //提交联系人
   $('#customer_contact_commit').click(function(){
+//	  var a =$('input[name=a\\[\\]]').map(function(){
+//          return $(this).val();
+//      }).get()
+//      console.log(a);
 	  call.submit({
 		  dom:$(this),
 		  url:'/customer_add',
-		  action:'customer_relation_info',
+		  action:'customer_info_contact',
+		  initdata: initformdata['customer_info_contact'],
 		  yes:function(result){
-				 var dom=  $('#contact').find('.col-md-6'),i=0
+				 var dom=  $('#contact').find('.col-md-6')
 				 result = JSON.parse(result) ;
 				 $.each(result,function(key,value){
-					 if(key == 'id_6'){
-						 i = 5;
+					 if(key == 'other_contact_id-6'){
+						 dom.eq(6).append('<input type="hidden" name=other_contact_id-6 value='+result[key]+'>');
 					 }
-					 dom.eq(i).append('<input type="hidden" name='+key +' value='+result[key]+'>');
-					 i++;
+					 dom.eq(key).append('<input type="hidden" name=contact_id-'+key +' value='+result[key]+'>');
 					 })
 					 $(document).on('click','.layui-tab-title li:eq(3)',call.tabClick)
 						call.tabChange('customer','3');
@@ -253,18 +287,11 @@ $("select").each(function(index,dom){
 	  call.submit({
 		    dom:$(this),
 		  url:'/customer_add',
-		  action:'customer_company_info',
+		  action:'customer_info_company',
 		  initdata: initformdata['customer_company'],
+		  tab_index : '4',
 		  yes:function(result,field){
-			  if(result == 'next'){
-			  }else if(result =='success'){
-			  }else{
 				  $('#customer_company_commit').append("<input type='hidden' name='customer_company_id' value="+ result +">")
-				  $(document).on('click','.layui-tab-title li:eq(4)',call.tabClick)
-			  }
-				call.tabChange('customer','4');
-				field['customer_company_id'] = '';
-				initformdata['customer_company']=field;
 		  }
 	  })
   })
@@ -279,45 +306,44 @@ $("select").each(function(index,dom){
 			$("#idcard").val(call.changeFivteenToEighteen($("#idcard").val()));
 		},
 		yes:function(result){
+			var title = '查询结果',content,btn = [],yes=function(index, layero){
+					  $(document).off('click','.layui-tab-title li:eq(0)')
+					  $(document).on('click','.layui-tab-title li:eq(0)',call.tabClick)
+					  layer.close(index);
+					  call.calc()
+					  call.tabChange('customer','1');
+			  }
 			switch(result)
 			{
 			case '0':
-				layer.open({
-					title:'查询结果',
-					content:'不存在该客户,点击下一步继续',
-					btn:['下一步'],
-					yes: function(index, layero){
-						 call.addClick();
-						 layer.close(index); 
-					  }
-				})
+				content = '不存在该客户,点击下一步继续';
+				btn = ['下一步'];
 			  break;
 			case '1':
-				layer.open({
-					title:'查询结果',
-					content:'该客户已经存在是否继续,点击下一步继续',
-					btn:['复制账号','下一步'],
-					yes: function(index, layero){
-						 layer.close(index); 
-					  } ,btn2: function(index, layero){
-						  	 call.addClick();
-							 layer.close(index); 
-					  }
-				})
+				content = '该客户已经存在！是否继续？点击下一步继续';
+				btn = ['下一步','复制账号'];
+				var btn2 =function(index, layero){
+					 layer.close(index); 
+					 console.log('复制成功')
+				  }
 			  break;
 			case '2' :
-				layer.open({
-					title:'查询结果',
-					content:'公司其他员工已有此客户',
-					btn:['确定'],
-					yes: function(index, layero){
-						 layer.close(index); 
-					  }
-				})
+				btn = ['确定']
+				content = '公司其他员工已有此客户'
+				yes = function(index, layero){
+				 layer.close(index);
+				}
 			  break;
 			default:
 				  break;
 			}
+			layer.open({
+				title:title,
+				content:content,
+				btn:btn,
+				yes: yes,
+				btn2: btn2
+			})
 		}
 	})  
   })

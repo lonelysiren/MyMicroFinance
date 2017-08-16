@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.mf.dao.CustomerDao;
 import com.mf.dao.UserDao;
 
 import net.sf.json.JSONArray;
@@ -26,6 +27,7 @@ import net.sf.json.JSONObject;
 public class CustomerEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	 static Logger logger = LogManager.getLogger(CustomerEditServlet.class.getName());
+	private Boolean editSql;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -50,33 +52,31 @@ public class CustomerEditServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		String customer_id = request.getParameter("customer_id");
 		HttpSession session=request.getSession();
-		UserDao userDao = new UserDao();
-		String result = null;
-		String parameter;
-		int id;
-		Map<String, Object> id_map;
+		CustomerDao customerDao = new CustomerDao();
+		String parameter = request.getParameter("data");;
+		JSONObject parameters = JSONObject.fromObject(parameter);
+		String result = "faild";
 		logger.info(action);
-		switch (action) {
-			case "customer_info":
-				 parameter = request.getParameter("data");
-				 id = userDao.editCustomer(parameter);
-				response.getWriter().print(id);
-				break;
-			case "customer_relation_info":
-				 parameter = request.getParameter("data");
-				 id_map = userDao.editCustomerRelation(parameter,customer_id);
-				 JSONObject info = JSONObject.fromObject(id_map);
-				response.getWriter().print(info);
-				break;
-			case "customer_company_info":
-				 parameter = request.getParameter("data");
-				  result = userDao.editCustomerCompany(parameter,customer_id);
-				response.getWriter().print(result);
-				break;
-			default:
-				break;
+		try {
+			switch (action) {
+				case "customer_info":
+					parameters.put("customer_id", customer_id);
+					result = customerDao.editSql(action, parameters, "customer_id");
+					break;
+				case "customer_info_contact":
+					customerDao.editCustoemrRelation(parameters);
+					break;
+				case "customer_info_company":
+						result = customerDao.editSql(action, parameters, "customer_company_id");
+					break;
+				default:
+					break;
+			}
+		}catch (SQLException e) {
+			logger.info(parameter);
+			e.printStackTrace();
 		}
-		
+		response.getWriter().write(result);
 	}
 
 }

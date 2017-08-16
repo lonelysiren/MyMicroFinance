@@ -48,6 +48,12 @@ function select(id) {
 			break;
 		case 'relationship':
 			option_data = options.relationship;
+			var str
+			for (i = 0; i < option_data.length; i++) {
+					str  = str +	"<option value=" + option_data[i].id + ">"
+								+ option_data[i].nickname + "</option>"
+			}
+			return str
 			break;
 		default:
 			break;

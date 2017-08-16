@@ -8,6 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,14 @@ import javax.sql.DataSource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mysql.jdbc.Statement;
 
+import net.sf.json.JSONObject;
+
 public class JdbcUtil {
 
 	private Connection connection;
 	private PreparedStatement pstmt;
 	private ResultSet resultSet;
-
+private static DataSource dataSource = null;
 	
 	 public  void close(){  
          if(resultSet!=null){  
@@ -44,7 +47,7 @@ public class JdbcUtil {
              }  
          }  
      }  
-	private static DataSource dataSource = null;
+	
 	static {
 		dataSource = new ComboPooledDataSource("mvcApp");
 	}
@@ -81,6 +84,7 @@ public class JdbcUtil {
 				pstmt.setObject(index++, params.get(i));
 			}
 		}
+		
 		 pstmt.executeUpdate();
 		 resultSet = pstmt.getGeneratedKeys(); 
 		if(resultSet.next()){  
@@ -201,6 +205,7 @@ public class JdbcUtil {
 		}
 		return list;
 	}
+
 
 	/**
 	 * @param args
