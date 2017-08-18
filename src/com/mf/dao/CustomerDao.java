@@ -30,24 +30,23 @@ public class CustomerDao extends BaseDao {
 	public static void main(String[] args) throws SQLException {
 		CustomerDao customerDao = new CustomerDao();
 		String customerData = "{\"customer_name\":\"吴一凡\",\"sex\":\"0\",\"age\":\"23\",\"marriage_status\":\"2\",\"idcard_type\":\"1\",\"idcard_number\":\"431003199408136018\",\"child_age\":\"12\",\"census_register\":\"安徽省-安庆市-大观区\",\"harea\":\"大观区\",\"hproper\":\"安庆市\",\"hcity\":\"安徽省\",\"census_register_detail\":\"安徽省-安庆市-大\",\"house_number\":\"123\",\"house_status\":\"1\",\"house_rent\":\"123\",\"house_holder\":\"123\",\"current_residence\":\"安徽省-安庆市-大观区-安徽省-安庆市-大\",\"native_type\":\"0\",\"current_residence_phone\":\"123\",\"mobile_phone\":\"13762567348\",\"mobile_phone_age\":\"\",\"mobile_phone_real_name\":\"0\",\"education\":\"2\",\"graduate_school\":\"\",\"account_number\":\"123\",\"deposit_bank\":\"123\",\"remark\":\"\",\"sales_account_manager\":\"1\"}";
-		String contacData = "{\"contact_content\":\"\",\"Object\":[{\"relationship[]\":\"1\",\"contact_name[]\":\"123\",\"contact_mobile_phone[]\":\"123\",\"contact_company[]\":\"213\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"}]}";
+		String contacData = "{\"contact_content\":\"\",\"Object\":[{\"relationship[]\":\"1\",\"contact_name[]\":\"123\",\"contact_mobile_phone[]\":\"123\",\"contact_company[]\":\"213\"},{\"relationship[]\":\"123\",\"contact_name[]\":\"123\",\"contact_mobile_phone[]\":\"123\",\"contact_company[]\":\"123\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"}]}";
 		JSONObject data = JSONObject.fromObject(contacData);
 		JSONArray object = data.getJSONArray("Object");
-		//logger.info(object.getJSONObject(0));
-		//logger.info(data);
-		 outerloop:  
-			    for (int i=0; i < 5; i++) {  
-			      for (int j=0; j < 5; j++) {  
-			        if (i >1) {  
-			          System.out.println("Breaking");  
-			          continue outerloop;  
-			        }  
-			        System.out.println(i + " " + j);  
-			      }  
-			      System.out.println("外层");  
-			    }  
-			    System.out.println("Done");  
-			  
+		// logger.info(object.getJSONObject(0));
+		// logger.info(data);
+		// JSONObject addCustomerContact = customerDao.addCustomerContact(data, "10");
+		// logger.info(addCustomerContact);
+		JSONObject result = new JSONObject();
+		for (int i = 0; i <10; i++) {
+			int j = 0;
+			if(i<5) {
+			}else {
+				j = i;
+			}
+			result.accumulate("id", j);
+		}
+		System.out.println(result);
 	}
 
 	public String CheckId(JSONObject data, int company_id) {
@@ -90,132 +89,88 @@ public class CustomerDao extends BaseDao {
 		return 0;
 	}
 
-	public Map<Object, Object> addCustomerContact(JSONObject data, String customer_id) throws SQLException {
+	public JSONObject addCustomerContact(JSONObject data, String customer_id) throws SQLException {
 		String content = data.getString("contact_content");
 		JSONObject result = new JSONObject();
-		
 		JSONArray jsonArray = data.getJSONArray("Object");
-		for (Object object : jsonArray) {
+		sqlLoop: for (Object object : jsonArray) {
 			JSONObject parameters = (JSONObject) object;
 			Iterator<?> iterator = parameters.keys();
-			while(iterator.hasNext()) {
+			while (iterator.hasNext()) {
 				String key = (String) iterator.next();
 				String value = parameters.getString(key);
+				if (value.trim().isEmpty()) {
+					result.accumulate("contact_id", 0);
+					continue sqlLoop;
+				}
 			}
 			parameters.put("customer_id", customer_id);
 			int contact_id = super.addSql("customer_info_contact", parameters);
 			result.accumulate("contact_id", contact_id);
 		}
-		
-		if(true != content.trim().isEmpty()) {
+		if (true != content.trim().isEmpty()) {
 			sql = "insert into customer_info_contact_other (contact_content,customer_id) values(?,?)";
 			params.add(content);
 			params.add(customer_id);
-			int content_other_id = jdbcUtil.addByPreparedStatement(sql, params);
-			result.put("content_other_id", content_other_id);
+			int contact_other_id = jdbcUtil.addByPreparedStatement(sql, params);
+			result.put("contact_other_id", contact_other_id);
 		}
-		return null;
-	}
-
-	public Map<String, Object> addCustomerRelation(JSONObject data, String customer_id) throws SQLException {
-		int relation_id = 1;
-		int parmas_id = 0;
-		sql = "insert into customer_info_contact values(?,?,?,?,?)";
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		Iterator<?> iterator = data.keys();
-		while (iterator.hasNext()) {
-			String key = (String) iterator.next();
-			String value = data.getString(key);
-			if (value.trim().isEmpty()) {
-				continue;
-			}
-			params.add(value);
-			if (key.equals("relationship_other")) {
-				String sql2 = "insert into customer_info_contact_other values(?,?)";
-				params.add(customer_id);
-				map.put("other_contact_id-6", jdbcUtil.addByPreparedStatement(sql2, params));
-				break;
-			}
-			if (parmas_id == 4) {
-				parmas_id = 0;
-				params.clear();
-				relation_id++;
-				continue;
-			}
-			if (parmas_id == 3) {
-				if (data.has("contact_id-" + relation_id)) {
-					continue;
-				}
-				params.add(customer_id);
-				map.put("contact_id-" + relation_id, jdbcUtil.addByPreparedStatement(sql, params));
-				parmas_id = 0;
-				relation_id++;
-				params.clear();
-				continue;
-			}
-			parmas_id++;
-		}
-		return map;
-	}
-
-	public Map<Object, Object> addCustomerRelationSimple(JSONObject parameters, String customer_id)
-			throws SQLException {
-		JSONObject parameter = new JSONObject();
-		logger.info(parameters.toString());
-		Map<Object, Object> result = new LinkedHashMap<Object, Object>();
-		String index = "1";
-		int result_id = 0;
-		Iterator<?> iterator = parameters.keys();
-		while (iterator.hasNext()) {
-			String key = (String) iterator.next();
-			String value = parameters.getString(key);
-			String[] split = key.split("-");
-			String num = split[1];
-			String colunm_name = split[0];
-			if (value.trim().isEmpty()) {
-				continue;
-			}
-			parameter.put("customer_id", customer_id);
-			if (num.equals(index)) {
-				parameter.put(colunm_name.trim(), value);
-				logger.info(colunm_name + ":" + value);
-			} else {
-				result_id = super.addSql("customer_info_contact", parameter);
-				result.put(Integer.parseInt(index), result_id);
-				index = split[1].trim();
-				parameter.clear();
-				parameter.put(colunm_name, value);
-				logger.info(colunm_name + ":" + value);
-				if (num.equals("6")) {
-					parameter.put("customer_id", customer_id);
-					result_id = super.addSql("customer_info_contact_other", parameter);
-					result.put("contact_other_id-6", result_id);
-					parameter.clear();
-				}
-			}
-		}
-		System.out.println(result.toString());
 		return result;
-
 	}
 
-	public int editCustoemrRelation(JSONObject parameters) throws SQLException {
-		JSONObject parameter = new JSONObject();
+	public Boolean isUserful(JSONObject parameters) {
 		Iterator<?> iterator = parameters.keys();
 		while (iterator.hasNext()) {
 			String key = (String) iterator.next();
 			String value = parameters.getString(key);
-			String[] split = key.split("-");
-			parameter.put(key, value);
-			if (split[0].equals("contact_id")) {
-				super.editSql("customer_info_contact", parameter, "contact_id");
-				parameter.clear();
-			} else if (split[0].equals("other_contact_id")) {
-				super.editSql("customer_info_contact_other", parameter, "contact_other_id");
-				parameter.clear();
+			if (value.trim().isEmpty()) {
+				return false;
 			}
 		}
-		return 1;
+		return true;
+	}
+
+	public JSONObject editCustoemrContact(JSONObject data, String customer_id) throws SQLException {
+		JSONObject result = new JSONObject();
+		logger.info(data.toString());
+		if (data.has("Object")) { // 是否有联系人
+			JSONArray jsonArray = data.getJSONArray("Object");
+			for (Object object : jsonArray) {
+				JSONObject parameters = (JSONObject) object;
+				int contact_id = 0;
+				if (parameters.getInt("contact_id[]") == 0) {// 是否已经创建联系人
+					parameters.remove("contact_id[]");
+					if (isUserful(parameters)) {
+						parameters.put("customer_id", customer_id);
+						contact_id = super.addSql("customer_info_contact", parameters);
+					}
+				} else {
+					if (parameters.size() > 1) {
+						super.editSql("customer_info_contact", parameters, "contact_id");
+					}
+				}
+				result.accumulate("contact_id", contact_id);
+			}
+		}
+		if (data.has("contact_content")) {
+			int contact_other_id = 0;
+			String contact_content = data.getString("contact_content");
+			params.add(contact_content);
+			if (data.getInt("contact_other_id") != 0) {
+				String id = data.getString("contact_other_id");
+				params.add(id);
+				sql = "UPDATE customer_info_contact_other set contact_content = ? where contact_other_id = ?";
+				jdbcUtil.updateByPreparedStatement(sql, params);
+			} else if (false == contact_content.trim().isEmpty()) {
+				sql = "INSERT INTO customer_inf_contact_other (contact_content,customer_id) values(?,?)";
+				params.add(customer_id);
+				contact_other_id = jdbcUtil.addByPreparedStatement(sql, params);
+			}
+			params.clear();
+			result.put("contact_other_id", contact_other_id);
+		}
+		logger.info(result);
+		return result;
 	}
 
 	public int addCustomerCompany(JSONObject data, String customer_id) throws SQLException {
@@ -223,11 +178,6 @@ public class CustomerDao extends BaseDao {
 		int CustomerCpmpany_id = 0;
 		CustomerCpmpany_id = super.addSql("customer_info_company", data);
 		return CustomerCpmpany_id;
-	}
-
-	public Map<String, Object> editCustomerRelation(String parameter, String customer_id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

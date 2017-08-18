@@ -55,19 +55,22 @@ public class CustomerEditServlet extends HttpServlet {
 		CustomerDao customerDao = new CustomerDao();
 		String parameter = request.getParameter("data");;
 		JSONObject parameters = JSONObject.fromObject(parameter);
-		String result = "faild";
+		String result = null;
 		logger.info(action);
 		try {
 			switch (action) {
 				case "customer_info":
 					parameters.put("customer_id", customer_id);
 					result = customerDao.editSql(action, parameters, "customer_id");
+					response.getWriter().write(result);
 					break;
 				case "customer_info_contact":
-					customerDao.editCustoemrRelation(parameters);
+					 JSONObject editCustoemrContact = customerDao.editCustoemrContact(parameters,customer_id);
+					 response.getWriter().print(editCustoemrContact);
 					break;
 				case "customer_info_company":
 						result = customerDao.editSql(action, parameters, "customer_company_id");
+						response.getWriter().write(result);
 					break;
 				default:
 					break;
@@ -76,7 +79,7 @@ public class CustomerEditServlet extends HttpServlet {
 			logger.info(parameter);
 			e.printStackTrace();
 		}
-		response.getWriter().write(result);
+		
 	}
 
 }

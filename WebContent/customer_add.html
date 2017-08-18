@@ -31,7 +31,7 @@
     <li lay-id="1">个人信息</li>
     <li lay-id="2">联系人信息</li>
     <li lay-id="3">公司信息</li>
-    <li lay-id="4">家庭信息</li>
+    <li lay-id="4">负债信息</li>
     <li lay-id="5">认证</li>
   </ul>
   <div class="layui-tab-content">
@@ -285,6 +285,7 @@
    <div class="col-md-6">
    <div class="layui-form-item" >
   <textarea name="contact_content"   placeholder="请输入" class="layui-textarea"></textarea>
+  <input type="hidden" id="contact_other_id" name="contact_other_id" value="0">
   </div>
    </div>
    </div>
@@ -406,23 +407,23 @@
 </div>
     </div>
    <div class="layui-tab-item">
-   <div class="row" >
+   <div class="row" id = "credit">
    <div class="col-md-3"> <div class="layui-form-item" >
    		<label class="layui-form-label">信用卡</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入发卡行" >
+   		<input type="text" name="creditcard_name[]" autocomplete="off" class="layui-input" placeholder="请输入发卡行" >
       </div>
       </div></div>
    <div class="col-md-3"> <div class="layui-form-item" >
    		<label class="layui-form-label">授信额度</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入金额" >
+   		<input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" >
       </div>
       </div></div>
    <div class="col-md-3"> <div class="layui-form-item" >
    		<label class="layui-form-label">已使用额度</label>
    		<div class="layui-input-block">
-   		<input type="text" name="name" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" >
+   		<input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" >
       </div>
       </div></div>
    	<div class="col-md-3"> 
@@ -435,13 +436,13 @@
    <div class="col-md-3"> <div class="layui-form-item" >
    		<label class="layui-form-label">零用贷</label>
    		<div class="layui-input-block">
-   		<input type="text" name="lingyong_name" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" >
+   		<input type="text" name="lingyong_name[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" >
       </div>
       </div></div>
    <div class="col-md-3"> <div class="layui-form-item" >
    		<label class="layui-form-label">金额</label>
    		<div class="layui-input-block">
-   		<input type="text" name="lingyong_amount" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" >
+   		<input type="text" name="lingyong_amount[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" >
       </div>
       </div></div>
    <div class="col-md-3"> <div class="layui-form-item" >
@@ -452,13 +453,13 @@
    <div class="col-md-3"> <div class="layui-form-item" >
    		<label class="layui-form-label">其他贷款</label>
    		<div class="layui-input-block">
-   		<input type="text" name="other_name" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required">
+   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required">
       </div>
       </div></div>
    <div class="col-md-3"> <div class="layui-form-item" >
    		<label class="layui-form-label">金额</label>
    		<div class="layui-input-block">
-   		<input type="text" name="other_amount" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required">
+   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required">
       </div>
       </div></div>
    <div class="col-md-3"> <div class="layui-form-item" >
@@ -468,7 +469,7 @@
  <div class="row">
 <div class="col-md-9"></div>
 <div class="col-md-3">
-<button class="layui-btn layui-btn-big" style="float: right">下一步</button>
+<button class="layui-btn layui-btn-big" type="button" id="contact_debt_commit" style="float: right">下一步</button>
 </div>
 </div>
    </div>

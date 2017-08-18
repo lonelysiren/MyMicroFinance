@@ -50,6 +50,9 @@ public class BaseDao {
 		while (iterator.hasNext()) {
 			String key = (String) iterator.next();
 			String value = parameters.getString(key);
+			if(key.trim().contains("[]")) {
+				key = key.replace("[]", "");
+			}
 			if (value.trim().isEmpty()) {//空值不添加
 				continue;
 			}
@@ -79,31 +82,27 @@ public class BaseDao {
 	}
 	
 	public String editSql(String table_name, JSONObject parameters,String requirement ) throws SQLException {
-		 sql = "UPDATE "+table_name +" SET";
+		sql = "UPDATE "+table_name +" SET";
 		 column_name = " ";
-		 values ="where "+requirement +" = ? ";
+		 values =" where "+requirement +" = ? ";
 		 iterator = parameters.keys();
-			Boolean isfirst = true;
 			while(iterator.hasNext()) {
 			String key = (String) iterator.next();
 			String value = parameters.getString(key);
-			if (key.equals(requirement)) {
-				params.add(value);
-				break;
-			}
-			column_name += key;
-			if(isfirst) {
-				column_name += "=?";
-			}else if(iterator.hasNext()) {
-				column_name += "=?,";
-			}
-			else {
-				column_name += "=?) ";
+			if(key.trim().contains("[]")) {
+				key = key.replace("[]", "");
 			}
 			params.add(value);
+			if( false == iterator.hasNext()) {
+				column_name = column_name.substring(0,column_name.length()-1);
+				break;
+			}
+			column_name = column_name + key + "=?,";
 		}
 		sql = sql + column_name + values;
+		logger.info(params.toString());
 		Boolean result = jdbcUtil.updateByPreparedStatement(sql, params);
+		params.clear();
 		 return  result?"success":"faild";
 	}
 }
