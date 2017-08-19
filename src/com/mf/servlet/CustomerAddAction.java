@@ -67,7 +67,7 @@ public class CustomerAddAction extends HttpServlet {
 						response.getWriter().print(id);
 						break;
 					case "customer_info_contact":
-						JSONObject info = customerDao.editCustoemrContact(data,customer_id);
+						JSONObject info = customerDao.editCustomerContact(data,customer_id);
 						response.getWriter().print(info);
 						break;
 					case "customer_info_company":

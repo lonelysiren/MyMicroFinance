@@ -15,7 +15,7 @@ layui.use(['form', 'jquery','layer'], function(){
   var text = 'lay-verify="required"';
   
  
-  var content = '<div class="row"><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">联系人</label><div class="layui-input-block"><select id="relationship"  name="relationship[]" lay-filter="contact"><option value="">请选择关系(必选)</option></select></div></div></div><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">姓名</label><div class="layui-input-block"><input type="text"  name="contact_name[]" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名"></div></div></div><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">联系电话</label><div class="layui-input-block"><input type="text"  name="contact_mobile_phone[]" autocomplete="off" class="layui-input" placeholder="请输入联系人电话"></div></div></div></div><div class="row"><div class="col-md-3"></div><div class="col-md-6"><div class="layui-form-item"><label class="layui-form-label">工作单位</label><div class="layui-input-block"><input type="text"  name="contact_company[]" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位"></div><input type="hidden" name=contact_id[] value=0></div></div></div>';
+  var content = '<div class="row"><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">联系人</label><div class="layui-input-block"><select id="relationship"  name="relationship[]" lay-filter="contact"><option value="">请选择关系(必选)</option></select></div></div></div><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">姓名</label><div class="layui-input-block"><input type="text"  name="contact_name[]" autocomplete="off" class="layui-input" placeholder="请输入联系人姓名"></div></div></div><div class="col-md-3"><div class="layui-form-item"><label class="layui-form-label">联系电话</label><div class="layui-input-block"><input type="text"  name="contact_mobile_phone[]" autocomplete="off" class="layui-input" placeholder="请输入联系人电话"></div></div></div></div><div class="row"><div class="col-md-3"></div><div class="col-md-6"><div class="layui-form-item"><label class="layui-form-label">工作单位</label><div class="layui-input-block"><input type="text"  name="contact_company[]" autocomplete="off" class="layui-input" placeholder="请输入联系人工作单位"></div></div></div></div>';
   for ( i = 0; i < 5; i++) {
 		$("#other_contact").before(content)
 	}
@@ -38,7 +38,7 @@ $("select").each(function(index,dom){
   //向导式表单
   var call = {
 		  //验证
-		  verify: {
+		  	verify: {
 	        required: [
 	            /[\S]+/
 	            ,'必填项不能为空'
@@ -89,7 +89,7 @@ $("select").each(function(index,dom){
 		            call.tabClick(null, null, liElem);
 		          },
 		      //身份证校验点击    
-			  calc : function(){
+			calc : function(){
 				  $(document).off('click','.layui-tab-title li:eq(0)')
 				  $(document).on('click','.layui-tab-title li:eq(0)',call.tabClick)
 					idcard = $('#idcard').val();
@@ -111,7 +111,7 @@ $("select").each(function(index,dom){
 					$('#idcard_number').val(idcard);
 			  },
 			  //15位身份证转换18
-			  changeFivteenToEighteen : function(card){  
+			changeFivteenToEighteen : function(card){  
 					    if(card.length == '15')  
 					    {  
 					        var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);   
@@ -159,24 +159,24 @@ $("select").each(function(index,dom){
 			    });
 			    if(stop) return false;
 			   if(options.before) options.before()
-			 var obj ={},objs = [] //
+			 var obj ={},index = 0,objs = [] //
 			   layui.each(fieldElem, function(_, item){
 			      if(!item.name) return;
 			      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
 			      if(item.name.indexOf('[]') != -1){
-			    	  if(obj.hasOwnProperty(item.name)){
-			    		  objs.push(obj)
+			    	  if(obj.hasOwnProperty(item.name)  ){
+			    		  field[index] = obj
+			    		  index++
 			    		  obj = {}
-			    		  obj[item.name] = item.value
-			    		  return
-			    	  } 
-			    		  obj[item.name] = item.value
+			    	  }
+				    	  obj[item.name] = item.value
 			    		  return
 			      }
+			      if(!($.isEmptyObject(obj)))  field[index] = obj
 			      field[item.name] = item.value;
 			    });
-			   	  if(!($.isEmptyObject(obj))) objs.push(obj)
-			      if(objs.length != 0) field['Object'] = objs
+				  
+				  console.log(field);
 					    var tempData,
 					   url=options.url,
 					   data = field
@@ -193,14 +193,13 @@ $("select").each(function(index,dom){
 				    	url = url.replace('add','edit');
 				    	data = tempData;
 				    }else{//没有重新编辑 --- 下一步
-				    	console.log("下一步")
 				    	call.tabChange('customer',index);
 				    	return
 				    }
 			    }
-				initformdata[action] = field;
-			    console.log(tempData);
-			    return
+			  //  initformdata[action] = field;
+			 //   console.log(tempData);
+			 //   return
 			     //新增
 			    var load = layer.load(1);
 					  var xhr =$.ajax({
@@ -234,33 +233,47 @@ $("select").each(function(index,dom){
 				          }
 					  })
 			},
+			pack_debt : function(fieldElem){
+				var c_index = 0,l_index = 0, o_index = 0 ,field = {},debt = {};
+				layui.each(fieldElem,function(key,item){
+								switch (item.name) {
+								case "creditcard_name[]":
+									debt[item.name] = debt[item];
+										break;
+								case "lingyong_name[]":
+									break;
+								case "other_name[]":
+									break;
+								default:
+									debt[item.name] = debt[item];
+									break;
+								}
+					
+				})
+			},
 			isEdit : function(oldData,newData){
-				    	var result= {},editData= {},editArray = [],length = 0;
+				    	var editData= {},length = 0;
+				    	if(!oldData) return newData;
 				    	layui.each(newData,function(key,item){//遍历提交对象
-				    		 if(item.constructor === Array){//遍历提交对象中数组对象
-				    			 for(var i=0;i<item.length;i++){
-				    				  var temp = call.isEdit(oldData[key][i],item[i])
-				    				  console[isEdit['length']];
-					    		      if(temp) editArray.push(temp);
-				    				}
-				    			 if(editArray.length){ 
-				    				 editData[key] = editArray;
+				    		if(item.constructor === Object){//遍历提交对象中的对象
+				    			var temp = call.isEdit(oldData[key],item);
+				    			 if(temp) {
+				    				 editData[key] = temp;
 				    				 length++;
 				    			 }
-				    		      return;
+				    		      return
 				    		 }
 				    		var isId = key.substr(key.length-2)
 				    		var isIdArr =  key.substr(key.length-4,2)
 				    		if( isIdArr == 'id'){
 					        	editData[key] = newData[key];
-					        	length++;
 					        	return 
 					        }
 				    		if( isId == 'id'){
 					        	editData[key] = newData[key];
 					        	return 
 					        }
-			    	        if (newData[key] != oldData[key])  
+			    	        if ( newData[key] != oldData[key])  
 			    	        {  
 			    	        	editData[key] = newData[key];
 			    	        	length++;
@@ -272,7 +285,7 @@ $("select").each(function(index,dom){
   };
   //测试用代码
   $(document).on('click','.layui-tab-title li ',call.tabClick)
-  var initformdata = {'customer_info': null,'customer_info_contact':null,'customer_info_company':null}
+  var initformdata = {'customer_info': null,'customer_info_contact':null,'customer_info_company':null,'customer_info_debt':null}
   var a = {"contact_content":"1","Object":[{"customer[]_id":"1","relationship[]":"1","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"213"},{"relationship[]":"123","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"123"},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""}]};
    //提交用户信息
   var b = {"contact_content":"1","Object":[{"customer[]_id":"1","relationship[]":"1","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"213"},{"relationship[]":"123","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"123"},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""}]};
@@ -290,6 +303,7 @@ $("select").each(function(index,dom){
 	  })
   });
   //提交用户
+  console.log(dom=  $('#customer_contact').find('.col-md-6').eq(1));
   //提交联系人
   $('#customer_contact_commit').click(function(){
 	  call.submit({
@@ -299,13 +313,14 @@ $("select").each(function(index,dom){
 		  initdata: initformdata['customer_info_contact'],
 		  tab_index : '3',
 		  yes:function(result){
-				 var dom=  $('#customer_contact').find('input[name^="contact_id"]'),
+				 var dom=  $('#customer_contact').find('.col-md-6'),
 				 result = JSON.parse(result) ;
-				 if(result['contact_other_id']){
-					 $('#contact_other_id').val(result['contact_other_id'])
-				 }
-				 layui.each(result['contact_id'],function(key,id){
-					 if(id)  dom.eq(key).val(id)
+				 layui.each(result,function(key,id){
+					 if(key == 'contact_other_id'){ 
+						 $(dom).eq(6).append("<input type='hidden' name='contact_other_id' value="+ id+">")
+						 }else{ 
+					    $(dom).eq(key).append("<input type='hidden' name='contact_id[]' value="+ id+">")
+						 }
 				 })
 		  }
 	  })
@@ -332,9 +347,17 @@ $("select").each(function(index,dom){
 		  url:'/customer_add',
 		  action:'customer_info_debt',
 		  initdata: initformdata['customer_info_debt'],
-		  tab_index : '4',
+		  tab_index : '5',
 		  yes:function(result,field){
 				  $('#customer_company_commit').append("<input type='hidden' name='customer_company_id' value="+ result +">")
+				  var dom=  $('#customer_debt').find('input[name^="debt_id"]'),
+					 result = JSON.parse(result) ;
+					 if(result['contact_other_id']){
+						 $('#contact_other_id').val(result['contact_other_id'])
+					 }
+					 layui.each(result['contact_id'],function(key,id){
+						 if(id)  dom.eq(key).val(id)
+					 })
 		  }
 	  })
   })
@@ -401,7 +424,7 @@ $("select").each(function(index,dom){
 	  $(this).parent().parent().parent().after(html)
   });
   $("#other_add").click(function(){
-	  var html = '<div class="col-md-3"><div class="layui-form-item" >   		<label class="layui-form-label">其他贷款</label>   		<div class="layui-input-block">   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)" class="layui-btn">增加</button></div></div></div>';
+	  var html = '<div class="col-md-3" id="other"><div class="layui-form-item" >   		<label class="layui-form-label">其他贷款</label>   		<div class="layui-input-block">   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)" class="layui-btn">增加</button></div></div></div>';
 	  $(this).parent().parent().parent().after(html)
   });
 

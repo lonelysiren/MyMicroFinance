@@ -38,15 +38,16 @@ public class CustomerDao extends BaseDao {
 		// JSONObject addCustomerContact = customerDao.addCustomerContact(data, "10");
 		// logger.info(addCustomerContact);
 		JSONObject result = new JSONObject();
-		for (int i = 0; i <10; i++) {
-			int j = 0;
-			if(i<5) {
+		result.put("contact_id[]", "252");
+		if (result.getInt("contact_id[]") >= 0) {// 是否已经创建联系人
+			result.remove("contact_id[]");
+			if (customerDao.isUserful(result)) {
+				System.out.println("vaild");
 			}else {
-				j = i;
+				System.out.println("111");
 			}
-			result.accumulate("id", j);
+				
 		}
-		System.out.println(result);
 	}
 
 	public String CheckId(JSONObject data, int company_id) {
@@ -85,89 +86,50 @@ public class CustomerDao extends BaseDao {
 		return Customer_id;
 	}
 
-	public int editCustomer(JSONObject data) {
-		return 0;
-	}
-
-	public JSONObject addCustomerContact(JSONObject data, String customer_id) throws SQLException {
-		String content = data.getString("contact_content");
-		JSONObject result = new JSONObject();
-		JSONArray jsonArray = data.getJSONArray("Object");
-		sqlLoop: for (Object object : jsonArray) {
-			JSONObject parameters = (JSONObject) object;
-			Iterator<?> iterator = parameters.keys();
-			while (iterator.hasNext()) {
-				String key = (String) iterator.next();
-				String value = parameters.getString(key);
-				if (value.trim().isEmpty()) {
-					result.accumulate("contact_id", 0);
-					continue sqlLoop;
-				}
-			}
-			parameters.put("customer_id", customer_id);
-			int contact_id = super.addSql("customer_info_contact", parameters);
-			result.accumulate("contact_id", contact_id);
-		}
-		if (true != content.trim().isEmpty()) {
-			sql = "insert into customer_info_contact_other (contact_content,customer_id) values(?,?)";
-			params.add(content);
-			params.add(customer_id);
-			int contact_other_id = jdbcUtil.addByPreparedStatement(sql, params);
-			result.put("contact_other_id", contact_other_id);
-		}
+	public String editCustomer(String table_name,JSONObject data, String customer_id) throws SQLException {
+		data.remove("harea");
+		data.remove("hproper");
+		data.remove("hcity");
+		String result = super.editSql(table_name, data, "customer_id");
 		return result;
 	}
 
-	public Boolean isUserful(JSONObject parameters) {
-		Iterator<?> iterator = parameters.keys();
-		while (iterator.hasNext()) {
-			String key = (String) iterator.next();
-			String value = parameters.getString(key);
-			if (value.trim().isEmpty()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public JSONObject editCustoemrContact(JSONObject data, String customer_id) throws SQLException {
+	public JSONObject editCustomerContact(JSONObject data, String customer_id) throws SQLException {
 		JSONObject result = new JSONObject();
 		logger.info(data.toString());
-		if (data.has("Object")) { // 是否有联系人
-			JSONArray jsonArray = data.getJSONArray("Object");
-			for (Object object : jsonArray) {
-				JSONObject parameters = (JSONObject) object;
-				int contact_id = 0;
-				if (parameters.getInt("contact_id[]") == 0) {// 是否已经创建联系人
-					parameters.remove("contact_id[]");
-					if (isUserful(parameters)) {
-						parameters.put("customer_id", customer_id);
-						contact_id = super.addSql("customer_info_contact", parameters);
-					}
-				} else {
-					if (parameters.size() > 1) {
-						super.editSql("customer_info_contact", parameters, "contact_id");
-					}
+			if (data.has("contact_content")) {
+				int contact_other_id = 0;
+				String contact_content = data.getString("contact_content");
+				data.remove("contact_content");
+				params.add(contact_content);
+				if (data.has("contact_other_id") ) {
+					String id = data.getString("contact_other_id");
+					data.remove("contact_other_id");
+					params.add(id);
+					sql = "UPDATE customer_info_contact_other set contact_content = ? where contact_other_id = ?";
+					jdbcUtil.updateByPreparedStatement(sql, params);
+				} else if (false == contact_content.trim().isEmpty()) {
+					sql = "INSERT INTO customer_info_contact_other (contact_content,customer_id) values(?,?)";
+					params.add(customer_id);
+					contact_other_id = jdbcUtil.addByPreparedStatement(sql, params);
+					result.put("contact_other_id", contact_other_id);
 				}
-				result.accumulate("contact_id", contact_id);
+				params.clear();
+				
 			}
-		}
-		if (data.has("contact_content")) {
-			int contact_other_id = 0;
-			String contact_content = data.getString("contact_content");
-			params.add(contact_content);
-			if (data.getInt("contact_other_id") != 0) {
-				String id = data.getString("contact_other_id");
-				params.add(id);
-				sql = "UPDATE customer_info_contact_other set contact_content = ? where contact_other_id = ?";
-				jdbcUtil.updateByPreparedStatement(sql, params);
-			} else if (false == contact_content.trim().isEmpty()) {
-				sql = "INSERT INTO customer_inf_contact_other (contact_content,customer_id) values(?,?)";
-				params.add(customer_id);
-				contact_other_id = jdbcUtil.addByPreparedStatement(sql, params);
+		Iterator<?> keys = data.keys();
+		while(keys.hasNext()) {
+			String key = (String) keys.next();
+			JSONObject contact = data.getJSONObject(key);
+			if(contact.has("contact_id[]")){
+				super.editSql("customer_info_contact", contact, "contact_id");
+			}else {
+				if (isUserful(contact)) {
+					contact.put("customer_id", customer_id);
+					int index = super.addSql("customer_info_contact", contact);
+					result.put(key, index);
+				}
 			}
-			params.clear();
-			result.put("contact_other_id", contact_other_id);
 		}
 		logger.info(result);
 		return result;
@@ -180,4 +142,16 @@ public class CustomerDao extends BaseDao {
 		return CustomerCpmpany_id;
 	}
 
+	public Boolean isUserful(JSONObject parameters) {
+		if(parameters.isEmpty()) return false;
+		Iterator<?> iterator = parameters.keys();
+		while (iterator.hasNext()) {
+			String key = (String) iterator.next();
+			String value = parameters.getString(key);
+			if (value.trim().isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -61,11 +61,11 @@ public class CustomerEditServlet extends HttpServlet {
 			switch (action) {
 				case "customer_info":
 					parameters.put("customer_id", customer_id);
-					result = customerDao.editSql(action, parameters, "customer_id");
+					result = customerDao.editCustomer(action, parameters, "customer_id");
 					response.getWriter().write(result);
 					break;
 				case "customer_info_contact":
-					 JSONObject editCustoemrContact = customerDao.editCustoemrContact(parameters,customer_id);
+					 JSONObject editCustoemrContact = customerDao.editCustomerContact(parameters,customer_id);
 					 response.getWriter().print(editCustoemrContact);
 					break;
 				case "customer_info_company":
