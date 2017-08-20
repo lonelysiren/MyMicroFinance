@@ -159,28 +159,44 @@ $("select").each(function(index,dom){
 			    });
 			    if(stop) return false;
 			   if(options.before) options.before()
-			 var obj ={},index = 0,objs = [] //
+			 var obj ={},index = 0,objs = [], c_index= 0, l_index=0, o_index=0 ,action=options.action//
 			   layui.each(fieldElem, function(_, item){
 			      if(!item.name) return;
 			      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
 			      if(item.name.indexOf('[]') != -1){
-			    	  if(obj.hasOwnProperty(item.name)  ){
-			    		  field[index] = obj
-			    		  index++
-			    		  obj = {}
+			    	  if(obj.hasOwnProperty(item.name)  && action !='customer_info_debt' ){
+								field[index] = obj
+					    		  index++
+					    		  obj = {}
 			    	  }
 				    	  obj[item.name] = item.value
+				    	  switch (item.name) {
+							case "creditcard_used[]":
+								field["credit_"+c_index] = obj
+								obj= {}
+								c_index++
+									break;
+							case "lingyong_amount[]":
+								field["lingyong_"+l_index] = obj
+								l_index++
+								obj= {}
+								break;
+							case "other_amount[]":
+								field["other_"+o_index] = obj
+								o_index++
+								obj= {}
+								break;
+							default:
+							break;
+			    			}
 			    		  return
 			      }
 			      if(!($.isEmptyObject(obj)))  field[index] = obj
 			      field[item.name] = item.value;
 			    });
-				  
-				  console.log(field);
 					    var tempData,
 					   url=options.url,
-					   data = field
-					   ,action=options.action,
+					   data = field ,
 					   oldData=initformdata[action],
 					   index =options.tab_index;
 			    if(action=='check_id' || action=='customer_info') {
@@ -197,9 +213,9 @@ $("select").each(function(index,dom){
 				    	return
 				    }
 			    }
-			  //  initformdata[action] = field;
-			 //   console.log(tempData);
-			 //   return
+			    initformdata[action] = field;
+			    console.log(tempData);
+			    return
 			     //新增
 			    var load = layer.load(1);
 					  var xhr =$.ajax({
@@ -232,24 +248,6 @@ $("select").each(function(index,dom){
 				                    })}
 				          }
 					  })
-			},
-			pack_debt : function(fieldElem){
-				var c_index = 0,l_index = 0, o_index = 0 ,field = {},debt = {};
-				layui.each(fieldElem,function(key,item){
-								switch (item.name) {
-								case "creditcard_name[]":
-									debt[item.name] = debt[item];
-										break;
-								case "lingyong_name[]":
-									break;
-								case "other_name[]":
-									break;
-								default:
-									debt[item.name] = debt[item];
-									break;
-								}
-					
-				})
 			},
 			isEdit : function(oldData,newData){
 				    	var editData= {},length = 0;
@@ -339,9 +337,14 @@ $("select").each(function(index,dom){
 		  }
 	  })
   })
+
   //提交用户公司
   //提交用户负债
   $('#contact_debt_commit').click(function(){
+	  console.log(dom=  $('#customer_debt').find("[name='credit']"));
+	  console.log(dom=  $('#customer_debt').find("[name='lingyong']"));
+	  console.log(dom=  $('#customer_debt').find("[name='other']"));
+	  return
 	  call.submit({
 		    dom:$(this),
 		  url:'/customer_add',
@@ -349,15 +352,12 @@ $("select").each(function(index,dom){
 		  initdata: initformdata['customer_info_debt'],
 		  tab_index : '5',
 		  yes:function(result,field){
-				  $('#customer_company_commit').append("<input type='hidden' name='customer_company_id' value="+ result +">")
-				  var dom=  $('#customer_debt').find('input[name^="debt_id"]'),
-					 result = JSON.parse(result) ;
-					 if(result['contact_other_id']){
-						 $('#contact_other_id').val(result['contact_other_id'])
-					 }
-					 layui.each(result['contact_id'],function(key,id){
-						 if(id)  dom.eq(key).val(id)
-					 })
+			  layui.each(result,function(key,item){
+				  var dom = $('#customer_debt').find("[name='"+key+"']");
+				  layui.each(item,function(index,id){
+					  if(id) dom.eq(index).before("<input type='hidden' name='credit_id' value="+ id+">")
+				  })
+			  })
 		  }
 	  })
   })
@@ -416,16 +416,16 @@ $("select").each(function(index,dom){
 
     //身份证验证
   $("#credit_add").click(function(){
-	  var html = '<div id="credit" class="row" ><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name[]" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button"  onclick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
-	 $(this).parent().parent().parent().after(html)
+	  var html = '<div name="credit" class="row" ><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name[]" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button"  onclick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
+	 $('#lingyong').before(html)
   });
   $("#lingyong_add").click(function(){
-	  var html = '<div class="row" id="lingyong"><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">零用贷</label><div class="layui-input-block"><input type="text" name="lingyong_name[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">金额</label><div class="layui-input-block"><input type="text" name="lingyong_amount[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button" onClick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
-	  $(this).parent().parent().parent().after(html)
+	  var html = '<div class="row" name="lingyong"><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">零用贷</label><div class="layui-input-block"><input type="text" name="lingyong_name[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">金额</label><div class="layui-input-block"><input type="text" name="lingyong_amount[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button" onClick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
+	  $('#other').before(html)
   });
   $("#other_add").click(function(){
-	  var html = '<div class="col-md-3" id="other"><div class="layui-form-item" >   		<label class="layui-form-label">其他贷款</label>   		<div class="layui-input-block">   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)" class="layui-btn">增加</button></div></div></div>';
-	  $(this).parent().parent().parent().after(html)
+	  var html = '<div class="row" name="other"><div class="col-md-3" ><div class="layui-form-item" >   		<label class="layui-form-label">其他贷款</label>   		<div class="layui-input-block">   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
+	  $('#final').before(html)
   });
 
 });
