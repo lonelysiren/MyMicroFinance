@@ -8,19 +8,18 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.mysql.jdbc.Statement;
 
-import net.sf.json.JSONObject;
-
 public class JdbcUtil {
-
+	static Logger logger = LogManager.getLogger(JdbcUtil.class.getName());
 	private Connection connection;
 	private PreparedStatement pstmt;
 	private ResultSet resultSet;
@@ -68,6 +67,7 @@ private static DataSource dataSource = null;
 				pstmt.setObject(index++, params.get(i));
 			}
 		}
+		logger.info(pstmt.toString());
 		result = pstmt.executeUpdate();
 		flag = result > 0 ? true : false;
 		return flag;

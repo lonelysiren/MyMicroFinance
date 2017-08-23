@@ -2,8 +2,6 @@ package com.mf.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,9 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mf.dao.CustomerDao;
-import com.mf.dao.UserDao;
-
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -26,60 +21,78 @@ import net.sf.json.JSONObject;
 @WebServlet("/CustomerEditServlet")
 public class CustomerEditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	 static Logger logger = LogManager.getLogger(CustomerEditServlet.class.getName());
+	static Logger logger = LogManager.getLogger(CustomerEditServlet.class.getName());
 	private Boolean editSql;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CustomerEditServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public CustomerEditServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String customer_id = request.getParameter("customer_id");
-		HttpSession session=request.getSession();
+		HttpSession session = request.getSession();
 		CustomerDao customerDao = new CustomerDao();
-		String parameter = request.getParameter("data");;
-		JSONObject parameters = JSONObject.fromObject(parameter);
+		String parameter = request.getParameter("data");
+		;
+		JSONObject data = JSONObject.fromObject(parameter);
+		JSONObject jresult = new JSONObject();
 		String result = null;
-		logger.info(action);
 		try {
+			logger.info(data);
 			switch (action) {
-				case "customer_info":
-					parameters.put("customer_id", customer_id);
-					result = customerDao.editCustomer(action, parameters, "customer_id");
-					response.getWriter().write(result);
-					break;
-				case "customer_info_contact":
-					 JSONObject editCustoemrContact = customerDao.editCustomerContact(parameters,customer_id);
-					 response.getWriter().print(editCustoemrContact);
-					break;
-				case "customer_info_company":
-						result = customerDao.editSql(action, parameters, "customer_company_id");
-						response.getWriter().write(result);
-					break;
-				default:
-					break;
+			case "customer_info":
+				data.put("customer_id", customer_id);
+				result = customerDao.editCustomer(action, data, "customer_id");
+				break;
+			case "customer_info_contact":
+				 jresult = customerDao.editCustomerContact(data, customer_id);
+				break;
+			case "customer_info_company":
+				result = customerDao.editSql(action, data, "customer_company_id");
+				break;
+			case "customer_info_debt":
+				 jresult =	customerDao.editCustomerDbet(data, customer_id);
+				break;
+			default:
+				break;
 			}
-		}catch (SQLException e) {
+			if(jresult.isEmpty() != true) {
+				response.getWriter().print(jresult);
+				return;
+			}
+			if(result.isEmpty() != true) {
+				response.getWriter().write(result);
+				return;
+			}
+			logger.info(result);
+		} catch (SQLException e) {
 			logger.info(parameter);
 			e.printStackTrace();
+		} finally {
+			customerDao.close();
 		}
-		
+
 	}
 
 }

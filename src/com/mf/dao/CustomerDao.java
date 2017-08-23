@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,25 +32,25 @@ public class CustomerDao extends BaseDao {
 		CustomerDao customerDao = new CustomerDao();
 		String customerData = "{\"customer_name\":\"吴一凡\",\"sex\":\"0\",\"age\":\"23\",\"marriage_status\":\"2\",\"idcard_type\":\"1\",\"idcard_number\":\"431003199408136018\",\"child_age\":\"12\",\"census_register\":\"安徽省-安庆市-大观区\",\"harea\":\"大观区\",\"hproper\":\"安庆市\",\"hcity\":\"安徽省\",\"census_register_detail\":\"安徽省-安庆市-大\",\"house_number\":\"123\",\"house_status\":\"1\",\"house_rent\":\"123\",\"house_holder\":\"123\",\"current_residence\":\"安徽省-安庆市-大观区-安徽省-安庆市-大\",\"native_type\":\"0\",\"current_residence_phone\":\"123\",\"mobile_phone\":\"13762567348\",\"mobile_phone_age\":\"\",\"mobile_phone_real_name\":\"0\",\"education\":\"2\",\"graduate_school\":\"\",\"account_number\":\"123\",\"deposit_bank\":\"123\",\"remark\":\"\",\"sales_account_manager\":\"1\"}";
 		String contacData = "{\"contact_content\":\"\",\"Object\":[{\"relationship[]\":\"1\",\"contact_name[]\":\"123\",\"contact_mobile_phone[]\":\"123\",\"contact_company[]\":\"213\"},{\"relationship[]\":\"123\",\"contact_name[]\":\"123\",\"contact_mobile_phone[]\":\"123\",\"contact_company[]\":\"123\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"}]}";
-		JSONObject data = JSONObject.fromObject(contacData);
-		JSONArray object = data.getJSONArray("Object");
+		String debtData = "{\"creditcard\":{\"0\":{\"creditcard_name[]\":\"1\",\"creditcard_limit[]\":\"1\",\"creditcard_used[]\":\"1\"}},\"lingyong\":{\"0\":{\"lingyong_name[]\":\"2\",\"lingyong_amount[]\":\"2\"}},\"other\":{\"0\":{\"other_name[]\":\"3\",\"other_amount[]\":\"3\"}}}";
+		String eData = "{\"creditcard\":{\"0\":{\"creditcard_id[]\":\"15\",\"creditcard_name[]\":\"23\",\"creditcard_limit[]\":\"23\",\"creditcard_used[]\":\"23\"}}}";
+		
+		
+		JSONObject data = JSONObject.fromObject(customerData);
+		JSONObject result = new JSONObject();
+		int id = 0;
 		// logger.info(object.getJSONObject(0));
 		// logger.info(data);
 		// JSONObject addCustomerContact = customerDao.addCustomerContact(data, "10");
-		// logger.info(addCustomerContact);
-		JSONObject result = new JSONObject();
-		result.put("contact_id[]", "252");
-		if (result.getInt("contact_id[]") >= 0) {// 是否已经创建联系人
-			result.remove("contact_id[]");
-			if (customerDao.isUserful(result)) {
-				System.out.println("vaild");
-			}else {
-				System.out.println("111");
-			}
-				
-		}
+		//JSONObject result = customerDao.editCustomerDbet(data, "10");
+		id = customerDao.addCustomer(data);
+		 logger.info(id);
+		
 	}
 
+	public void close() {
+		jdbcUtil.close();
+	}
 	public String CheckId(JSONObject data, int company_id) {
 		sql = "select sales_account_manager_id from manager_relation where idcard_number = ? and company_id = ?";
 		params.add(data.getString("idcard"));
@@ -72,7 +73,7 @@ public class CustomerDao extends BaseDao {
 			result = "3";
 			e.printStackTrace();
 		} finally {
-			jdbcUtil.close();
+		
 		}
 		return result;
 	}
@@ -96,7 +97,6 @@ public class CustomerDao extends BaseDao {
 
 	public JSONObject editCustomerContact(JSONObject data, String customer_id) throws SQLException {
 		JSONObject result = new JSONObject();
-		logger.info(data.toString());
 			if (data.has("contact_content")) {
 				int contact_other_id = 0;
 				String contact_content = data.getString("contact_content");
@@ -131,7 +131,6 @@ public class CustomerDao extends BaseDao {
 				}
 			}
 		}
-		logger.info(result);
 		return result;
 	}
 
@@ -142,6 +141,33 @@ public class CustomerDao extends BaseDao {
 		return CustomerCpmpany_id;
 	}
 
+	public JSONObject editCustomerDbet(JSONObject data, String customer_id) throws SQLException {
+		JSONObject result = new JSONObject();
+		logger.info(data.toString());
+		String table_name = "customer_info_debt_";
+		Iterator<?> keys = data.keys();
+		while (keys.hasNext()) {
+			String key = (String) keys.next();
+			JSONObject debts = data.getJSONObject(key);
+			  Iterator<?> index_set = debts.keys();
+			  while(index_set.hasNext()) {
+				  String index = (String) index_set.next();
+				  JSONObject debt = debts.getJSONObject(index);
+				  if(debt.has( key+"_id[]")) {
+					  super.editSql(table_name+key, debt, key+"_id");
+				  }else {
+					  JSONObject out_index_set = new JSONObject();
+					  debt.put("customer_id", customer_id);
+					  int debt_id = super.addSql(table_name+key, debt);
+					  out_index_set.put(index, debt_id);
+					  result.accumulate(key,out_index_set );
+				  }
+			  }
+			
+		}
+		return result;
+	}
+	
 	public Boolean isUserful(JSONObject parameters) {
 		if(parameters.isEmpty()) return false;
 		Iterator<?> iterator = parameters.keys();
@@ -154,4 +180,6 @@ public class CustomerDao extends BaseDao {
 		}
 		return true;
 	}
+	
+	
 }

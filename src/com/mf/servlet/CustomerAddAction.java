@@ -26,60 +26,71 @@ import net.sf.json.JSONObject;
 @WebServlet("/CustomerAddAction")
 public class CustomerAddAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	 static Logger logger = LogManager.getLogger(CustomerEditServlet.class.getName());
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CustomerAddAction() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	static Logger logger = LogManager.getLogger(CustomerEditServlet.class.getName());
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public CustomerAddAction() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String action = request.getParameter("action");
 		String customer_id = request.getParameter("customer_id");
-		HttpSession session=request.getSession();
+		HttpSession session = request.getSession();
 		CustomerDao customerDao = new CustomerDao();
-		String parameter = request.getParameter("data");;
+		String parameter = request.getParameter("data");
 		JSONObject data = JSONObject.fromObject(parameter);
-		int id;
-		Map<Object, Object> id_map;
 		try {
-				switch (action) {
-					case "check_id":
-						int company = (int) session.getAttribute("company_id");
-						String result = customerDao.CheckId(data,company);
-						response.getWriter().write(result);
-						break;
-					case "customer_info":
-						id = customerDao.addCustomer(data);
-						response.getWriter().print(id);
-						break;
-					case "customer_info_contact":
-						JSONObject info = customerDao.editCustomerContact(data,customer_id);
-						response.getWriter().print(info);
-						break;
-					case "customer_info_company":
-						int customer_company_id = customerDao.addCustomerCompany(data,customer_id);
-						response.getWriter().print(customer_company_id);
-						break;
-					default:
-						break;
-				}
-		}catch(SQLException e){
+			logger.info(data);
+			switch (action) {
+			case "check_id":
+				int company = (int) session.getAttribute("company_id");
+				String result = customerDao.CheckId(data, company);
+				response.getWriter().write(result);
+				break;
+			case "customer_info":
+				int id = customerDao.addCustomer(data);
+				logger.info(id);
+				response.getWriter().print(id);
+				break;
+			case "customer_info_contact":
+				JSONObject contact = customerDao.editCustomerContact(data, customer_id);
+				response.getWriter().print(contact);
+				break;
+			case "customer_info_company":
+				int customer_company_id = customerDao.addCustomerCompany(data, customer_id);
+				response.getWriter().write(customer_company_id);
+				break;
+			case "customer_info_debt":
+				JSONObject debt = customerDao.editCustomerDbet(data, customer_id);
+				response.getWriter().print(debt);
+				break;
+			default:
+				break;
+			}
+		} catch (SQLException e) {
 			logger.info(parameter);
 			e.printStackTrace();
+		} finally {
+			customerDao.close();
 		}
 	}
 

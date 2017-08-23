@@ -159,36 +159,48 @@ $("select").each(function(index,dom){
 			    });
 			    if(stop) return false;
 			   if(options.before) options.before()
-			 var obj ={},index = 0,objs = [], c_index= 0, l_index=0, o_index=0 ,action=options.action//
+			 var obj ={},index = 0,objs = {}, c_index= 0, l_index=0, o_index=0 ,action=options.action//
 			   layui.each(fieldElem, function(_, item){
 			      if(!item.name) return;
 			      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
 			      if(item.name.indexOf('[]') != -1){
-			    	  if(obj.hasOwnProperty(item.name)  && action !='customer_info_debt' ){
-								field[index] = obj
-					    		  index++
-					    		  obj = {}
-			    	  }
-				    	  obj[item.name] = item.value
+			    	  if(action == 'customer_info_debt'){
+			    		  obj[item.name] = item.value
+			    		  var type;
 				    	  switch (item.name) {
 							case "creditcard_used[]":
-								field["credit_"+c_index] = obj
-								obj= {}
+								type = 'creditcard';
+								index = c_index;
 								c_index++
 									break;
 							case "lingyong_amount[]":
-								field["lingyong_"+l_index] = obj
+								type = 'lingyong';
+								index = l_index;
 								l_index++
-								obj= {}
 								break;
 							case "other_amount[]":
-								field["other_"+o_index] = obj
+								type = 'other';
+								index = o_index;
 								o_index++
-								obj= {}
 								break;
 							default:
 							break;
-			    			}
+		    			}
+				    	  if(!type) return
+				    	  if(!field[type]){
+				    		  if(objs) objs = {};
+				    		  field[type] = objs;
+				    	  }
+				    	  field[type][index] = obj;
+				    	  obj = {};
+				    	  return
+			    	  }
+			    	  if(obj.hasOwnProperty(item.name)   ){
+								field[index] = obj
+								index++
+					    		  obj = {}
+			    	  } 
+				    	  obj[item.name] = item.value
 			    		  return
 			      }
 			      if(!($.isEmptyObject(obj)))  field[index] = obj
@@ -202,27 +214,26 @@ $("select").each(function(index,dom){
 			    if(action=='check_id' || action=='customer_info') {
 			    	field['sales_account_manager'] = $("#sales_account_manager").val();
 			    	}
-
-			    if(null != oldData){
-			    	tempData = call.isEdit(oldData,field)//第二次点击提交 进行重新编辑判断
-				    if(tempData){//有重新编辑---改变请求地址
-				    	url = url.replace('add','edit');
-				    	data = tempData;
-				    }else{//没有重新编辑 --- 下一步
-				    	call.tabChange('customer',index);
-				    	return
+                var isCheck = options.isCheck == false ? false : true;
+                if(isCheck){
+				    if(null != oldData){
+				    	tempData = call.isEdit(oldData,field)//第二次点击提交 进行重新编辑判断
+					    if(tempData){//有重新编辑---改变请求地址
+					    	url = url.replace('add','edit');
+					    	data = tempData;
+					    }else{//没有重新编辑 --- 下一步
+					    	call.tabChange('customer',index);
+					    	return
+					    }
 				    }
-			    }
-			    initformdata[action] = field;
-			    console.log(tempData);
-			    return
+                }
 			     //新增
 			    var load = layer.load(1);
 					  var xhr =$.ajax({
 						  type:'post',
 						  url:url,
 						  timeout: 5000, 
-						  data:{'action' : action,'data' :JSON.stringify(data),'customer_id':'10'},//$("#customer_id").val()},
+						  data:{'action' : action,'data' :JSON.stringify(data),'customer_id':$("#customer_id").val()},//'10'},//
 						  beforeSend:function(xhr){
 						  },
 						  success:function(result){
@@ -249,6 +260,7 @@ $("select").each(function(index,dom){
 				          }
 					  })
 			},
+		
 			isEdit : function(oldData,newData){
 				    	var editData= {},length = 0;
 				    	if(!oldData) return newData;
@@ -283,11 +295,11 @@ $("select").each(function(index,dom){
   };
   //测试用代码
   $(document).on('click','.layui-tab-title li ',call.tabClick)
+  //
   var initformdata = {'customer_info': null,'customer_info_contact':null,'customer_info_company':null,'customer_info_debt':null}
   var a = {"contact_content":"1","Object":[{"customer[]_id":"1","relationship[]":"1","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"213"},{"relationship[]":"123","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"123"},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""}]};
    //提交用户信息
   var b = {"contact_content":"1","Object":[{"customer[]_id":"1","relationship[]":"1","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"213"},{"relationship[]":"123","contact_name[]":"123","contact_mobile_phone[]":"123","contact_company[]":"123"},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""},{"relationship[]":"","contact_name[]":"","contact_mobile_phone[]":"","contact_company[]":""}]};
- // console.log(call.isEdit(a,b))
   $('#cusotmer_info_commit').click(function(){
 	  call.submit({
 		  dom:$(this),
@@ -296,12 +308,11 @@ $("select").each(function(index,dom){
 		  initdata: initformdata['customer_info'],
 		  tab_index : '2',
 		  yes:function(result,field){
-					$('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer[]_id' value="+ result +">")
+					$('#sales_account_manager').append("<input type='hidden' name='customer_id' id='customer_id' value="+ result +">")
 			  }
 	  })
   });
   //提交用户
-  console.log(dom=  $('#customer_contact').find('.col-md-6').eq(1));
   //提交联系人
   $('#customer_contact_commit').click(function(){
 	  call.submit({
@@ -337,14 +348,9 @@ $("select").each(function(index,dom){
 		  }
 	  })
   })
-
   //提交用户公司
   //提交用户负债
   $('#contact_debt_commit').click(function(){
-	  console.log(dom=  $('#customer_debt').find("[name='credit']"));
-	  console.log(dom=  $('#customer_debt').find("[name='lingyong']"));
-	  console.log(dom=  $('#customer_debt').find("[name='other']"));
-	  return
 	  call.submit({
 		    dom:$(this),
 		  url:'/customer_add',
@@ -352,10 +358,11 @@ $("select").each(function(index,dom){
 		  initdata: initformdata['customer_info_debt'],
 		  tab_index : '5',
 		  yes:function(result,field){
+			  result = JSON.parse(result) ;
 			  layui.each(result,function(key,item){
 				  var dom = $('#customer_debt').find("[name='"+key+"']");
 				  layui.each(item,function(index,id){
-					  if(id) dom.eq(index).before("<input type='hidden' name='credit_id' value="+ id+">")
+					  if(id) dom.eq(index).prepend("<input type='hidden' name='" + key + "_id[]' value="+ id+">")
 				  })
 			  })
 		  }
@@ -368,6 +375,7 @@ $("select").each(function(index,dom){
 		dom:$(this),
 		url:'/customer_add',
 		action:'check_id',
+		isCheck:false,
 		before:function(){
 			$("#idcard").val(call.changeFivteenToEighteen($("#idcard").val()));
 		},
@@ -416,15 +424,15 @@ $("select").each(function(index,dom){
 
     //身份证验证
   $("#credit_add").click(function(){
-	  var html = '<div name="credit" class="row" ><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name[]" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button"  onclick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
+	  var html = '<div name="creditcard" class="row" ><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name[]" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button"  class="layui-btn layui-btn-danger" onclick="remove_input(this)" >删除</button></div></div></div>';
 	 $('#lingyong').before(html)
   });
   $("#lingyong_add").click(function(){
-	  var html = '<div class="row" name="lingyong"><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">零用贷</label><div class="layui-input-block"><input type="text" name="lingyong_name[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">金额</label><div class="layui-input-block"><input type="text" name="lingyong_amount[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button" onClick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
+	  var html = '<div class="row" name="lingyong"><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">零用贷</label><div class="layui-input-block"><input type="text" name="lingyong_name[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">金额</label><div class="layui-input-block"><input type="text" name="lingyong_amount[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button" onClick="remove_input(this)"  class="layui-btn layui-btn-danger" >删除</button></div></div></div>';
 	  $('#other').before(html)
   });
   $("#other_add").click(function(){
-	  var html = '<div class="row" name="other"><div class="col-md-3" ><div class="layui-form-item" >   		<label class="layui-form-label">其他贷款</label>   		<div class="layui-input-block">   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)" class="layui-btn">删除</button></div></div></div>';
+	  var html = '<div class="row" name="other"><div class="col-md-3" ><div class="layui-form-item" >   		<label class="layui-form-label">其他贷款</label>   		<div class="layui-input-block">   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="col-md-3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)"  class="layui-btn layui-btn-danger" >删除</button></div></div></div>';
 	  $('#final').before(html)
   });
 

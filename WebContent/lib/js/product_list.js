@@ -90,8 +90,6 @@
 							});
 						},
 						success: function(layero, index) {
-							//弹出窗口成功后渲染表单
-							//console.log(layero, index);
 								var form = layui.form();
 								if(id != '0'){
 									$.ajax({

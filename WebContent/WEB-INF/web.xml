@@ -97,13 +97,21 @@
     <servlet-name>CustomerEditServlet</servlet-name>
     <url-pattern>/customer_edit</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>CustomerAddAction</servlet-name>
     <servlet-class>com.mf.servlet.CustomerAddAction</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>CustomerAddAction</servlet-name>
     <url-pattern>/customer_add</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>ProductAddAction</servlet-name>
+    <servlet-class>com.mf.servlet.ProductAddAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProductAddAction</servlet-name>
+    <url-pattern>/product_add</url-pattern>
   </servlet-mapping>
   <jsp-config>
     <taglib>

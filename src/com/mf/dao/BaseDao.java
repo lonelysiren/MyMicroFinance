@@ -23,6 +23,7 @@ public class BaseDao {
 	private String column_name;
 	private String values;
 	private Iterator<?> iterator;
+
 	public BaseDao() {
 		super();
 		try {
@@ -35,14 +36,15 @@ public class BaseDao {
 
 	/**
 	 * 根据传过来的json对象 生成添加sql语句
+	 * 
 	 * @param table_name
 	 * @param parameters
 	 * @param params
-	 * @return 
-	 * @throws SQLException 
+	 * @return
+	 * @throws SQLException
 	 * 
 	 */
-	public int  addSql(String table_name, JSONObject parameters) throws SQLException {
+	public int addSql(String table_name, JSONObject parameters) throws SQLException {
 		sql = "INSERT INTO " + table_name;
 		column_name = " (";
 		values = " values(";
@@ -50,17 +52,17 @@ public class BaseDao {
 		while (iterator.hasNext()) {
 			String key = (String) iterator.next();
 			String value = parameters.getString(key);
-			if(key.trim().contains("[]")) {
+			if (key.trim().contains("[]")) {
 				key = key.replace("[]", "");
 			}
-			if (value.trim().isEmpty()) {//空值不添加
+			if (value.trim().isEmpty()) {// 空值不添加
 				continue;
 			}
 			if (iterator.hasNext()) {
-			column_name += key+",";	
-			values += "?,";
+				column_name += key + ",";
+				values += "?,";
 			} else {
-				column_name += key +")";
+				column_name += key + ")";
 				values += "?)";
 			}
 			params.add(value);
@@ -71,38 +73,46 @@ public class BaseDao {
 		params.clear();
 		return id;
 	}
-	
-	public String delteSql(String table_name,String requirement, String value ) throws SQLException {
-		
-		sql = "DELETE FROM " + table_name + " WHERE + "+ column_name + "= ? ";
+
+	public String delteSql(String table_name, String requirement, String value) throws SQLException {
+
+		sql = "DELETE FROM " + table_name + " WHERE + " + column_name + "= ? ";
 		params.add(value);
 		boolean result = jdbcUtil.updateByPreparedStatement(sql, params);
-		return  result?"success":"faild";
-		
+		return result ? "success" : "faild";
+
 	}
-	
-	public String editSql(String table_name, JSONObject parameters,String requirement ) throws SQLException {
-		sql = "UPDATE "+table_name +" SET";
-		 column_name = " ";
-		 values =" where "+requirement +" = ? ";
-		 iterator = parameters.keys();
-			while(iterator.hasNext()) {
+
+	public String editSql(String table_name, JSONObject parameters, String requirement) throws SQLException {
+		sql = "UPDATE " + table_name + " SET";
+		column_name = " ";
+		values = " where " + requirement + " = ? ";
+		iterator = parameters.keys();
+		String req_value = null;
+		while (iterator.hasNext()) {
 			String key = (String) iterator.next();
 			String value = parameters.getString(key);
-			if(key.trim().contains("[]")) {
+			if (key.trim().contains("[]")) {
 				key = key.replace("[]", "");
 			}
-			params.add(value);
-			if( false == iterator.hasNext()) {
-				column_name = column_name.substring(0,column_name.length()-1);
+			
+			if (key.equals(requirement) ) {
+				req_value = value;
+			}else {
+				params.add(value);
+				column_name = column_name + key + "=?,";
+			}
+			if (false == iterator.hasNext()) {
+				column_name = column_name.substring(0, column_name.length() - 1);
 				break;
 			}
-			column_name = column_name + key + "=?,";
 		}
+			params.add(req_value);
 		sql = sql + column_name + values;
+		logger.info(sql);
 		logger.info(params.toString());
 		Boolean result = jdbcUtil.updateByPreparedStatement(sql, params);
 		params.clear();
-		 return  result?"success":"faild";
+		return result ? "success" : "faild";
 	}
 }

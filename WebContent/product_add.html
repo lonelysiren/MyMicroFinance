@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta charset="UTF-8">
+ <link rel="stylesheet" href="./lib/plugins/layui2.0/css/layui.css" media="all" />
+<body>
+<div style="margin: 50px;">
+	<form class="layui-form" action="/product_add" method="post">
+	<div class="layui-row">
+	  <div class="layui-col-md9">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left">产品名称：</label>
+			<div class="layui-input-block">
+				<input type="text"  name="name"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class="layui-row">
+	  <div class="layui-col-md3">
+	  <div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;">周期天数 ：</label>
+			<div class="layui-input-inline" style="width:150px"   >
+				<input type="text"  name="cycle"  required lay-verify="required" placeholder="请输入周期天数" autocomplete="off" class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux" style="margin-right: 0px">天</div>
+			</div>
+		</div>
+		<div class="layui-col-md1">
+			<label class="layui-form-label"  style="text-align: left;"   >日息：</label>
+			</div>
+				<div class="layui-col-md2">
+			<div class="layui-form-mid layui-word-aux" style="margin-right: 5px">千分之</div>
+			<div class="layui-input-block" style="margin-left:50px"  >
+				<input type="text"   name="day_rate"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+		</div>
+		</div>
+			<div class="layui-col-md1">
+			<label class="layui-form-label"  style="text-align: left;"   >周息：</label>
+			</div>
+				<div class="layui-col-md2">
+			<div class="layui-form-mid layui-word-aux" style="margin-right: 5px">千分之</div>
+			<div class="layui-input-block" style="margin-left:50px"  >
+				<input type="text"   name="week_rate"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+		</div>
+		</div>
+		<div class="layui-col-md3">
+			<div class="layui-form-mid layui-word-aux" style="margin: 5px">(此处值已包含利息和服务费)</div>
+		</div>
+		<div class="layui-row">
+	  <div class="layui-col-md3">
+	  <div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;">保证金 ：</label>
+			<div class="layui-input-inline" style="width:150px"  >
+				<input type="text"  name="margin_loans"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux" style="margin-right: 0px">期</div>
+			</div>
+		</div>
+		<div class="layui-col-md1">
+			<label class="layui-form-label"  style="text-align: left;"   >管理费：</label>
+			
+			</div>
+				<div class="layui-col-md2">
+			<div class="layui-form-mid layui-word-aux" style="margin-right: 5px">千分之</div>
+			<div class="layui-input-block" style="margin-left:50px"  >
+				<input type="text"   name="management_pay"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+		</div>
+		</div>
+		 <div class="layui-col-md3">
+		<div class="layui-form-item">
+			<label class="layui-form-label"  style="text-align: left"   >其他费用：</label>
+			<div class="layui-input-block" style="width:auto">
+				<input type="text"  name=other_pay   placeholder="请输入其他费用" autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+	<div class="layui-row">
+	<div class="layui-col-md3">
+	<div class="layui-form-item">
+	<label class="layui-form-label"  style="text-align: left"   >还款方式：</label>
+			<div class="layui-input-block"  style="width:150px">
+				<select name="payment_method" >
+  <option value="0" selected>等额本金</option>
+  <option value="1">等额本息</option>
+</select> 
+			</div>
+			</div>
+	</div>
+	<div class="layui-col-md3">
+	<div class="layui-form-item">
+	<label class="layui-form-label"  style="text-align: left"   >提前还款：</label>
+			<div class="layui-input-block"  >
+		 <input type="checkbox" name="isAdvance" lay-skin="switch" lay-text="是|否">
+			</div>
+	</div>
+	</div>
+	</div>
+	<div class="layui-row">
+	<div class="layui-col-md9">
+	<div class="layui-form-item">
+	<label class="layui-form-label"  style="text-align: left"   >备注：</label>
+	<div class="layui-input-block" >
+			<textarea name="remark"  placeholder="请输入备注" class="layui-textarea"></textarea>
+			</div>
+	</div>
+	</div>
+	</div>
+	<div class="layui-row">
+	<div class="layui-col-md1 layui-col-md-offset8">
+      <button class="layui-btn" lay-submit  lay-filter="add">立即提交</button>
+	</div>
+	</div>
+	</div>
+	
+	</form>
+</div>
+<script type="text/javascript" src="./lib/plugins/layui2.0/layui.js"></script>
+<script type="text/javascript">
+
+layui.use(['form'], function(){
+	$= layui.jquery,company_id = $('#company_id', window.parent.document).val();
+	var form = layui.form
+	form.on('submit(add)', function(data){
+		  console.log(data);
+		  return true
+		});
+});
+</script>
+</body>
+</head>
+</html>
