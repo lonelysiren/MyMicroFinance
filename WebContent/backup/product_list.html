@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>table模块快速使用</title>
+  <link rel="stylesheet" href="./lib/plugins/layui2.0/css/layui.css" media="all" />
+</head>
+<body>
+ 
+<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+				产品信息
+				 <button type="button" class="layui-btn layui-btn-small" style="float:right;margin:0;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
+			</blockquote>
+			<fieldset class="layui-elem-field">
+				<legend>产品列表</legend>
+				<div class="layui-field-box layui-form">
+					<table id="product_list"  lay-filter="product_list" class="layui-table admin-table">
+					</table>
+				</div>
+			</fieldset>
+			
+		</div>
+ <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="isAdvance">
+  {{#  if(d.product_isAdvance == 1){ }}
+  	  是
+  {{#  } else { }}
+否
+  {{#  } }}
+</script>
+    <script type="text/html" id="product_payment_method">
+  {{#  if(d.product_payment_method == 1){ }}
+  	  等额本息
+  {{#  } else { }}
+等额本金
+  {{#  } }}
+</script> 
+	<script type="text/javascript" src="./lib/plugins/layui2.0/layui.js"></script>
+	<script type="text/javascript" src="./lib/js/operate.js"></script>
+<script>
+layui.config({
+	base:'lib/js/'
+});
+layui.use(['paging'],function(){
+	var paging = layui.paging(),
+	$ = layui.jquery;
+	paging.init({
+		url:'/product_list',
+		where:{'company_id':$('#company_id', window.parent.document).val()},
+		elem:'#product_list',
+		cols:[[ //标题栏
+		    {field: 'product_id', title: 'ID', width: 80},
+		    {field: 'product_name', title: '产品名称', width: 120},
+		    {field: 'product_cycle', title: '周期天数', width: 100},
+		    {field: 'product_day_rate',  title: '日息', width: 80},
+		    {field: 'product_week_rate',  title: '周息', width: 80},
+		    {field: 'product_margin_loans', title: '保证金', width: 80},
+		    {field: 'product_management_pay', title: '管理费', width: 80},
+		    {field: 'product_other_pay', title: '其他费用', width: 100},
+		    {field: 'product_payment_method',templet: '#product_payment_method', title: '还款方式', width: 120},
+		    {field: 'product_isAdvance',templet: '#isAdvance', title: '提前还款', width: 100},
+		    {field: 'product_remark', title: '备注', width: 120},
+		    {fixed: 'right',title:'操作', width:130, align:'center', toolbar: '#barDemo'} 
+		  ]],
+		  filter:'product_list',
+		  del:{'name':'product_name','id':'product_id','url':'/product_del'},
+		  edit:{'page':'./lib/temp/edit-product.html','url':'/product_edit'}
+		  
+		
+	})
+})
+/* layui.use(['table'], function(){
+  var table = layui.table,
+  form = layui.form,
+  $ = layui.$,
+  layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
+  layer = layui.layer;
+  company_id = $('#company_id', window.parent.document).val();
+  console.log(company_id)
+  $('#add').click(function(){
+			var $that = $(this);
+		});
+  table.render({
+	  url:'/product_list',
+	  where:{'company_id':company_id},
+	  page: true,
+	  even: true,
+	  elem:'#product_list',
+	  cols:  [[ //标题栏
+		    {field: 'product_id', title: 'ID', width: 80},
+		    {field: 'product_name', title: '产品名称', width: 120},
+		    {field: 'product_cycle', title: '周期天数', width: 100},
+		    {field: 'product_day_rate',  title: '日息', width: 80},
+		    {field: 'product_week_rate',  title: '周息', width: 80},
+		    {field: 'product_margin_loans', title: '保证金', width: 80},
+		    {field: 'product_management_pay', title: '管理费', width: 80},
+		    {field: 'product_other_pay', title: '其他费用', width: 100},
+		    {field: 'product_payment_method',templet: '#product_payment_method', title: '还款方式', width: 120},
+		    {field: 'product_isAdvance',templet: '#isAdvance', title: '提前还款', width: 100},
+		    {field: 'product_remark', title: '备注', width: 120},
+		    {fixed: 'right',title:'操作', width:130, align:'center', toolbar: '#barDemo'} 
+		  ]]
+  })
+  table.on('tool(product_list)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+	  var data = obj.data; //获得当前行数据
+	  var layEvent = obj.event; //获得 lay-event 对应的值
+	  var tr = obj.tr; //获得当前行 tr 的DOM对象
+	 if(layEvent === 'del'){ //删除
+	    layer.confirm('确定删除产品： '+data.product_name+' 吗？该操作不可逆', function(index){
+	      obj.del(); //删除对应行（tr）的DOM结构
+	      delete_page(data.product_id)
+	      layer.close(index);
+	      //向服务端发送删除指令
+	    });
+	  } else if(layEvent === 'edit'){ //编辑
+         edit_page($,data,layer,obj)
+	  }
+	});
+}); */
+
+
+
+</script>
+</body>
+</html>

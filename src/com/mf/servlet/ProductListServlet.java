@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.mf.dao.ProductDao;
+
+import net.sf.json.JSONObject;
+
 /**
  * Servlet implementation class ProductListServlet
  */
@@ -27,7 +31,12 @@ public class ProductListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		int page = Integer.parseInt(request.getParameter("page"));
+		int limit = Integer.parseInt(request.getParameter("limit"));
+		int company_id = Integer.parseInt(request.getParameter("company_id"));
+		ProductDao productDao = new ProductDao();
+		JSONObject product_list = productDao.paging(page,limit,company_id);
+		response.getWriter().print(product_list);
 	}
 
 	/**
@@ -35,6 +44,7 @@ public class ProductListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 	}
 
 }

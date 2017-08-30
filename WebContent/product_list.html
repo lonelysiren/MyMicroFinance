@@ -8,9 +8,198 @@
 <body>
  
 <div class="admin-main">
-			<blockquote class="layui-elem-quote">
+<blockquote class="layui-elem-quote">
+				合同信息
+				<button type="button" class="layui-btn layui-btn-small" style="float:right;margin:0;" id="mproduct"> 产品信息</button>
+			</blockquote>
+			 <fieldset class="layui-elem-field">
+			 <legend>合同信息设置</legend>
+<form class="layui-field-box  layui-form"  >
+<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">公司名称：</label>
+			<div class="layui-input-block" style="margin-left: 130px">
+				<input type="text"  lay-verify="required"name="company_name"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:120px">还款用户名：</label>
+			<div class="layui-input-block" style="margin-left: 150px">
+				<input type="text" lay-verify="required" name="company_man"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">公司地址：</label>
+			<div class="layui-input-block" style="margin-left: 130px">
+				<input type="text" lay-verify="required"  name="company_address"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:120px">违约金每天：</label>
+			<div class="layui-form-mid layui-word-aux" style="margin-right: 0px">百分之</div>
+			<div class="layui-input-block" style="margin-left: 210px">
+				<input type="text" lay-verify="required" name="company_overfeeday"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">联系电话：</label>
+			<div class="layui-input-block" style="margin-left: 130px">
+				<input type="text" lay-verify="required" name="compnay_telphone"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:120px">提前结清违约金：</label>
+			<div class="layui-form-mid layui-word-aux" style="margin-right: 0px">百分之</div>
+			<div class="layui-input-block" style="margin-left: 210px">
+				<input type="text" lay-verify="required" name="company_overfeetime"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+	<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">还款银行名称：</label>
+			<div class="layui-input-block" style="margin-left: 130px">
+				<input type="text" lay-verify="required" name="company_bankname"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:120px">提前结清期数：</label>
+			<div class="layui-input-block" style="margin-left: 150px">
+				<input type="text" lay-verify="required" name="company_tiqianshu"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">还款卡号：</label>
+			<div class="layui-input-block" style="margin-left: 130px">
+				<input type="text" lay-verify="required" name="company_conunt"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:120px">还款日期截止：</label>
+			<div class="layui-input-block" style="margin-left: 150px">
+				<input type="text" lay-verify="required" name="company_repaydate"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">微信：</label>
+			<div class="layui-input-block" style="margin-left: 130px">
+				<input type="text" lay-verify="required" name="company_wechat"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:120px">逾期最长天数：</label>
+			<div class="layui-input-block" style="margin-left: 150px">
+				<input type="text" lay-verify="required" name="company_overmaxday"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">支付宝：</label>
+			<div class="layui-input-block" style="margin-left: 130px">
+				<input type="text" lay-verify="required" name="company_alipay"   autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">初始投资：</label>
+			 <div class="layui-input-inline">
+      <input type="text" lay-verify="required" name="company_beginfee"  autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">元</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">已经运营费用：</label>
+			 <div class="layui-input-inline">
+      <input type="text" lay-verify="required"  name="company_runfee"  autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">元</div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">公众号客户直接提交认证：</label>
+			 <div class="layui-input-block">
+      <input type="radio" name="company_renzheng" value="1" title="是">
+<input type="radio" name="company_renzheng" value="0" title="否" checked>
+    </div>
+		</div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md5">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">还款二维码：</label>
+			 <div class="layui-input-block" style="margin-left: 130px">
+			  <input type="text" name="company_qrcode"  autocomplete="off" class="layui-input">
+    </div>
+    </div>
+		</div>
+		</div>
+		<div class=" layui-row">
+	  <div class="layui-col-md10">
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="text-align: left;width:100px">其他：</label>
+			 <div class="layui-input-block" style="margin-left: 130px">
+			 <textarea id="other" name="company_remark" style="display: none;"></textarea>
+    </div>
+    </div>
+		</div>
+		</div>
+		<div class="layui-row">
+	<div class="layui-col-md1 layui-col-md-offset9">
+      <button class="layui-btn" style="float:right" lay-submit  lay-filter="save">保存</button>
+	</div>
+	</div>
+</form>
+ </fieldset>
+			<blockquote id="product_info"class="layui-elem-quote">
 				产品信息
-				 <button type="button" class="layui-btn layui-btn-small" style="float:right;margin:0;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
+				 <button type="button" class="layui-btn layui-btn-small" style="float:right;" id="reload"> <i class="layui-icon">&#x1002;</i> 刷新</button>
+				 <button type="button" class="layui-btn layui-btn-small" style="float:right;margin-right: 10px;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
+				 
 			</blockquote>
 			<fieldset class="layui-elem-field">
 				<legend>产品列表</legend>
@@ -25,67 +214,62 @@
   <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="isAdvance">
+  {{#  if(d.product_isAdvance == 1){ }}
+  	  是
+  {{#  } else { }}
+否
+  {{#  } }}
+</script>
+    <script type="text/html" id="product_payment_method">
+  {{#  if(d.product_payment_method == 1){ }}
+  	  等额本息
+  {{#  } else { }}
+等额本金
+  {{#  } }}
+</script> 
 	<script type="text/javascript" src="./lib/plugins/layui2.0/layui.js"></script>
 <script>
-layui.use(['table','layer'], function(){
-  var table = layui.table,$ = layui.$,layer = layui.layer;
-  company_id = $('#company_id', window.parent.document).val();
-  console.log(company_id)
-  $('#add').click(function(){
-			var $that = $(this);
-			
-		});
-  table.render({
-	  url:'./lib/datas/tableDemo.json',
-	  where:{'company_id':company_id},
-	  page: true,
-	  limit: 15,
-	  even: true,
-	  elem:'#product_list',
-	  cols:  [[ //标题栏
-		    {field: 'id', title: 'ID', width: 80},
-		    {field: 'name', title: '产品名称', width: 120},
-		    {field: 'cycle', title: '周期天数', width: 100},
-		    {field: 'day_rate', title: '日息', width: 80},
-		    {field: 'week_rate', title: '周息', width: 80},
-		    {field: 'margin_loans', title: '保证金', width: 80},
-		    {field: 'management_pay', title: '管理费', width: 80},
-		    {field: 'other_pay', title: '其他费用', width: 100},
-		    {field: 'payment_method', title: '还款方式', width: 120},
-		    {field: 'isAdvance', title: '提前还款', width: 100},
-		    {field: 'produc_remak', title: '备注', width: 120},
-		    {fixed: 'right', width:130, align:'center', toolbar: '#barDemo'} 
-		  ]],
-		  done: function(res, curr, count){
-			    //如果是异步请求数据方式，res即为你接口返回的信息。
-			    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-			    console.log(res);
-			    //得到当前页码
-			    console.log(curr); 
-			    //得到数据总量
-			    console.log(count);
-			  }
-  })
-  
-  table.on('tool(product_list)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-	  var data = obj.data; //获得当前行数据
-	  var layEvent = obj.event; //获得 lay-event 对应的值
-	  var tr = obj.tr; //获得当前行 tr 的DOM对象
-	 if(layEvent === 'del'){ //删除
-	    layer.confirm('确定删除 '+data.name+' 吗？该操作不可逆', function(index){
-	      obj.del(); //删除对应行（tr）的DOM结构
-	      layer.close(index);
-	      //向服务端发送删除指令
-	    });
-	  } else if(layEvent === 'edit'){ //编辑
-	    //do something
-	    //同步更新缓存对应的值
-	    obj.update({
-	      name: '产品改'
-	    });
-	  }
-	});
+layui.config({
+	base:'lib/js/'
 });
+layui.use(['paging','element','layedit'],function(){
+	var paging = layui.paging(),
+	element = layui.element,
+	form = layui.form,
+	$ = layui.jquery;
+	var layedit = layui.layedit;
+	  layedit.build('other'); //建立编辑器
+	paging.init({
+		url:'/product_list',
+		where:{'company_id':$('#company_id', window.parent.document).val()},
+		elem:'#product_list',
+		cols:[[ //标题栏
+		    {field: 'product_id', title: 'ID', width: 80},
+		    {field: 'product_name', title: '产品名称', width: 120},
+		    {field: 'product_cycle', title: '周期天数', width: 100},
+		    {field: 'product_day_rate',  title: '日息', width: 80},
+		    {field: 'product_week_rate',  title: '周息', width: 80},
+		    {field: 'product_margin_loans', title: '保证金', width: 80},
+		    {field: 'product_management_pay', title: '管理费', width: 80},
+		    {field: 'product_other_pay', title: '其他费用', width: 100},
+		    {field: 'product_payment_method',templet: '#product_payment_method', title: '还款方式', width: 120},
+		    {field: 'product_isAdvance',templet: '#isAdvance', title: '提前还款', width: 100},
+		    {field: 'product_remark', title: '备注', width: 120},
+		    {fixed: 'right',title:'操作', width:130, align:'center', toolbar: '#barDemo'} 
+		  ]],
+		  filter:'product_list',
+		  del:{'name':'product_name','id':'product_id','url':'/product_del'},
+		  edit:{'page':'./lib/temp/edit-product.html','url':'/product_edit'}
+	})
+	
+	$('#mproduct').click(function(){
+		$("html,body").animate({scrollTop:$("#product_info").offset().top},200);
+	})
+	$('#reload').click(function(){
+		paging.reload()
+	})
+})
 </script>
 </body>
 </html>

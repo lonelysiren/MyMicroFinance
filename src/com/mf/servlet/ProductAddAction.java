@@ -1,6 +1,7 @@
 package com.mf.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Enumeration;
 
 import javax.servlet.ServletException;
@@ -8,6 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.mf.dao.ProductDao;
+
+import net.sf.json.JSONObject;
 
 /**
  * Servlet implementation class ProductAddAction
@@ -35,14 +40,17 @@ public class ProductAddAction extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 Enumeration<String> names = request.getParameterNames();
-	        while (names.hasMoreElements()) {
-	            String strings = (String) names.nextElement();
-	            String[] parameterValues = request.getParameterValues(strings);
-	            for (int i = 0;parameterValues!=null&&i < parameterValues.length; i++) {
-	                System.out.println(strings+":"+parameterValues[i]+"\t");
-	            }
-	        }
-	    }
-	
+		String parameter = request.getParameter("product");
+		JSONObject product = JSONObject.fromObject(parameter);
+		ProductDao productDao = new ProductDao();
+		try {
+			int result = productDao.add(product);
+			response.getWriter().write(result);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			
+		}
+	}	
 }

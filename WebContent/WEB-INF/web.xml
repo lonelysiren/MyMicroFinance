@@ -105,13 +105,29 @@
     <servlet-name>CustomerAddAction</servlet-name>
     <url-pattern>/customer_add</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>ProductAddAction</servlet-name>
     <servlet-class>com.mf.servlet.ProductAddAction</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ProductAddAction</servlet-name>
     <url-pattern>/product_add</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ProductListServlet</servlet-name>
+    <servlet-class>com.mf.servlet.ProductListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProductListServlet</servlet-name>
+    <url-pattern>/product_list</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>ProductEditAction</servlet-name>
+    <servlet-class>com.mf.servlet.ProductEditAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ProductEditAction</servlet-name>
+    <url-pattern>/product_edit</url-pattern>
   </servlet-mapping>
   <jsp-config>
     <taglib>

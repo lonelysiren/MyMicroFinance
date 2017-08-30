@@ -1,31 +1,23 @@
-/**
- * Paging 组件
- * @description 基于laytpl 、laypage、layer 封装的组件
- * @author Van zheng_jinfan@126.com
- * @link http://m.zhengjinfan.cn
- * @license MIT
- * @version 1.0.1
- */
-layui.define(['layer', 'laypage', 'laytpl'], function (exports) {
+layui.define(['table','form'], function (exports) {
     "use strict";
-    var $ = layui.jquery,
-        layer = parent.layui.layer === undefined ? layui.layer : parent.layui.layer,
-        laytpl = layui.laytpl;
+    var table = layui.table,
+    form = layui.form,
+    $ = layui.$,
+    layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
+    layer = layui.layer,
+    tableIns = {};
 
     var Paging = function () {
         this.config = {
+        		even:true,
             url: undefined, //数据远程地址
-            type: 'POST', //数据的获取方式  get or post
+            where: {}, //获取数据时传递的额外参数
+            page: true,//是否显示分页组件
             elem: undefined, //内容容器
-            params: {}, //获取数据时传递的额外参数
-            openWait: false, //加载数据时是否显示等待框 
-            tempElem: undefined, //模板容器
-            tempType: 0, //如果等于0则需要设置模板容器，1为提供模板内容
-            paged: true,//是否显示分页组件
-            pageConfig: { //参数应该为object类型
-                elem: undefined,
-                pageSize: 15 //分页大小
-            },
+            cols:undefined,
+            filter:undefined,
+            del:undefined,
+            edit:undefined,
             success: undefined, //type:function
             fail: function (res) {
                 console.log(res.msg);
@@ -40,7 +32,7 @@ layui.define(['layer', 'laypage', 'laytpl'], function (exports) {
 	/**
 	 * 版本号
 	 */
-    Paging.prototype.v = '1.0.3';
+    Paging.prototype.v = '1.0.0';
 
 	/**
 	 * 设置
@@ -68,30 +60,14 @@ layui.define(['layer', 'laypage', 'laytpl'], function (exports) {
         if ($(_config.elem).length === 0) {
             throwError('Paging Error:找不到配置的容器elem!');
         }
-        if (_config.tempType === 0) {
-            if (_config.tempElem === undefined) {
-                throwError('Paging Error:请配置参数tempElem!');
-            }
-            if ($(_config.tempElem).length === 0) {
-                throwError('Paging Error:找不到配置的容器tempElem!');
-            }
-        }
-        if (_config.paged) {
-            var _pageConfig = _config.pageConfig;
-            if (_pageConfig.elem === undefined) {
-                throwError('Paging Error:请配置参数pageConfig.elem!');
-            }
-        }
-        if (_config.type.toUpperCase() !== 'GET' && _config.type.toUpperCase() !== 'POST') {
-            throwError('Paging Error:type参数配置出错，只支持GET或都POST');
-        }
-        that.get({
-            pageIndex: 1,
-            pageSize: _config.pageConfig.pageSize
-        });
-
+        that.get();
         return that;
     };
+    
+    Paging.prototype.reload = function(options) {
+    	tableIns.reload();
+    }
+    
 	/**
 	 * 获取数据
 	 * @param {Object} options
@@ -99,88 +75,110 @@ layui.define(['layer', 'laypage', 'laytpl'], function (exports) {
     Paging.prototype.get = function (options) {
         var that = this;
         var _config = that.config;
-        var loadIndex = undefined;
-        if (_config.openWait) {
-            loadIndex = layer.load(2);
-        }
         //默认参数
-        var df = {
-        		
-            pageIndex: 1,
-            pageSize: _config.pageConfig.pageSize
-        };
-        $.extend(true, _config.params, df, options);
-        $.ajax({
-            type: _config.type,
-            url: _config.url,
-            data: _config.params,
-            dataType: 'json',
-            success: function (result, status, xhr) {
-                if (loadIndex !== undefined)
-                    layer.close(loadIndex); //关闭等待层
-                if (result.rel) {
-                
-                    //获取模板
-                    var tpl = _config.tempType === 0 ? $(_config.tempElem).html() : _config.tempElem;
-                    //渲染数据
-                    laytpl(tpl).render(result, function (html) {
-                        if (_config.renderBefore) {
-                            _config.renderBefore(html, function (formatHtml) {
-                                $(_config.elem).html(formatHtml);
-                            }, result.list);
-                        }
-                        else {
-                            $(_config.elem).html(html);
-                        }
-                    });
-                    if (_config.paged) {
-                        if (result.count === null || result.count === undefined) {
-                            throwError('Paging Error:请返回数据总数！');
-                            return;
-                        }
-                        var _pageConfig = _config.pageConfig;
-                        var pageSize = _pageConfig.pageSize;
-                        var pages = result.count % pageSize == 0 ?
-                            (result.count / pageSize) : (result.count / pageSize + 1);
-
-                        var defaults = {
-                            cont: $(_pageConfig.elem),
-                            curr: _config.params.pageIndex,
-                            pages: pages,
-                            jump: function (obj, first) {
-                                //得到了当前页，用于向服务端请求对应数据
-                                var curr = obj.curr;
-                                if (!first) {
-                                    that.get({
-                                        pageIndex: curr,
-                                        pageSize: pageSize
-                                    });
-                                }
-                            }
-                        };
-                        $.extend(defaults, _pageConfig); //参数合并
-                        layui.laypage(defaults); //调用laypage组件渲染分页
-                    }
-                    if (_config.success) {
-                        _config.success(); //渲染成功
-                    }
-                } else {
-                    var thLength = $(_config.elem).siblings('thead').find('th').length;
-                    $(_config.elem).html('<tr><td colspan="' + thLength + '" style="text-align:left;">' + result.msg + '</td></tr>');
-                    if (_config.fail) {
-                        _config.fail(result); //获取数据失败
-                    }
+         tableIns = table.render({
+        	url:_config.url,
+        	where:_config.where,
+        	elem:_config.elem,
+        	page: _config.page,
+        	even: _config.even,
+        	cols:_config.cols
+        })
+        table.on('tool('+ _config.filter+')', function(obj){
+        	 var odata = obj.data; //获得当前行数据
+       	  var layEvent = obj.event; //获得 lay-event 对应的值
+       	  var tr = obj.tr; //获得当前行 tr 的DOM对象
+       	 if(layEvent === 'del'){ //删除
+       	    layer.confirm('确定删除： '+odata[_config.del.name]+' 吗？该操作不可逆', function(index){
+       	     $.ajax({
+       	    	 type:'post',
+       	    	 url:_config.del.url,
+       	    	 data:{'delete_id':odata[_config.del.id]},
+       	    	 success:function(result){
+            	    	obj.del(); //删除对应行（tr）的DOM结构
+            	      layer.close(index);
+       	    	 },
+       	    	error: function (xhr, status, error) {
+                    _config.serverError(xhr, status, error); //服务器错误
                 }
-                if (_config.complate) {
-                    _config.complate(); //渲染完成
-                }
-            },
-            error: function (xhr, status, error) {
-                if (loadIndex !== undefined)
-                    layer.close(loadIndex); //关闭等待层
-                _config.serverError(xhr, status, error); //服务器错误
-            }
-        });
+       	     })
+       	    });
+       	  } else if(layEvent === 'edit'){ //编辑
+       		$.get(_config.edit.page, null, function(form) {
+       			addBoxIndex = layer.open({
+       				type: 1,
+       				title: '编辑',
+       				content: form,
+       				btn: ['保存', '取消'],
+       				shade: false,
+       				offset: ['15%', '0%'],
+       				area: ['100%', '500px'],
+       				zIndex: 19950924,
+       				maxmin: true,
+       				yes: function(index) {
+       					//触发表单的提交事件
+       					$('form.layui-form').find('button[lay-filter=edit]').click();
+       				},
+       				full: function(elem) {
+       					var win = window.top === window.self ? window : parent.window;
+       					$(win).on('resize', function() {
+       						var $this = $(this);
+       						elem.width($this.width()).height($this.height()).css({
+       							top: 0,
+       							left: 0
+       						});
+       						elem.children('div.layui-layer-content').height($this.height() - 95);
+       					});
+       				},
+       				success: function(layero, index) {
+       					var form = layui.form
+       						$("form input").each(function(index,element){
+       							if(element.name =="product_isAdvance" ){
+       								  $(element).attr("checked",odata[element.name]);
+       									console.log(odata[element.name])
+       								  return
+       							}
+       							$(element).val(odata[element.name]);
+       						})
+       						  $("select[name='product_payment_method']").val(odata['product_payment_method']);
+       						$("#product_remark").val(odata['product_remark']);
+       						form.render();
+       					form.on('submit(edit)', function(data) {
+       						var data = data.field,temp={},fields={}
+       						layui.each(odata,function(key,value){
+       							if(value != data[key]){
+       								temp[key] =  data[key]
+       								fields[key]=data[key]
+       							}
+       						})
+       						 if($.isEmptyObject(temp)) {layer.close(index); return false;}
+       							
+       						 temp['product_id'] = data['product_id']
+       						$.ajax({
+       							type:'post',
+       							url:_config.edit.url,
+       							data:{'product':JSON.stringify(temp)},
+       							success: function (result) {
+       								if(result == "success"){
+       									parent.layer.msg("修改成功");
+       									 obj.update(fields);
+       								}else{
+       									parent.layer.msg("修改失败");
+       								}
+       								layer.close(index);
+       							}
+       						});							
+       						//这里可以写ajax方法提交表单
+       						return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。									
+       					});
+       				},
+       				end: function() {
+       					addBoxIndex = -1;
+       				}
+       			});
+       		});
+       	  }
+        })
     };
 	/**
 	 * 抛出一个异常错误信息

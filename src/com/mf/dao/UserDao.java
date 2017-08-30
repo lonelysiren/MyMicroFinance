@@ -36,7 +36,7 @@ public class UserDao {
 	}
 
 	public Map<String, Object> login(String userName, String passWord) {
-		sql = "SELECT nickname,role,stauts,company_id,name FROM company_info INNER JOIN user_info ON user_info.company_id = company_info.id where username = ? and password = ?";
+		sql = "SELECT nickname,role,stauts,company_info.company_id,company_name FROM company_info INNER JOIN user_info ON user_info.company_id = company_info.company_id where username = ? and password = ?";
 		params.add(userName);
 		params.add(passWord);
 		Map<String, Object> map = null;

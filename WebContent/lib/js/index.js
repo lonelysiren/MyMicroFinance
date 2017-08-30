@@ -22,7 +22,6 @@ layui.config({
             console.log(data.id); //当前Tab的Id
             console.log(data.index); //得到当前Tab的所在下标
             console.log(data.elem); //得到当前的Tab大容器
-
             console.log(tab.getCurrentTabId())
         },
         closeBefore: function (obj) { //tab 关闭之前触发的事件
@@ -237,3 +236,6 @@ function lock($, layer) {
         }
     });
 };
+function reload(){
+	
+}

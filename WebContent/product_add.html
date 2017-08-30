@@ -4,7 +4,7 @@
  <link rel="stylesheet" href="./lib/plugins/layui2.0/css/layui.css" media="all" />
 <body>
 <div style="margin: 50px;">
-	<form class="layui-form" action="/product_add" method="post">
+	<form class="layui-form"  >
 	<div class="layui-row">
 	  <div class="layui-col-md9">
 		<div class="layui-form-item">
@@ -91,7 +91,7 @@
 	<div class="layui-form-item">
 	<label class="layui-form-label"  style="text-align: left"   >提前还款：</label>
 			<div class="layui-input-block"  >
-		 <input type="checkbox" name="isAdvance" lay-skin="switch" lay-text="是|否">
+		 <input type="checkbox" value="1" name="isAdvance" lay-skin="switch" lay-text="是|否">
 			</div>
 	</div>
 	</div>
@@ -118,12 +118,40 @@
 <script type="text/javascript" src="./lib/plugins/layui2.0/layui.js"></script>
 <script type="text/javascript">
 
-layui.use(['form'], function(){
+layui.use(['form','layer'], function(){
 	$= layui.jquery,company_id = $('#company_id', window.parent.document).val();
-	var form = layui.form
+	var form = layui.form,
+	layer=layui.layer;
+	console.log(parent.tab.getTabId('产品列表'))
+	layer.open({
+							  title: '提示'
+							  ,icon:1
+							  ,content: '添加产品成功!'
+							 ,closeBtn:0
+							 ,btn:'我知道了'
+							 ,yes: function(index, layero){
+								    //按钮【按钮一】的回调
+								    var tabIndex = parent.tab.exists('产品列表')
+								    if(tabIndex != -1){
+								    }
+								 layer.close(index);
+							  }
+							//,time:3000
+							});  
 	form.on('submit(add)', function(data){
-		  console.log(data);
-		  return true
+		  data.field['company_id'] = company_id
+		  console.log(data.field);
+		  $.ajax({
+				type:'post',
+				url:'/product_add',
+				data:{'product':JSON.stringify(data.field)},
+					success: function (result) {
+						
+						form.render(); //更新全部
+	                },
+	                error: function (result, status) { }
+			});
+		  return false
 		});
 });
 </script>
