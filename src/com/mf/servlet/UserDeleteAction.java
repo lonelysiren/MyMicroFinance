@@ -9,21 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mf.dao.ProductDao;
-
-import net.sf.json.JSONObject;
+import com.mf.dao.UserDao;
 
 /**
- * Servlet implementation class ProdcutEditAction
+ * Servlet implementation class UserDeleteAction
  */
-@WebServlet("/ProdcutEditAction")
-public class ProductEditAction extends HttpServlet {
+@WebServlet("/UserDeleteAction")
+public class UserDeleteAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductEditAction() {
+    public UserDeleteAction() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,18 +38,16 @@ public class ProductEditAction extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String parameter = request.getParameter("data");
-		JSONObject product = JSONObject.fromObject(parameter);
-		ProductDao productDao = new ProductDao();
+		// TODO Auto-generated method stub
+		String id = request.getParameter("delete_id");
+		UserDao userDao = new UserDao();
 		try {
-			String result = productDao.edit(product);
+			String result = userDao.delete(id);
 			response.getWriter().write(result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			
 		}
-	}	
+	}
 
 }

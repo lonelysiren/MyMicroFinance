@@ -40,12 +40,14 @@ public class ProductAddAction extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String parameter = request.getParameter("product");
+		String parameter = request.getParameter("data");
 		JSONObject product = JSONObject.fromObject(parameter);
 		ProductDao productDao = new ProductDao();
 		try {
 			int result = productDao.add(product);
-			response.getWriter().write(result);
+			if(result != 0) {
+				response.getWriter().write("success");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

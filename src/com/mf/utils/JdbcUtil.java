@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -94,6 +96,7 @@ private static DataSource dataSource = null;
 	}
 	
 	public Map<String, Object> findSimpleResult(String sql, List<Object> params) throws SQLException {
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		int index = 1;
 		pstmt = connection.prepareStatement(sql);
@@ -112,6 +115,10 @@ private static DataSource dataSource = null;
 				Object cols_value = resultSet.getObject(cols_name);
 				if (cols_value == null) {
 					cols_value = "";
+				}
+				if(cols_value instanceof java.util.Date) {
+					DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					cols_value = sdf.format(cols_value);
 				}
 				map.put(cols_name, cols_value);
 			}
@@ -138,6 +145,10 @@ private static DataSource dataSource = null;
 				Object cols_value = resultSet.getObject(cols_name);
 				if (cols_value == null) {
 					cols_value = "";
+				}
+				if(cols_value instanceof java.util.Date) {
+					DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					cols_value = sdf.format(cols_value);
 				}
 				map.put(cols_name, cols_value);
 			}

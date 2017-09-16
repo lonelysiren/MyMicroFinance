@@ -1,10 +1,15 @@
+<%@page import="net.sf.json.JSONArray"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 			<link rel="stylesheet" href="./lib/plugins/layui2.0/css/layui.css" media="all" />
-		<link rel="stylesheet" href="./lib/css/main.css" />
+			<link rel="stylesheet" href="./lib/plugins/city/css/city.css" media="all" />
+			<link rel="stylesheet" href="./lib/css/main.css" />
 	</head>
 	<body>
 		<div class="admin-main">
@@ -16,29 +21,29 @@
   <label class="layui-form-label" >客户经理:</label>
   <div class="layui-input-inline">
   <select id="sales_account_manager" name="sales_account_manager" >
-  <option value="">请选择客户经理</option>
 	</select> 
   </div>
   </div>
   </div>
 </fieldset>
-<fieldset class="layui-elem-field">
+<fieldset id="info" class="layui-elem-field">
   <legend>个人信息</legend>
   <div class="layui-field-box">
 <div class="layui-layui-row">
 <div class="layui-col-md3">
  <div class="layui-form-item" >
+ <div data-id="customer_id" ></div>
    		<label class="layui-form-label">客户姓名</label>
    		<div class="layui-input-block">
-   		<input type="text" name="customer_name" autocomplete="off" lay-verify="required" class="layui-input" placeholder="请输入客户姓名(必填)" ">
+   		<input type="text" name="customer_name" autocomplete="off" lay-verify="required" class="layui-input" placeholder="请输入客户姓名(必填)" value="${info.customer_name }">
       </div>
-      </div>
+</div>
 </div>
 <div class="layui-col-md3">
  <div class="layui-form-item" pane="" >
    		<label class="layui-form-label">性别</label>
    		<div class="layui-input-block">
-   		<input type="radio" name="sex" value="0" title="男" checked>
+   		<input type="radio" name="sex"  title="男" checked>
 		<input type="radio" name="sex" value="1" title="女" >
       </div>
       </div>
@@ -47,7 +52,7 @@
  <div class="layui-form-item" >
    		<label class="layui-form-label">年龄</label>
    		<div class="layui-input-block">
-   		<input type="number" id='age' name="age" lay-verify="required|number" autocomplete="off" class="layui-input" placeholder="请输入年龄(必填)">
+   		<input type="text" id='age' name="age" lay-verify="required|number" autocomplete="off" class="layui-input" placeholder="请输入年龄(必填)">
       </div>
       </div>
 </div>
@@ -153,7 +158,7 @@
  <div class="layui-form-item" pane="">
    		<label class="layui-form-label">是否本地</label>
    		<div class="layui-input-block ">
-   		<input type="radio" name="native_type" value="0" title="是" checked>
+   		<input type="radio" name="native_type"  title="是" checked>
    		<input type="radio"  name="native_type" value="1" title="否" >
       </div>
       </div>
@@ -189,7 +194,7 @@
  <div class="layui-form-item" pane="">
    		<label class="layui-form-label">是否实名制</label>
    		<div class="layui-input-block">
-   		<input type="radio" name="mobile_phone_real_name" value="0" title="是" checked>
+   		<input type="radio" name="mobile_phone_real_name"  title="是" checked>
    		<input type="radio" name="mobile_phone_real_name" value="1" title="否" >
       </div>
       </div>
@@ -250,6 +255,7 @@
   <div class="layui-field-box">
   <div class="layui-row">
     <div class="layui-col-md3"><div class="layui-form-item" >
+    <div data-id="customer_company_id" ></div>
    		<label class="layui-form-label">公司名称：</label>
    		<div class="layui-input-block">
    		<input type="text" name="company_name" autocomplete="off" class="layui-input" placeholder="请输入公司名称(必填)" lay-verify="required">
@@ -358,6 +364,7 @@
    <div class="layui-row" id="other_contact">
     <div class="layui-col-md3">
      <div class="layui-form-item" >
+     <div data-id="contac_other_id" ></div>
    		<label class="layui-form-label" style="width:100%">其他联系人</label>
    		</div>
     </div> 
@@ -372,8 +379,9 @@
 <fieldset class="layui-elem-field">
   <legend>负债信息</legend>
   <div class="layui-field-box">
-   <div class="layui-row" name="creditcard">
+   <div class="layui-row" name="creditcard" id="creditcard">
    <div class="layui-col-md3"> <div class="layui-form-item" >
+  <div data-id="creditcard_id"></div>
    		<label class="layui-form-label">信用卡</label>
    		<div class="layui-input-block">
    		<input type="text" name="creditcard_name[]" autocomplete="off" class="layui-input" placeholder="请输入发卡行" >
@@ -399,6 +407,7 @@
    </div>
    <div class="layui-row" name="lingyong" id="lingyong" >
    <div class="layui-col-md3"> <div class="layui-form-item" >
+    <div data-id="lingyong_id"></div>
    		<label class="layui-form-label">零用贷</label>
    		<div class="layui-input-block">
    		<input type="text" name="lingyong_name[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" >
@@ -416,35 +425,105 @@
    </div>
    <div class="layui-row" name="other" id="other">
    <div class="layui-col-md3"> <div class="layui-form-item" >
+   <div data-id="other_id"></div>
    		<label class="layui-form-label">其他贷款</label>
    		<div class="layui-input-block">
-   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required">
+   		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" >
       </div>
       </div></div>
    <div class="layui-col-md3"> <div class="layui-form-item" >
    		<label class="layui-form-label">金额</label>
    		<div class="layui-input-block">
-   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required">
+   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" >
       </div>
       </div></div>
    <div class="layui-col-md3"> <div class="layui-form-item" >
    		<button type="button" id="other_add" class="layui-btn">增加</button>
       </div></div>
+      <div id = "final">
+      <button lay-filter="edit" lay-submit style="display: none;"></button>
+      </div>
    </div>
   </div>
 </fieldset>
-
 </form>
 			</div>
+			<script type="text/javascript" src="./lib/js/jquery-3.2.1.min.js"></script>
 			<script type="text/javascript" src="./lib/datas/option.js"></script>
 			<script type="text/javascript"src="./lib/js/select.js"></script>
-	<script src="./lib/plugins/city/Popt.js"></script>
+			<script type="text/javascript" src="./lib/js/customer_list.js"></script>
+		<script src="./lib/plugins/city/Popt.js"></script>
 		<script src="./lib/plugins/city/citySet.js"></script>
 		<script src="./lib/plugins/city/cityJson.js"></script>
-		
 		<script type="text/javascript">
-			$("[name='census_register']").click(function (e) {
-			SelCity(this,e);
+		var form = layui.form,layer=layui.layer
+		var info = ${info}
+		var company = ${company}
+		var contact = ${contacts}
+		var contact_other = ${contact_other}
+		var debt_creditcard =${debt_creditcard}
+		var debt_lingyong = ${debt_lingyong}
+		var debt_other = ${debt_other}
+		var details = {"cusotmer":info,"company":company,"contact":contact,"contact_other":contact_other,"creditcard":debt_creditcard,"lingyong":debt_lingyong,"other":debt_other}
+		for (var i = 1; i < debt_creditcard.length; i++) {
+				 var html = $("#creditcard").clone()
+				 $(html).children().last().remove()
+				 $('#lingyong').before(html)
+			}
+		for (var i = 1; i < debt_lingyong.length; i++) {
+			var html =  $("#lingyong").clone()
+			 $(html).children().last().remove()
+			  $('#other').before(html)
+		}
+		for (var i = 1; i < debt_other.length; i++) {
+			var html =  $("#other").clone()
+			$(html).children().last().remove()
+			  $('#final').before(html)
+		}
+		layui.each(details,function(index,value){
+			loadData(value);
+		})
+		form.render()
+			form.on('select(house_status)', function(data) {
+				if (data.value == '1') {
+					$("#current_residence").val(
+							$("#census_register").val() + "-"
+									+ $("#census_register_detail").val());
+				}
+			});
+		form.on('submit(edit)',function(data){
+			var ndata = {}, field = data.field,obj = data.form
+			layui.each(details,function(key,value){
+				var temp = {},id = {}
+				if(value.constructor === Array){
+					var adata = getData(obj,key)
+					console.log(adata)
+					layui.each(value,function(index,value){
+						console.log(adata[index])
+						temp = check(value,adata[index])
+						if($.isEmptyObject(temp)) adata.splice(index,1);
+					})
+					ndata[key] = adata
+					return
+				}
+				layui.each(value,function(name,value){
+					if(name.indexOf("_id" ) > 0){
+						id[name] = value
+						return
+					}
+					if(value != data.field[name]){
+						temp[name] = data.field[name]
+					}
+				})
+				if($.isEmptyObject(temp)) return
+				temp = $.extend({},temp,id)
+				ndata[key] = temp
+			})
+			console.log(ndata)
+			return false
+		})
+			$("[name='census_register']").click(function(e) {
+				SelCity(this, e, layer);
 			});
 		</script>
 	</body>

@@ -7,8 +7,6 @@ import net.sf.json.JSONObject;
 
 import com.mf.entity.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,26 +15,21 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class UserDao {
+public class UserDao extends BaseDao{
 
 	static Logger logger = LogManager.getLogger(UserDao.class.getName());
-	private JdbcUtil jdbcUtil = new JdbcUtil();
+	private JdbcUtil jdbcUtil = null;
 	private String sql = null;
-	private List<Object> params = new ArrayList<Object>();
+	private List<Object> params = null;
 
 	public UserDao() {
 		super();
-		try {
-			jdbcUtil.getConnection();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		this.jdbcUtil = super.jdbcUtil;
+		this.params = super.params;
 	}
 
 	public Map<String, Object> login(String userName, String passWord) {
-		sql = "SELECT nickname,role,stauts,company_info.company_id,company_name FROM company_info INNER JOIN user_info ON user_info.company_id = company_info.company_id where username = ? and password = ?";
+		sql = "SELECT id,nickname,role,stauts,company_info.company_id,company_name FROM company_info INNER JOIN user_info ON user_info.company_id = company_info.company_id where username = ? and password = ?";
 		params.add(userName);
 		params.add(passWord);
 		Map<String, Object> map = null;
@@ -71,7 +64,7 @@ public class UserDao {
 	public JSONObject findUserByCompanyId(int company_id, int pageIndex, int pageSize) {
 		Map<String, Object> maps = new LinkedHashMap<String, Object>();
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		sql = "select user_info.id,username,nickname,stauts from user_info where company_id = ? limit ? , ? ";
+		sql = "select user_info.id,username,nickname,email,role,stauts from user_info where company_id = ? limit ? , ? ";
 		params.add(company_id);
 		if (pageIndex == 1) {
 			params.add(0);
@@ -83,14 +76,14 @@ public class UserDao {
 		List<Map<String, Object>> list = null;
 		try {
 			list = jdbcUtil.findModeResult(sql, params);
-			maps.put("rel", true);
+			maps.put("code", 0);
 			maps.put("msg", "获取成功");
-			maps.put("list", list);
 			sql = " select count(1)  from user_info where company_id = ? ";
 			params.remove(1);
 			params.remove(1);
 			map = jdbcUtil.findSimpleResult(sql, params);
 			maps.put("count", map.get("count(1)"));
+			maps.put("data", list);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -334,13 +327,20 @@ public class UserDao {
 		return isSuccess?"success":"faild";
 	}
 
-	public Map<String, Object> editCustomerRelation(String parameter, String customer_id) {
-		// TODO Auto-generated method stub
-		return null;
+	public String edit(JSONObject user) throws SQLException {
+		String result = super.editSql("user_info", user, "id");
+		return result;
 	}
 
-	public int editCustomer(String parameter) {
+	public String delete(String id) throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		String result = super.delteSql("user_info", "id", id);
+		return result;
+	}
+
+	public int add(JSONObject userinfo) throws SQLException {
+		userinfo.remove("company");
+		int result = super.addSql("user_info", userinfo);
+		return result;
 	}
 }

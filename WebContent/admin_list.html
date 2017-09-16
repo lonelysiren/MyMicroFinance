@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" href="./lib/plugins/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="./lib/plugins/layui2.0/css/layui.css" media="all" />
 		<link rel="stylesheet" href="./lib/css/main.css" />
 	</head>
 
@@ -18,50 +18,78 @@
 			<fieldset class="layui-elem-field">
 				<legend>数据列表</legend>
 				<div class="layui-field-box layui-form">
-					<table class="layui-table admin-table">
-						<thead>
-							<tr>
-								<th style="width: 30px;"><input type="checkbox" lay-filter="allselector" lay-skin="primary"></th>
-								<th>id</th>
-								<th>账号</th>
-								<th>姓名</th>
-								<th>最后登录时间</th>
-								<th>最后登录IP</th>
-								<th>状态</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody id="content">
-						</tbody>
-					</table>
-				</div>
+				<table id="admin_list" lay-filter="admin_list"
+					class="layui-table admin-table">
+				</table>
+			</div>
 			</fieldset>
 			<div class="admin-table-page">
 				<div id="paged" class="page" >
 				</div>
 			</div>
 		</div>
-		<script type="text/html" id="tpl">
-			{{# layui.each(d.list, function(index, item){ }}
-			<tr>
-				<td><input type="checkbox" lay-skin="primary"></td>
-				<td>{{ item.id }}</td>
-				<td>{{ item.username }}</td>
-				<td>{{ item.nickname  }}</td>
-				<td> </td>
-				<td> </td>
-				<td>{{ item.stauts == 0 ? '启用':'未启用' }} </td>
-				<td>
-					<a href="javascript:;" data-name="{{ item.username }}" data-opt="edit" class="layui-btn layui-btn-mini">编辑</a>
-					<a href="javascript:;" data-id="{{ item.id }}" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
-				</td>
-			</tr>
-			{{# }); }}
-		</script>
-		<script type="text/javascript" src="./lib/plugins/layui/layui.js"></script>
+		 <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="stauts">
+  {{#  if(d.stauts == 0){ }}
+禁用
+  {{#  } else { }}
+启用
+  {{#  } }}
+</script>
+		<script type="text/javascript" src="./lib/plugins/layui2.0/layui.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
-		<script type="text/javascript" src ="./lib/js/admin_list.js"></script>
+		<script type="text/javascript">
+		layui.config({
+			base:'lib/js/'
+		});
+		layui.use(['paging','element'],function(){
+			var paging = layui.paging(),
+			element = layui.element,
+			form = layui.form,
+			$ = layui.jquery,
+			company_id = $('#company_id', window.parent.document).val()
+			paging.init({
+		url:'/user_list',
+		where:{'company_id':company_id},
+		elem:'#admin_list',
+		cols:[[ //标题栏
+		    {field: 'id', title: 'ID', width: 120},
+		    {field: 'username', title: '账号', width: 150},
+		    {field: 'nickname', title: '姓名', width: 150},
+		    {field: 'username',  title: '最后登录时间', width: 200},
+		    {field: 'username',  title: '最后登录IP', width: 200},
+		    {field: 'stauts',templet: '#stauts', title: '状态', width: 150},
+		    {fixed: 'right',title:'操作', width:150, align:'center', toolbar: '#barDemo'} 
+		  ]],
+		  filter:'admin_list',
+		  done:function(res, curr, count){
+      	    layui.each(res.data,function(index,value){
+      	    	layui.data('admin', {
+      	    	  key: value.id
+      	    	  ,value: {'email':value.email,'role':value.role}
+      	    	});
+      	    })
+      	    var localTest = layui.data('admin');
+      	  },
+      	render:function(odata){
+      		var id = odata['id'];
+  	    	$("select[name='role']").val( layui.data('admin')[id]['role']);
+  	    	$("input[name='email']").val(layui.data('admin')[id]['email']);
+  	    },
+  	  user:function(){
+  		$("input[name='company']").val($('#company', window.parent.document).html());
+  	  },
+  	    add:{'url':'/user_add','company_id':company_id},
+		  del:{'name':'nickname','id':'id','url':'/user_del'},
+		  edit:{'page':'./lib/temp/edit-admin.html','url':'/user_edit'}
+	})
+		});
+		
+		</script>
 	</body>
 
 </html>

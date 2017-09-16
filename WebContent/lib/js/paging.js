@@ -16,8 +16,17 @@ layui.define(['table','form'], function (exports) {
             elem: undefined, //内容容器
             cols:undefined,
             filter:undefined,
+            done: function(res, curr, count){
+        	},
+        	render:function(odata){
+        		  
+        	},
+        	user:function(){
+        		
+        	},
             del:undefined,
             edit:undefined,
+            add:undefined,
             success: undefined, //type:function
             fail: function (res) {
                 console.log(res.msg);
@@ -82,7 +91,12 @@ layui.define(['table','form'], function (exports) {
         	elem:_config.elem,
         	page: _config.page,
         	even: _config.even,
-        	cols:_config.cols
+        	cols:_config.cols, 
+        	done:_config.done
+        	
+        })
+        $('#add').click(function(){
+        	edit_page(that,'add',_config)
         })
         table.on('tool('+ _config.filter+')', function(obj){
         	 var odata = obj.data; //获得当前行数据
@@ -104,82 +118,106 @@ layui.define(['table','form'], function (exports) {
        	     })
        	    });
        	  } else if(layEvent === 'edit'){ //编辑
-       		$.get(_config.edit.page, null, function(form) {
-       			addBoxIndex = layer.open({
-       				type: 1,
-       				title: '编辑',
-       				content: form,
-       				btn: ['保存', '取消'],
-       				shade: false,
-       				offset: ['15%', '0%'],
-       				area: ['100%', '500px'],
-       				zIndex: 19950924,
-       				maxmin: true,
-       				yes: function(index) {
-       					//触发表单的提交事件
-       					$('form.layui-form').find('button[lay-filter=edit]').click();
-       				},
-       				full: function(elem) {
-       					var win = window.top === window.self ? window : parent.window;
-       					$(win).on('resize', function() {
-       						var $this = $(this);
-       						elem.width($this.width()).height($this.height()).css({
-       							top: 0,
-       							left: 0
-       						});
-       						elem.children('div.layui-layer-content').height($this.height() - 95);
-       					});
-       				},
-       				success: function(layero, index) {
-       					var form = layui.form
-       						$("form input").each(function(index,element){
-       							if(element.name =="product_isAdvance" ){
-       								  $(element).attr("checked",odata[element.name]);
-       									console.log(odata[element.name])
-       								  return
-       							}
-       							$(element).val(odata[element.name]);
-       						})
-       						  $("select[name='product_payment_method']").val(odata['product_payment_method']);
-       						$("#product_remark").val(odata['product_remark']);
-       						form.render();
-       					form.on('submit(edit)', function(data) {
-       						var data = data.field,temp={},fields={}
-       						layui.each(odata,function(key,value){
-       							if(value != data[key]){
-       								temp[key] =  data[key]
-       								fields[key]=data[key]
-       							}
-       						})
-       						 if($.isEmptyObject(temp)) {layer.close(index); return false;}
-       							
-       						 temp['product_id'] = data['product_id']
-       						$.ajax({
-       							type:'post',
-       							url:_config.edit.url,
-       							data:{'product':JSON.stringify(temp)},
-       							success: function (result) {
-       								if(result == "success"){
-       									parent.layer.msg("修改成功");
-       									 obj.update(fields);
-       								}else{
-       									parent.layer.msg("修改失败");
-       								}
-       								layer.close(index);
-       							}
-       						});							
-       						//这里可以写ajax方法提交表单
-       						return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。									
-       					});
-       				},
-       				end: function() {
-       					addBoxIndex = -1;
-       				}
-       			});
-       		});
+       		edit_page(that,'edit',_config,odata,obj)
+       	  } else if(layEvent === 'stauts'){
+       		  console.log('状态');
        	  }
         })
     };
+    
+    function edit_page(that,action,_config,odata,obj){
+    	var title,url
+    	if(action == 'edit'){
+    			title='增加'
+    			url = _config.edit.url
+    	}else{
+    		title='增加'
+    			url = _config.add.url
+    	}
+    	$.get(_config.edit.page, null, function(form) {
+   			var addBoxIndex = layer.open({
+   				type: 1,
+   				title: title,
+   				content: form,
+   				btn: ['确定', '取消'],
+   				shade: false,
+   				offset: ['15%', '0%'],
+   				area: ['100%', '500px'],
+   				zIndex: 19950924,
+   				maxmin: true,
+   				yes: function(index) {
+   					//触发表单的提交事件
+   					$('form.layui-form').find('button[lay-filter=edit]').click();
+   				},
+   				full: function(elem) {
+   					var win = window.top === window.self ? window : parent.window;
+   					$(win).on('resize', function() {
+   						var $this = $(this);
+   						elem.width($this.width()).height($this.height()).css({
+   							top: 0,
+   							left: 0
+   						});
+   						elem.children('div.layui-layer-content').height($this.height() - 95);
+   					});
+   				},
+   				success: function(layero, index) {
+   					$('form.layui-form').find('button[lay-filter=edit]').eq(0).css({ "display": "none" });
+   					var form = layui.form
+   					if(odata != undefined){
+   						$("form input").each(function(index,element){
+   							if(element.type =="radio" ){
+   								  $("[value='"+odata[element.name]+"']").attr("checked",true);
+   								  return
+   							}
+   							$(element).val(odata[element.name]);
+   						})
+   						_config.render(odata)
+   					}
+   					_config.user()
+   					form.render();
+   					form.on('submit(edit)', function(data) {
+   						var data = data.field,temp={},fields={}
+   						if(odata != undefined){
+   						layui.each(odata,function(key,value){
+   							if(value != data[key]){
+   								temp[key] =  data[key];
+   								fields[key]=data[key];
+   							}
+   						})
+   						 if($.isEmptyObject(temp)) {layer.close(index); return false;}
+   						 temp[_config.del.id] = data[_config.del.id];
+   						 data = temp;
+   						}
+   						if(action == 'add'){
+   							data['company_id'] =  _config.add.company_id
+   						}
+   						$.ajax({
+   							type:'post',
+   							url:url,
+   							data:{'data':JSON.stringify(data)},
+   							success: function (result) {
+   								if(result == "success"){
+   									parent.layer.msg("操作成功");
+   									if($.isEmptyObject(fields)){
+   										that.reload()
+   									}else{ obj.update(fields);}
+   									
+   								}else{
+   									parent.layer.msg("操作失败");
+   								}
+   								layer.close(index);
+   							}
+   						});							
+   						return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。									
+   					});
+   				},
+   				end: function() {
+   					addBoxIndex = -1;
+   				}
+   			});
+   		});
+    }
+    
 	/**
 	 * 抛出一个异常错误信息
 	 * @param {String} msg

@@ -54,7 +54,7 @@ var Iput = {
         $b.setAttribute('align', 'left');
         $b.style.position = 'absolute';
         $b.style.background = 'transparent';
-        $b.style.zIndex = '20000';
+        $b.style.zIndex = '19950925';
         if ($a) {
             if (Iput.get(Iput.confg.idIframe)) {
                 Iput.colse();

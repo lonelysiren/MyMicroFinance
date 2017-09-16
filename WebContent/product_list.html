@@ -14,7 +14,7 @@
 			</blockquote>
 			 <fieldset class="layui-elem-field">
 			 <legend>合同信息设置</legend>
-<form class="layui-field-box  layui-form"  >
+<form class="layui-field-box  layui-form" id="company_info" >
 <div class=" layui-row">
 	  <div class="layui-col-md5">
 		<div class="layui-form-item">
@@ -170,13 +170,22 @@
 		</div>
 		<div class=" layui-row">
 	  <div class="layui-col-md5">
-		<div class="layui-form-item">
+		<div class="layui-form-item" >
 			<label class="layui-form-label" style="text-align: left;width:100px">还款二维码：</label>
-			 <div class="layui-input-block" style="margin-left: 130px">
-			  <input type="text" name="company_qrcode"  autocomplete="off" class="layui-input">
-    </div>
+			<input type="hidden" name="qrcode">
+			 <div class="layui-input-block" style="margin-left: 130px; ">
+			 <div style="width:250px;height:250px;border:1px solid #000;">
+			 <img  id="qrimg"alt="" src="/lib/images/qrcode.png">
+			 <img  id="upqr" src="" style="display:none;">
+			 </div>
     </div>
 		</div>
+		</div>
+		 <div class="layui-col-md1" >
+			  <button type="button" class="layui-btn" id="upload">
+  <i class="layui-icon">&#xe67c;</i>上传图片
+</button>
+    </div>
 		</div>
 		<div class=" layui-row">
 	  <div class="layui-col-md10">
@@ -190,7 +199,7 @@
 		</div>
 		<div class="layui-row">
 	<div class="layui-col-md1 layui-col-md-offset9">
-      <button class="layui-btn" style="float:right" lay-submit  lay-filter="save">保存</button>
+      <button class="layui-btn" style="float:right" id="save"lay-submit  lay-filter="save">保存</button>
 	</div>
 	</div>
 </form>
@@ -230,16 +239,132 @@
 </script> 
 	<script type="text/javascript" src="./lib/plugins/layui2.0/layui.js"></script>
 <script>
+function checkImgPX(ths, width, height) {  
+    var img = null;  
+    img = document.createElement("img");  
+    console.log(img)
+    document.body.insertAdjacentElement("beforeEnd", img); // firefox不行  
+    img.style.visibility = "hidden";   
+    img.src = ths;  
+    var imgwidth = img.offsetWidth;  
+    var imgheight = img.offsetHeight;  
+    if(imgwidth > width || imgheight > height) {  
+        alert("图的尺寸应该小于" + width + "x"+ height);  
+        ths.value = "";  
+        return false;  
+    }  
+    return true;  
+}  
 layui.config({
 	base:'lib/js/'
 });
-layui.use(['paging','element','layedit'],function(){
+layui.use(['paging','element','layedit','upload'],function(){
 	var paging = layui.paging(),
 	element = layui.element,
 	form = layui.form,
-	$ = layui.jquery;
-	var layedit = layui.layedit;
-	  layedit.build('other'); //建立编辑器
+	$ = layui.jquery,
+	upload = layui.upload,
+	company_id = $('#company_id', window.parent.document).val(),
+	fieldElem = $('#company_info').find('input,select,textarea');
+	var uploadInst = upload.render({
+	    elem: '#upload' //绑定元素
+	    ,url: '/upload_qrcode' //上传接口
+	    ,data:{'company_id':company_id}
+	 	,auto: false //选择文件后不自动上传
+	 	,size:500
+	 	,exts:'jpg|png|jpeg'
+	 	,choose: function(obj){
+	 	    //将每次选择的文件追加到文件队列
+	 	    var files = obj.pushFile();
+	 	    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+	 	    obj.preview(function(index, file, result){
+	 	      console.log(index); //得到文件索引
+	 	      console.log(file); //得到文件对象
+	 	   if(checkImgPX(result,250,250)){
+	 		  obj.upload(index, file);
+	 	   }
+	 	      //这里还可以做一些 append 文件列表 DOM 的操作
+	 	      //obj.upload(index, file); //对上传失败的单个文件重新上传，一般在某个事件中使用
+	 	      //delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+	 	    })}
+	  	,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+		    layer.load(); //上传loading
+		  }
+	    ,done: function(res){
+	      //上传完毕回调
+	       layer.closeAll('loading'); //关闭loading
+	    }
+	    ,error: function(){
+	       layer.closeAll('loading'); //关闭loading
+	      //请求异常回调
+	    }
+	  });
+		 $.ajax({
+			type:'post',
+			url:'/company_info',
+			data:{'company_id':company_id},
+				success: function (result) {
+					 layui.each(fieldElem,function(key,item){
+						 if(!item.name) return;
+					      if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
+					      if(!result[item.name]) return;
+					      fieldElem.eq(key).val(result[item.name]);
+					      field[item.name] = result[item.name];
+					      form.render();
+					}) 
+                },
+                error: function (result, status) { }
+		});  
+	var layedit = layui.layedit,
+	  edit = layedit.build('other',{tool: [
+		  'strong' //加粗
+		  ,'italic' //斜体
+		  ,'underline' //下划线
+		  ,'del' //删除线
+		  ,'|' //分割线
+		  ,'left' //左对齐
+		  ,'center' //居中对齐
+		  ,'right' //右对齐
+		  ,'link' //超链接
+		  ,'unlink' //清除链接
+		]}); //建立编辑器
+		$('#save').click(function(){
+			layedit.sync(edit)
+		})
+	  form.on('submit(save)',function(data){
+		 
+		  layui.each(data.field,function(key,value){
+			  console.log(key,value,field[key])
+			  if(!field[key] == undefined) return
+			  if(value != field[key]) return
+				 delete data.field[key]
+		  })
+			if(isEmptyObject(data.field)) return false
+			data.field['company_id'] = company_id;
+			$.ajax({
+				type:'post',
+				url:'/company_edit',
+				data:data.field,
+					success: function (result) {
+						if(result == 'error'){
+							$(':password').val('');
+							$(':text').val( $.cookie('rememberMe'));
+							form.render();
+							layer.msg('用户名或密码错误,请重新输入');
+						}else if(result == 'stauts') {
+							$(':password').val('');
+							$(':text').val( $.cookie('rememberMe'));
+							form.render();
+							layer.msg('此账号已被禁用');
+						}
+						else{
+							window.location.href='index.jsp';
+						}
+	                },
+	                error: function (result, status) { }
+			});
+			return false
+	  })
 	paging.init({
 		url:'/product_list',
 		where:{'company_id':$('#company_id', window.parent.document).val()},
@@ -259,8 +384,13 @@ layui.use(['paging','element','layedit'],function(){
 		    {fixed: 'right',title:'操作', width:130, align:'center', toolbar: '#barDemo'} 
 		  ]],
 		  filter:'product_list',
+		  add:{'url':'/product_add','company_id':company_id},
 		  del:{'name':'product_name','id':'product_id','url':'/product_del'},
-		  edit:{'page':'./lib/temp/edit-product.html','url':'/product_edit'}
+		  edit:{'page':'./lib/temp/edit-product.html','url':'/product_edit'},
+		  render:function(odata){
+			 		 $("select[name='product_payment_method']").val(odata['product_payment_method']);
+					$("#product_remark").val(odata['product_remark']);
+		  }
 	})
 	
 	$('#mproduct').click(function(){

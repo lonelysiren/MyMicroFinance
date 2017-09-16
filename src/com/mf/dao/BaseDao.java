@@ -75,6 +75,13 @@ public class BaseDao {
 		return id;
 	}
 
+	/**
+	 * @param column
+	 * @param table_name
+	 * @param parameters
+	 * @return
+	 * @throws SQLException
+	 */
 	public int addSql(String column,String table_name, JSONObject parameters) throws SQLException {
 		sql = "INSERT INTO " + table_name;
 		column_name = " (";
@@ -104,7 +111,7 @@ public class BaseDao {
 	
 	public String delteSql(String table_name, String requirement, String value) throws SQLException {
 
-		sql = "DELETE FROM " + table_name + " WHERE + " + column_name + "= ? ";
+		sql = "DELETE FROM " + table_name + " WHERE + " + requirement + "= ? ";
 		params.add(value);
 		boolean result = jdbcUtil.updateByPreparedStatement(sql, params);
 		return result ? "success" : "faild";

@@ -56,13 +56,14 @@ public class LoginServlet extends HttpServlet {
 		if(user_info.isEmpty()) {
 			response.getWriter().write("error");
 		} else if(user_info.get("stauts").toString().equals("0")) {
+			response.getWriter().write("disabled");
+		} else {
 			HttpSession session = request.getSession();
+			session.setAttribute("id", user_info.get("id"));
 			session.setAttribute("role", user_info.get("role"));
 			session.setAttribute("company_id", user_info.get("company_id"));
-			session.setAttribute("company_name", user_info.get("name"));
+			session.setAttribute("company_name", user_info.get("company_name"));
 			session.setAttribute("nickname", user_info.get("nickname"));
-		} else {
-			response.getWriter().write("stauts");
 		}
 	
 

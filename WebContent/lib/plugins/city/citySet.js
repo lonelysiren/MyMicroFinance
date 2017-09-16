@@ -1,10 +1,25 @@
-﻿function SelCity(obj,e) {
+﻿function SelCity(obj,e,layer) {
     var ths = obj;
     var dal = '<div class="_citys"><span title="关闭" id="cColse" >×</span><ul id="_citysheng" class="_citys0"><li class="citySel">省份</li><li>城市</li><li>区县</li></ul><div id="_citys0" class="_citys1"></div><div style="display:none" id="_citys1" class="_citys1"></div><div style="display:none" id="_citys2" class="_citys1"></div></div>';
-    Iput.show({ id: ths, event: e, content: dal,width:"470"});
-    $("#cColse").click(function () {
-        Iput.colse();
-    });
+    if(layer){
+    	var index = layer.open({
+    		type: 1,
+    		title:"选择地区",
+    		content:dal, 
+    		anim: 3,
+    		zIndex:19940813,
+    		shadeClose:true,
+    		scrollbar: false,
+    		offset: '100px'
+    	})
+    	
+    }else{
+    	  Iput.show({ id: ths, event: e, content: dal,width:"470"});
+    	    $("#cColse").click(function () {
+    	        Iput.colse();
+    	    });
+    }
+  
     var tb_province = [];
     var b = province;
     for (var i = 0, len = b.length; i < len; i++) {
@@ -84,7 +99,11 @@
                 var bc = $("#hcity").val();
                 var bp = $("#hproper").val();
                 ths.value = bc + "-" + bp + "-" + $(this).data("name");
+                if(index){
+                	layer.close(index)
+                }else{
                 Iput.colse();
+                }
             });
 
         });

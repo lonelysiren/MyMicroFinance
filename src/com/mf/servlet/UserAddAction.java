@@ -9,21 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mf.dao.ProductDao;
+import com.mf.dao.UserDao;
 
 import net.sf.json.JSONObject;
 
 /**
- * Servlet implementation class ProdcutEditAction
+ * Servlet implementation class UserAddAction
  */
-@WebServlet("/ProdcutEditAction")
-public class ProductEditAction extends HttpServlet {
+@WebServlet("/UserAddAction")
+public class UserAddAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductEditAction() {
+    public UserAddAction() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,7 +33,6 @@ public class ProductEditAction extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -41,17 +40,19 @@ public class ProductEditAction extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String parameter = request.getParameter("data");
-		JSONObject product = JSONObject.fromObject(parameter);
-		ProductDao productDao = new ProductDao();
+		JSONObject userinfo = JSONObject.fromObject(parameter);
+		UserDao userDao = new UserDao();
 		try {
-			String result = productDao.edit(product);
-			response.getWriter().write(result);
+			int result = userDao.add(userinfo);
+			if(result != 0){
+			response.getWriter().write("success");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			
 		}
-	}	
+	}
 
 }

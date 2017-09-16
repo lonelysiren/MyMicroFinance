@@ -421,8 +421,6 @@ $("select").each(function(index,dom){
 		}
 	})  
   })
-
-    //身份证验证
   $("#credit_add").click(function(){
 	  var html = '<div name="creditcard" class="row" ><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name[]" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="col-md-3"><div class="layui-form-item" ><button type="button"  class="layui-btn layui-btn-danger" onclick="remove_input(this)" >删除</button></div></div></div>';
 	 $('#lingyong').before(html)

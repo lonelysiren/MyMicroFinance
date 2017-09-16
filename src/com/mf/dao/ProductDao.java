@@ -41,9 +41,9 @@ public class ProductDao extends BaseDao {
 	}
 	
 	public int add(JSONObject product) throws SQLException {
-		product.put("day_rate", product.get("day_rate") + "‰");
-		product.put("week_rate", product.get("week_rate") + "‰");
-		int result = super.addSql("product", "product_info", product);
+	//	product.put("day_rate", product.get("day_rate") + "‰");
+	//	product.put("week_rate", product.get("week_rate") + "‰");
+		int result = super.addSql("product_info", product);
 		return result;
 
 	}
@@ -70,7 +70,7 @@ public class ProductDao extends BaseDao {
 			params.add(0);
 			params.add(limit);
 		} else {
-			params.add((page - 1) * company_id);
+			params.add((page - 1) * limit);
 			params.add(limit);
 		}
 		List<Map<String, Object>> list = null;
@@ -96,10 +96,4 @@ public class ProductDao extends BaseDao {
 		JSONObject jsonObject = JSONObject.fromObject(maps);
 		return jsonObject;
 	}
-	
-	
-
-
-	
-
 }

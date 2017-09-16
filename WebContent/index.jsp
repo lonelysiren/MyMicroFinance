@@ -43,10 +43,10 @@
 					</div>
 					
 					<ul class="layui-nav admin-header-item" >
-					<li class="layui-nav-item">
+					<li class="layui-nav-item" style="color:#333">
 					<span >积分：100</span>
 					</li>	
-					<li class="layui-nav-item">
+					<li class="layui-nav-item" style="color:#333">
 					公司：<span id="company">${ sessionScope.company_name} </span>
 					<input id="company_id" type="hidden" value=${ sessionScope.company_id}>
 					</li>					

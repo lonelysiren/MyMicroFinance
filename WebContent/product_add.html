@@ -4,13 +4,13 @@
  <link rel="stylesheet" href="./lib/plugins/layui2.0/css/layui.css" media="all" />
 <body>
 <div style="margin: 50px;">
-	<form class="layui-form"  >
+	<form class="layui-form"   >
 	<div class="layui-row">
 	  <div class="layui-col-md9">
 		<div class="layui-form-item">
 			<label class="layui-form-label" style="text-align: left">产品名称：</label>
 			<div class="layui-input-block">
-				<input type="text"  name="name"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+				<input type="text"  name="product_name"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		</div>
@@ -20,7 +20,7 @@
 	  <div class="layui-form-item">
 			<label class="layui-form-label" style="text-align: left;">周期天数 ：</label>
 			<div class="layui-input-inline" style="width:150px"   >
-				<input type="text"  name="cycle"  required lay-verify="required" placeholder="请输入周期天数" autocomplete="off" class="layui-input">
+				<input type="text"  name="product_cycle"  required lay-verify="required" placeholder="请输入周期天数" autocomplete="off" class="layui-input">
 			</div>
 			<div class="layui-form-mid layui-word-aux" style="margin-right: 0px">天</div>
 			</div>
@@ -31,7 +31,7 @@
 				<div class="layui-col-md2">
 			<div class="layui-form-mid layui-word-aux" style="margin-right: 5px">千分之</div>
 			<div class="layui-input-block" style="margin-left:50px"  >
-				<input type="text"   name="day_rate"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+				<input type="text"   name="product_day_rate"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
 		</div>
 		</div>
 			<div class="layui-col-md1">
@@ -40,7 +40,7 @@
 				<div class="layui-col-md2">
 			<div class="layui-form-mid layui-word-aux" style="margin-right: 5px">千分之</div>
 			<div class="layui-input-block" style="margin-left:50px"  >
-				<input type="text"   name="week_rate"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+				<input type="text"   name="product_week_rate"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
 		</div>
 		</div>
 		<div class="layui-col-md3">
@@ -51,7 +51,7 @@
 	  <div class="layui-form-item">
 			<label class="layui-form-label" style="text-align: left;">保证金 ：</label>
 			<div class="layui-input-inline" style="width:150px"  >
-				<input type="text"  name="margin_loans"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+				<input type="text"  name="product_margin_loans"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
 			</div>
 			<div class="layui-form-mid layui-word-aux" style="margin-right: 0px">期</div>
 			</div>
@@ -63,14 +63,14 @@
 				<div class="layui-col-md2">
 			<div class="layui-form-mid layui-word-aux" style="margin-right: 5px">千分之</div>
 			<div class="layui-input-block" style="margin-left:50px"  >
-				<input type="text"   name="management_pay"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
+				<input type="text"   name="product_management_pay"  required lay-verify="required" placeholder="请输入产品名称" autocomplete="off" class="layui-input">
 		</div>
 		</div>
 		 <div class="layui-col-md3">
 		<div class="layui-form-item">
 			<label class="layui-form-label"  style="text-align: left"   >其他费用：</label>
 			<div class="layui-input-block" style="width:auto">
-				<input type="text"  name=other_pay   placeholder="请输入其他费用" autocomplete="off" class="layui-input">
+				<input type="text"  name="product_other_pay"   placeholder="请输入其他费用" autocomplete="off" class="layui-input">
 			</div>
 		</div>
 		</div>
@@ -80,7 +80,7 @@
 	<div class="layui-form-item">
 	<label class="layui-form-label"  style="text-align: left"   >还款方式：</label>
 			<div class="layui-input-block"  style="width:150px">
-				<select name="payment_method" >
+				<select name="product_payment_method" >
   <option value="0" selected>等额本金</option>
   <option value="1">等额本息</option>
 </select> 
@@ -91,7 +91,7 @@
 	<div class="layui-form-item">
 	<label class="layui-form-label"  style="text-align: left"   >提前还款：</label>
 			<div class="layui-input-block"  >
-		 <input type="checkbox" value="1" name="isAdvance" lay-skin="switch" lay-text="是|否">
+		 <input type="checkbox" value="1" name="product_isAdvance" lay-skin="switch" lay-text="是|否">
 			</div>
 	</div>
 	</div>
@@ -101,7 +101,7 @@
 	<div class="layui-form-item">
 	<label class="layui-form-label"  style="text-align: left"   >备注：</label>
 	<div class="layui-input-block" >
-			<textarea name="remark"  placeholder="请输入备注" class="layui-textarea"></textarea>
+			<textarea name="product_remark"  placeholder="请输入备注" class="layui-textarea"></textarea>
 			</div>
 	</div>
 	</div>
@@ -109,6 +109,7 @@
 	<div class="layui-row">
 	<div class="layui-col-md1 layui-col-md-offset8">
       <button class="layui-btn" lay-submit  lay-filter="add">立即提交</button>
+      <button type="reset" class="layui-btn"  id="reset" style="display:none">重置</button>
 	</div>
 	</div>
 	</div>
@@ -122,8 +123,15 @@ layui.use(['form','layer'], function(){
 	$= layui.jquery,company_id = $('#company_id', window.parent.document).val();
 	var form = layui.form,
 	layer=layui.layer;
-	console.log(parent.tab.getTabId('产品列表'))
-	layer.open({
+	form.on('submit(add)', function(data){
+		  data.field['company_id'] = company_id
+		  console.log(data.field);
+		  $.ajax({
+				type:'post',
+				url:'/product_add',
+				data:{'data':JSON.stringify(data.field)},
+					success: function (result) {
+						layer.open({
 							  title: '提示'
 							  ,icon:1
 							  ,content: '添加产品成功!'
@@ -131,28 +139,20 @@ layui.use(['form','layer'], function(){
 							 ,btn:'我知道了'
 							 ,yes: function(index, layero){
 								    //按钮【按钮一】的回调
-								    var tabIndex = parent.tab.exists('产品列表')
-								    if(tabIndex != -1){
-								    }
-								 layer.close(index);
+									$("#reset").click()
+								    layer.close(index);
+								    
 							  }
-							//,time:3000
-							});  
-	form.on('submit(add)', function(data){
-		  data.field['company_id'] = company_id
-		  console.log(data.field);
-		  $.ajax({
-				type:'post',
-				url:'/product_add',
-				data:{'product':JSON.stringify(data.field)},
-					success: function (result) {
-						
+							,time:3000
+							}); 
 						form.render(); //更新全部
 	                },
 	                error: function (result, status) { }
 			});
+		  form.render();
 		  return false
 		});
+	form.render(); //更新全部
 });
 </script>
 </body>

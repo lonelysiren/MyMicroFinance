@@ -66,12 +66,28 @@
     <url-pattern>/user_list</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>UserEditServlet</servlet-name>
-    <servlet-class>com.mf.servlet.UserEditServlet</servlet-class>
+    <servlet-name>UserEditAction</servlet-name>
+    <servlet-class>com.mf.servlet.UserEditAction</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>UserEditServlet</servlet-name>
+    <servlet-name>UserEditAction</servlet-name>
     <url-pattern>/user_edit</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UserDeleteAction</servlet-name>
+    <servlet-class>com.mf.servlet.UserDeleteAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserDeleteAction</servlet-name>
+    <url-pattern>/user_del</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UserAddAction</servlet-name>
+    <servlet-class>com.mf.servlet.UserAddAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UserAddAction</servlet-name>
+    <url-pattern>/user_add</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>NavServlet</servlet-name>
@@ -106,6 +122,22 @@
     <url-pattern>/customer_add</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>CustomerListServlet</servlet-name>
+    <servlet-class>com.mf.servlet.CustomerListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomerListServlet</servlet-name>
+    <url-pattern>/customer_list</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CustomerDetailAction</servlet-name>
+    <servlet-class>com.mf.servlet.CustomerDetailAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomerDetailAction</servlet-name>
+    <url-pattern>/customer_detail</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>ProductAddAction</servlet-name>
     <servlet-class>com.mf.servlet.ProductAddAction</servlet-class>
   </servlet>
@@ -121,7 +153,7 @@
     <servlet-name>ProductListServlet</servlet-name>
     <url-pattern>/product_list</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <servlet-name>ProductEditAction</servlet-name>
     <servlet-class>com.mf.servlet.ProductEditAction</servlet-class>
   </servlet>
@@ -129,6 +161,26 @@
     <servlet-name>ProductEditAction</servlet-name>
     <url-pattern>/product_edit</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>CompanyInfoServlet</servlet-name>
+    <servlet-class>com.mf.servlet.CompanyInfoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CompanyInfoServlet</servlet-name>
+    <url-pattern>/company_info</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CompanyEditAction</servlet-name>
+    <servlet-class>com.mf.servlet.CompanyEditAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpLoadQrcodeAction</servlet-name>
+    <url-pattern>/upload_qrcode</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UpLoadQrcodeAction</servlet-name>
+    <servlet-class>com.mf.servlet.UpLoadQrcodeAction</servlet-class>
+  </servlet>
   <jsp-config>
     <taglib>
       <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
