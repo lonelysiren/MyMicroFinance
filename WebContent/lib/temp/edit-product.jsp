@@ -379,7 +379,7 @@
 <fieldset class="layui-elem-field">
   <legend>负债信息</legend>
   <div class="layui-field-box">
-   <div class="layui-row" name="creditcard" id="creditcard">
+   <div class="layui-row" name="debt_creditcard" id="creditcard">
    <div class="layui-col-md3"> <div class="layui-form-item" >
   <div data-id="creditcard_id"></div>
    		<label class="layui-form-label">信用卡</label>
@@ -405,7 +405,7 @@
       </div>
       </div>
    </div>
-   <div class="layui-row" name="lingyong" id="lingyong" >
+   <div class="layui-row" name="debt_lingyong" id="lingyong" >
    <div class="layui-col-md3"> <div class="layui-form-item" >
     <div data-id="lingyong_id"></div>
    		<label class="layui-form-label">零用贷</label>
@@ -423,7 +423,7 @@
    		<button type="button" id = "lingyong_add" class="layui-btn">增加</button>
       </div></div>
    </div>
-   <div class="layui-row" name="other" id="other">
+   <div class="layui-row" name="debt_other" id="other">
    <div class="layui-col-md3"> <div class="layui-form-item" >
    <div data-id="other_id"></div>
    		<label class="layui-form-label">其他贷款</label>
@@ -464,7 +464,7 @@
 		var debt_creditcard =${debt_creditcard}
 		var debt_lingyong = ${debt_lingyong}
 		var debt_other = ${debt_other}
-		var details = {"cusotmer":info,"company":company,"contact":contact,"contact_other":contact_other,"creditcard":debt_creditcard,"lingyong":debt_lingyong,"other":debt_other}
+		var details = {"info":info,"company":company,"contact":contact,"contact_other":contact_other,"debt_creditcard":debt_creditcard,"debt_lingyong":debt_lingyong,"debt_other":debt_other}
 		for (var i = 1; i < debt_creditcard.length; i++) {
 				 var html = $("#creditcard").clone()
 				 $(html).children().last().remove()
@@ -497,13 +497,18 @@
 				var temp = {},id = {}
 				if(value.constructor === Array){
 					var adata = getData(obj,key)
-					console.log(adata)
 					layui.each(value,function(index,value){
-						console.log(adata[index])
 						temp = check(value,adata[index])
-						if($.isEmptyObject(temp)) adata.splice(index,1);
+						if($.isEmptyObject(temp)) delete adata[index]
 					})
-					ndata[key] = adata
+					if($.isEmptyObject(adata)) return
+					var bdata = [];//去除undefined后的结果
+					for(var i=0;i<adata.length;i++){
+					    if(typeof(adata[i])!='undefined'){
+					    	bdata.push(adata[i]);
+					    }
+					}
+					ndata[key] = bdata
 					return
 				}
 				layui.each(value,function(name,value){
@@ -519,7 +524,14 @@
 				temp = $.extend({},temp,id)
 				ndata[key] = temp
 			})
-			console.log(ndata)
+			console.log(ndata);
+			/*  $.ajax({
+						type:'post',
+  						url:'/customer_edit',
+						data:{'action':'customer','customer_id':info[customer_id],'data':JSON.stringify(nata)},
+						success: function(result){
+					   }
+					   	})  */
 			return false
 		})
 			$("[name='census_register']").click(function(e) {

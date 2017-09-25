@@ -93,7 +93,7 @@ public class CustomerDao extends BaseDao {
 		return Customer_id;
 	}
 
-	public String editCustomer(String table_name, JSONObject data, String customer_id) throws SQLException {
+	public String editCustomerInfo(String table_name, JSONObject data, String customer_id) throws SQLException {
 		data.remove("harea");
 		data.remove("hproper");
 		data.remove("hcity");
@@ -146,6 +146,11 @@ public class CustomerDao extends BaseDao {
 		CustomerCpmpany_id = super.addSql("customer_info_company", data);
 		return CustomerCpmpany_id;
 	}
+	
+	public String editCustomerCompany(String table_name, JSONObject parameters, String requirement) throws SQLException {
+		String result = super.editSql(table_name, parameters, requirement);
+		return result;
+	}
 
 	public JSONObject editCustomerDbet(JSONObject data, String customer_id) throws SQLException {
 		JSONObject result = new JSONObject();
@@ -160,7 +165,7 @@ public class CustomerDao extends BaseDao {
 				String index = (String) index_set.next();
 				JSONObject debt = debts.getJSONObject(index);
 				if (debt.has(key + "_id[]")) {
-						super.editSql(table_name + key, debt, key + "_id");		
+					super.editSql(table_name + key, debt, key + "_id");
 				} else {
 					JSONObject out_index_set = new JSONObject();
 					debt.put("customer_id", customer_id);
@@ -265,14 +270,60 @@ public class CustomerDao extends BaseDao {
 		List<Map<String, Object>> debt_lingyong = jdbcUtil.findModeResult(sql4, params);
 		List<Map<String, Object>> debt_other = jdbcUtil.findModeResult(sql5, params);
 		detail.put("customer_info", customer_info);
-		detail.put("company",  company);
+		detail.put("company", company); 
 		detail.put("contacts", contacts);
-		detail.put("contact_other",  contact_other);
-		detail.put("debt_creditcard",  debt_creditcard);
-		detail.put("debt_lingyong",  debt_lingyong);
-		detail.put("debt_other",  debt_other);
+		detail.put("contact_other", contact_other);
+		detail.put("debt_creditcard", debt_creditcard);
+		detail.put("debt_lingyong", debt_lingyong);
+		detail.put("debt_other", debt_other);
 		JSONObject customer_detail = JSONObject.fromObject(detail);
 		return customer_detail;
+	}
+
+	public JSONObject editCustomer(JSONObject data, String customer_id) throws SQLException {
+		Iterator<?> keys = data.keys();
+		while (keys.hasNext()) {
+			String key = (String) keys.next();
+			JSONObject obj = data.getJSONObject(key);
+			String table_name = "customer_info";
+			switch (key) {
+			case "info":
+				editCustomerInfo(table_name, obj, "customer_id");
+				break;
+			case "company":
+				table_name = table_name + "_" + key;
+				if(obj.has("company_id")) {
+					String company = super.editSql(table_name, obj, "customer_company_id");
+				}
+				
+				break;
+			case "contact":
+				JSONArray contacts = JSONArray.fromObject(obj);
+				if(obj.size()>0){
+					  for(int i=0;i<obj.size();i++){
+					    JSONObject contact = contacts.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+
+					  }
+					}
+				break;
+			case "contact_other":
+				table_name = table_name + "_" + key;
+				String contact_other = super.editSql(table_name, obj, "contact_other_id");
+				break;
+			case "debt_creditcard":
+				break;
+			case "debt_lingyong":
+
+				break;
+			case "debt_other":
+
+				break;
+			default:
+				break;
+			}
+		}
+
+		return null;
 	}
 
 }

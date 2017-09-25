@@ -14,15 +14,15 @@
 		}
 	});
   $("#credit_add").click(function(){
-	  var html = '<div name="creditcard" class="layui-row" ><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><button type="button"  class="layui-btn layui-btn-danger" onclick="remove_input(this)" >删除</button></div></div></div>';
+	  var html = '<div name="debt_creditcard" class="layui-row" ><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">信用卡</label><div class="layui-input-block"><input type="text" name="creditcard_name" autocomplete="off" class="layui-input" placeholder="请输入发卡行" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">授信额度</label><div class="layui-input-block"><input type="text" name="creditcard_limit[]" autocomplete="off" class="layui-input" placeholder="请输入金额" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">已使用额度</label><div class="layui-input-block"><input type="text" name="creditcard_used[]" autocomplete="off" class="layui-input" placeholder="请输入已经用金额" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><button type="button"  class="layui-btn layui-btn-danger" onclick="remove_input(this)" >删除</button></div></div></div>';
 	 $('#lingyong').before(html)
   });
   $("#lingyong_add").click(function(){
-	  var html = '<div class="layui-row" name="lingyong"><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">零用贷</label><div class="layui-input-block"><input type="text" name="lingyong_name" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">金额</label><div class="layui-input-block"><input type="text" name="lingyong_amount[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><button type="button" onClick="remove_input(this)"  class="layui-btn layui-btn-danger" >删除</button></div></div></div>';
+	  var html = '<div class="layui-row" name="debt_lingyong"><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">零用贷</label><div class="layui-input-block"><input type="text" name="lingyong_name" autocomplete="off" class="layui-input" placeholder="请输入零用贷名称" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><label class="layui-form-label">金额</label><div class="layui-input-block"><input type="text" name="lingyong_amount[]" autocomplete="off" class="layui-input" placeholder="请输入零用贷额度" ></div></div></div><div class="layui-col-md3"><div class="layui-form-item" ><button type="button" onClick="remove_input(this)"  class="layui-btn layui-btn-danger" >删除</button></div></div></div>';
 	  $('#other').before(html)
   });
   $("#other_add").click(function(){
-	  var html = '<div class="layui-row" name="other"><div class="layui-col-md3" ><div class="layui-form-item" ><label class="layui-form-label">其他贷款</label><div class="layui-input-block">   		<input type="text" name="other_name" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="layui-col-md3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="layui-col-md3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)"  class="layui-btn layui-btn-danger" >删除</button></div></div></div>';
+	  var html = '<div class="layui-row" name="debt_other"><div class="layui-col-md3" ><div class="layui-form-item" ><label class="layui-form-label">其他贷款</label><div class="layui-input-block">   		<input type="text" name="other_name" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" lay-verify="required"></div></div></div><div class="layui-col-md3"><div class="layui-form-item" >   		<label class="layui-form-label">金额</label>   		<div class="layui-input-block">   		<input type="text" name="other_amount[]" autocomplete="off" class="layui-input" placeholder="请输入其他金额" lay-verify="required"></div></div></div><div class="layui-col-md3"><div class="layui-form-item" >   		<button type="button" onClick="remove_input(this)"  class="layui-btn layui-btn-danger" >删除</button></div></div></div>';
 	  $('#final').before(html)
   });
   function remove_input(obj){
@@ -48,7 +48,6 @@
 	  
 function getData(obj,key){
 	var obj = $(obj).find("[name='"+ key +"']"),
-	fieldElem = obj.find('input,select,textarea'),
 	data = {},
 	datas = [];
 	layui.each(obj,function(index,value){
@@ -60,10 +59,6 @@ function getData(obj,key){
 		})
 		 datas[index] = data
 		 data = {}
-	})
-	console.log(datas)
-	layui.each(datas,function(index,obj){
-		console.log(index,obj)
 	})
 //	layui.each(fieldElem,function(_,item){
 //		console.log(item.name,item.value);

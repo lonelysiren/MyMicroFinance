@@ -63,17 +63,19 @@ public class CustomerEditServlet extends HttpServlet {
 			switch (action) {
 			case "customer_info":
 				data.put("customer_id", customer_id);
-				result = customerDao.editCustomer(action, data, "customer_id");
+				result = customerDao.editCustomerInfo(action, data, "customer_id");
 				break;
 			case "customer_info_contact":
 				 jresult = customerDao.editCustomerContact(data, customer_id);
 				break;
 			case "customer_info_company":
-				result = customerDao.editSql(action, data, "customer_company_id");
+				result = customerDao.editCustomerCompany(action, data, "customer_company_id");
 				break;
 			case "customer_info_debt":
 				 jresult =	customerDao.editCustomerDbet(data, customer_id);
 				break;
+			case "customer":
+				jresult = customerDao.editCustomer(data,customer_id);
 			default:
 				break;
 			}
