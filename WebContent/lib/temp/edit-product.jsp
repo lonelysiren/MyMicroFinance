@@ -43,7 +43,7 @@
  <div class="layui-form-item" pane="" >
    		<label class="layui-form-label">性别</label>
    		<div class="layui-input-block">
-   		<input type="radio" name="sex"  title="男" checked>
+   		<input type="radio" name="sex" value="0" title="男" checked>
 		<input type="radio" name="sex" value="1" title="女" >
       </div>
       </div>
@@ -158,7 +158,7 @@
  <div class="layui-form-item" pane="">
    		<label class="layui-form-label">是否本地</label>
    		<div class="layui-input-block ">
-   		<input type="radio" name="native_type"  title="是" checked>
+   		<input type="radio" name="native_type"  value="0" title="是" checked>
    		<input type="radio"  name="native_type" value="1" title="否" >
       </div>
       </div>
@@ -194,7 +194,7 @@
  <div class="layui-form-item" pane="">
    		<label class="layui-form-label">是否实名制</label>
    		<div class="layui-input-block">
-   		<input type="radio" name="mobile_phone_real_name"  title="是" checked>
+   		<input type="radio" name="mobile_phone_real_name" value="0" title="是" checked>
    		<input type="radio" name="mobile_phone_real_name" value="1" title="否" >
       </div>
       </div>
@@ -252,7 +252,7 @@
 </fieldset>
 <fieldset class="layui-elem-field">
   <legend>公司信息</legend>
-  <div class="layui-field-box">
+  <div class="layui-field-box" name="company">
   <div class="layui-row">
     <div class="layui-col-md3"><div class="layui-form-item" >
     <div data-id="customer_company_id" ></div>
@@ -361,10 +361,10 @@
 <fieldset class="layui-elem-field">
   <legend>联系人信息</legend>
   <div class="layui-field-box">
-   <div class="layui-row" id="other_contact">
+   <div class="layui-row" id="other_contact" name="contact_other">
     <div class="layui-col-md3">
-     <div class="layui-form-item" >
-     <div data-id="contac_other_id" ></div>
+     <div class="layui-form-item"  >
+     <div data-id="contac_other_id"  ></div>
    		<label class="layui-form-label" style="width:100%">其他联系人</label>
    		</div>
     </div> 
@@ -425,7 +425,7 @@
    </div>
    <div class="layui-row" name="debt_other" id="other">
    <div class="layui-col-md3"> <div class="layui-form-item" >
-   <div data-id="other_id"></div>
+   <div data-id="debt_other_id"></div>
    		<label class="layui-form-label">其他贷款</label>
    		<div class="layui-input-block">
    		<input type="text" name="other_name[]" autocomplete="off" class="layui-input" placeholder="请输入其他贷款名称" >
@@ -496,7 +496,7 @@
 			layui.each(details,function(key,value){
 				var temp = {},id = {}
 				if(value.constructor === Array){
-					var adata = getData(obj,key)
+					var adata = getData(obj,key,value.length)
 					layui.each(value,function(index,value){
 						temp = check(value,adata[index])
 						if($.isEmptyObject(temp)) delete adata[index]
@@ -508,30 +508,37 @@
 					    	bdata.push(adata[i]);
 					    }
 					}
+					if(bdata.length == 0) return
 					ndata[key] = bdata
 					return
 				}
-				layui.each(value,function(name,value){
-					if(name.indexOf("_id" ) > 0){
-						id[name] = value
-						return
-					}
-					if(value != data.field[name]){
-						temp[name] = data.field[name]
-					}
-				})
+				if($.isEmptyObject(value)){
+					temp = getData(obj,key,0,1)
+					console.log(temp);
+				}else{
+					layui.each(value,function(name,value){
+						if(name.indexOf("_id" ) > 0){
+							id[name] = value
+							return
+						}
+						if(value != data.field[name]){
+							temp[name] = data.field[name]
+						}
+					})
+				}
 				if($.isEmptyObject(temp)) return
 				temp = $.extend({},temp,id)
 				ndata[key] = temp
 			})
 			console.log(ndata);
-			/*  $.ajax({
+			if($.isEmptyObject(ndata)) return false
+			 $.ajax({
 						type:'post',
   						url:'/customer_edit',
-						data:{'action':'customer','customer_id':info[customer_id],'data':JSON.stringify(nata)},
+						data:{'action':'customer','customer_id':info['customer_id'],'data':JSON.stringify(ndata)},
 						success: function(result){
 					   }
-					   	})  */
+					   	}) 
 			return false
 		})
 			$("[name='census_register']").click(function(e) {

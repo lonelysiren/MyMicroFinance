@@ -46,7 +46,7 @@
 	   return temp
 	  };
 	  
-function getData(obj,key){
+function getData(obj,key,length,mode){
 	var obj = $(obj).find("[name='"+ key +"']"),
 	data = {},
 	datas = [];
@@ -55,11 +55,14 @@ function getData(obj,key){
 		layui.each(fieldElem,function(_,item){
 			if(!item.name) return;
 		     if(/^checkbox|radio$/.test(item.type) && !item.checked) return;
+		     if(index >= length && item.value =="") return;
 		     data[item.name] = item.value
 		})
+		if($.isEmptyObject(data)) return
 		 datas[index] = data
 		 data = {}
 	})
+	return (mode==1) ? datas[0] : datas
 //	layui.each(fieldElem,function(_,item){
 //		console.log(item.name,item.value);
 //		if(!item.name) return;
@@ -72,7 +75,7 @@ function getData(obj,key){
 //		data[item.name] = item.value
 //	})
 //	     if(!($.isEmptyObject(data)))  datas[index] = data
-	return datas
+	
 }	  
 
 function loadData(jsonStr,index){

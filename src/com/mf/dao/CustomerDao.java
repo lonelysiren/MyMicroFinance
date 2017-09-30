@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,8 +49,11 @@ public class CustomerDao extends BaseDao {
 		// JSONObject addCustomerContact = customerDao.addCustomerContact(data, "10");
 		// JSONObject result = customerDao.editCustomerDbet(data, "10");
 		// id = customerDao.addCustomer(data);
-		JSONObject findAll = customerDao.detail("9");
-		logger.info(findAll);
+		//JSONObject findAll = customerDao.detail("9");
+		String arrayData = "[{\"sex\":\"2\"},{\"sex\":\"3\"}]";
+		JSONArray test = JSONArray.fromObject(arrayData);
+		logger.info(test.size());
+		logger.info(test);
 
 	}
 
@@ -210,7 +214,6 @@ public class CustomerDao extends BaseDao {
 		List<Map<String, Object>> list = null;
 		try {
 			list = jdbcUtil.findModeResult(sql, params);
-
 			sql = " select count(1)  from customer_list where company_id = ? ";
 			params.remove(1);
 			params.remove(1);
@@ -230,11 +233,9 @@ public class CustomerDao extends BaseDao {
 		jsonConfig.registerJsonValueProcessor(Date.class, new DateJsonValueProcessor());
 		JSONObject jsonObject = JSONObject.fromObject(maps, jsonConfig);
 		return jsonObject;
-
 	}
 
 	public JSONObject detail(String customer_id) throws SQLException {
-		// TODO Auto-generated method stub
 		Map<String, Object> detail = new LinkedHashMap<String, Object>();
 		sql = "SELECT\n" + "customer_info.customer_id,\n" + "customer_info.customer_name,\n" + "customer_info.sex,\n"
 				+ "customer_info.age,\n" + "customer_info.marriage_status,\n" + "customer_info.idcard_type,\n"
@@ -282,47 +283,64 @@ public class CustomerDao extends BaseDao {
 
 	public JSONObject editCustomer(JSONObject data, String customer_id) throws SQLException {
 		Iterator<?> keys = data.keys();
+		Map<String, Object> map = new HashMap<String, Object>();
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
-			JSONObject obj = data.getJSONObject(key);
+			JSONObject obj;
 			String table_name = "customer_info";
 			switch (key) {
 			case "info":
-				editCustomerInfo(table_name, obj, "customer_id");
+				obj = data.getJSONObject(key);
+				String value = editCustomerInfo(table_name, obj, "customer_id");
+				map.put(key, value);
 				break;
 			case "company":
+				 obj = data.getJSONObject(key);
 				table_name = table_name + "_" + key;
-				if(obj.has("company_id")) {
-					String company = super.editSql(table_name, obj, "customer_company_id");
+				if(obj.has("customer_"+key+"_id")) {
+					String company = super.editSql(table_name, obj, "customer_"+key+"_id");
+					map.put(key, company);
+				}else {
+					obj.accumulate("customer_id", customer_id);
+					int company = super.addSql(table_name, obj);
+					map.put(key, company);
 				}
-				
-				break;
-			case "contact":
-				JSONArray contacts = JSONArray.fromObject(obj);
-				if(obj.size()>0){
-					  for(int i=0;i<obj.size();i++){
-					    JSONObject contact = contacts.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-
-					  }
-					}
+				;
 				break;
 			case "contact_other":
+				 obj = data.getJSONObject(key);
 				table_name = table_name + "_" + key;
-				String contact_other = super.editSql(table_name, obj, "contact_other_id");
-				break;
-			case "debt_creditcard":
-				break;
-			case "debt_lingyong":
-
-				break;
-			case "debt_other":
-
+				if(obj.has(key+"_id")) {
+					String contact_other = super.editSql(table_name, obj, key+"_id");
+					map.put(key, contact_other);
+				}
+				else {
+					obj.accumulate("customer_id", customer_id);
+					int contact_other = super.addSql(table_name, obj);
+					map.put(key, contact_other);
+				}
 				break;
 			default:
+				//contact,debt_other....
+				table_name = table_name + "_" + key;
+				JSONArray jsonArray = data.getJSONArray(key);
+					  for(int i=0;i<jsonArray.size();i++){
+					    JSONObject jsonObj = jsonArray.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+					    if(jsonObj.has(key+"_id")) {
+							 String result = super.editSql(table_name, jsonObj, key+"_id");
+							 logger.info(key+":修改成功");
+							 map.put(key+i+"",result);
+						}else {
+							jsonObj.accumulate("customer_id", customer_id);
+							 int result = super.addSql(table_name, jsonObj);
+							 logger.info(key+":添加成功");
+							 map.put(key+i,result);
+						}
+					  }
 				break;
 			}
 		}
-
+		 logger.info(map);
 		return null;
 	}
 
