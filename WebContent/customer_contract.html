@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="./lib/plugins/layui2.0/css/layui.css"
+	media="all" />
+</head>
+<body>
+	<blockquote class="layui-elem-quote">客户名称:
+	<button type="button" class="layui-btn layui-btn-sm" style="float:right;margin:0;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
+	 <button type="button" class="layui-btn layui-btn-sm" style="float:right;margin-right:5px;" id="print"> <i class="layui-icon">&#xe608;</i> 打印</button>
+	</blockquote>
+	
+	<fieldset class="layui-elem-field">
+		<legend>合同</legend>
+		<textarea name="content" id="editor">
+<h2 style="text-align:center;font-size:20px;font-weight: bold">第三方借款协议</h2>
+
+<p>&nbsp;</p>
+
+<p><br />
+甲方(资金出借方)：<br />
+<br />
+身份证号：<br />
+<br />
+乙方（资金借入方）：擦 ___________________<br />
+<br />
+身份证号：431003199408136018<br />
+<br />
+现住地址：123<br />
+<br />
+手机号：13762657891<br />
+<br />
+丙方（服务提供商）：湖北天诚信息服务有限公司<br />
+<br />
+地址：湖北<br />
+<br />
+联系方式：1384561123422<br />
+<br />
+<span style="font-weight:bold">鉴于：</span><br />
+<br />
+1.&emsp; 丙方是一家合法成立并有效存在的公司，公司名称为湖北天诚信息服务有限公司,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 提供投资和信用咨询，为交易提供信息服务，企业管理服务，广告信息发布，商务信<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 息咨询服务资质。<br />
+2.&emsp;甲乙双方确认本协议是通过丙方签署，基于上述事实，甲乙双方就借款事宜达成协议如下。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">一、&emsp;借款及偿还方式</span><br />
+<br />
+1.1&emsp;甲方承诺其出借资金为合法所得，甲方对该资金享有完整且无瑕疵的支配权。<br />
+1.2&emsp;乙方承诺借款为自己资金周转使用，不用于自己或转借他人进行炒股，买卖期货，等及法<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;律禁止的不合法用途。<br />
+1.3&emsp;乙方向甲方借款，借款信息如下</p>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered comtable thcenter" width="500">
+	<thead>
+		<tr align="center">
+			<td>借款总金额：</td>
+			<td>￥：1000</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr align="center">
+			<td>大写：</td>
+			<td>壹仟元整</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered comtable thcenter" width="500">
+	<tbody>
+		<tr align="center">
+			<td rowspan="2">协议期限：</td>
+			<td>2017-10-30</td>
+		</tr>
+		<tr align="center">
+			<td>2017-11-15</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><br />
+1.4 .&emsp;借款说明<br />
+<br />
+1.4.1&nbsp;&emsp;本协议期限内甲方向乙方提供最高不超过人民币（￥1000）大写壹仟元整元）<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的借款，在本协议约定的期限内，乙方可随时在甲方提供的额度内申请借款，但乙<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方单次或多次累计借款不得超过甲方提供的借款额度.<br />
+1.4.2.&emsp; 借款周期：借款周期为七天，乙方应在合同约定的日期前还清本次借款，<br />
+1.4.3.&emsp; 还款说明：乙方应根据实际的借款总额按天计息，自借款达到乙方相关账号之日起计算<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;利息，协议期内乙方在还清单次借款后可以根据自身的资金需求重复向甲方提出借款。<br />
+<br />
+1.5 .&emsp;相关费用<br />
+<br />
+1.5.1.&emsp;乙方确认：就单次一个周期即七天乙方借款应向丙方支付46元的账户管理费，用于相关<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;账户的管理，该借款费用包括乙方支付给丙方的借款服务费，其具体由手机验证费,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;银行卡验证费,身份证验证费,信用审核费,信息发布费,撮合服务费,平台运营费,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;客户端使用费等组成，乙方同意上述服务费用从本金中先行扣除。用于相关账户的<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管理。<br />
+1.5.2.&emsp;乙方还款金额及还款方式详见协议附件（还款明细说明）<br />
+1.5.3.&emsp;乙方确保及时还款至协议唯一指定账号，如因乙方还款不及时或还款至非协议账户而造<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成的逾期所产生的费用，乙方应按照协议内容，支付滞纳金。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">二、&emsp;借款的获取来源</span><br />
+<br />
+2.1.&nbsp;&nbsp;&emsp;乙方所获借款可能会来自多位出借人，丙方或第三方机构会按出借人列表所示出借比例对<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该笔还款为相应的出借人进行还款分配。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">三． &emsp;结算和支付方式</span><br />
+<br />
+3.1.&nbsp;&nbsp;&nbsp;&emsp;乙方同意按协议附件（还款明细说明）所示还款日期，周期，金额及还款账号如期进行还款<br />
+3.2.&nbsp;&nbsp;&nbsp;&emsp;甲方授权丙方负责本协议下的借款回收及日常管理工作，甲乙双方均同意丙方有权代甲方进行借款<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的违约提醒及催收工作，包括但不限于电话通知，发律师函，对乙方提起诉讼等，<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;乙方对上述委托的提醒，催收事项明确知晓并积极配合。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">四．&emsp;提前还款</span><br />
+<br />
+4.1 .&nbsp;&nbsp;&nbsp;&emsp;乙方可随时提前还款，如提前还款，甲方应退还未到期所收利息，丙方收取的管理费不予退款。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">五．&emsp;违约责任</span><br />
+<br />
+5.1.&nbsp;&nbsp;&nbsp;&emsp;若乙方在还款期限之前未按照合同约定的收支账户转入还款金额或金额不足，即构成违约，<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;并向甲方、丙方承担以下违约责任：<br />
+5.1.1 .&emsp;甲方自应还款日起每日按实际到账金额的10%收取滞纳金。每周期即七天计算复利。<br />
+5.1.2.&emsp;乙方如因特殊原因暂时无法按时足额还款时,请在第一时间(当期还款日之前)与本公司<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;联系。我们将协助您安排预约还款并准确告知您还款金额(本息,服务费，违约金,滞<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;纳金，罚息等协议约定的相关费用等)特别需要您值的注意的是:针对违约时长超过<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;15天，将支付全部借款金额、利息、账户管理费、逾期违约金、罚息及协议约定的<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;相关费用。<br />
+5.1.3.&emsp;逾期超过30日，丙方有权对乙方提供的及公司自行收集的乙方个人信息和资料编辑<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;入网站黑名单，并将该黑名单对第三方披露，并与任何第三方数据共享，以便丙<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方或其委托的第三方催收逾期借款及对乙方的其他申请进行审核之用，由此因第三<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;方的行为可能造成乙方的损失，甲方与丙方不承担法律责任。<br />
+5.2 &nbsp;&nbsp;&nbsp;.&emsp;守约方为追回损失而支付的包括但不限于律师费、诉讼费、公证费、交通通讯费等，由违 约方承担。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">六、&emsp;税务</span><br />
+<br />
+&nbsp;&emsp;协议各方在资金出借、转让过程中产生的税费，自行向主管税务机关申报、缴纳。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">七、&emsp;通知及送达。</span><br />
+<br />
+7.1.&nbsp;&nbsp;&nbsp;&emsp;在本协议有效期内，因法律、法规、政策的变化，或任一方丧失履行本协议的资格和/或<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;能力，影响本协议履行的，该方应承担在合理时间内通知其他各方的义务。<br />
+7.2.&nbsp;&nbsp;&nbsp;&emsp;协议各方同意，与本协议有关的任何通知，以书面方式送达方为有效。书面形式包括但不<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;限于：传真、快递、邮件、电子邮件。上述通知应当被视为在下列时候送达：以传<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;真发送，为该传真成功发送并接收方收到之日，以快递或专人发送，为收件人收<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;到该通知日，以挂号邮件发送，为发出7个工作日；以电子邮件发送，为电子邮件<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成功发出之日。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">八、&emsp;协议的变更、终止和解除</span><br />
+<br />
+除本协议或法律另有规定外，协议的变更、解除和终止以下列约定为准。<br />
+<br />
+8.1.&nbsp;&nbsp;&nbsp;&emsp;本协议的任何修改、变更应协议各方另行协商，并就修改、变更事项共同签署书面协议后<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 方可成立。<br />
+&emsp;8.2.&nbsp;&nbsp;.&emsp; 本协议在下列情况下解除：<br />
+8.2.1.&nbsp;&emsp;经双方协商一致解除。<br />
+8.2.2.&nbsp;&emsp;任何一方发生违约行为并在守约方向其发出书面通知之日起3日内不予履行合同的，<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;累计发生2次或以上违约行为的，守约方有权单方面通知解除本协议。<br />
+8.2.3.&nbsp;&emsp;因法律规定的不可抗力造成本协议无法继续履行的。<br />
+8.3. &nbsp;&nbsp;&nbsp;.&emsp;提出解除协议的一方，应当以书面形式通知其他各方。<br />
+8.4.&nbsp;&nbsp;&nbsp;&emsp;本协议解除后，不影响守约方要求违约方支付违约金并赔偿损失的权利。<br />
+8.5.&nbsp;&nbsp;&nbsp;&emsp;除本协议另有约定外，非经本协议各方协商一致并达成书面协议，任何一方不得转让其在<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本协议或本协议下的全部或部分权利和义务。<br />
+8.6.&nbsp;&nbsp;&nbsp;&emsp;如果一方出借资产的继承或赠与等权利变更需要对方协助办理的，必须由主张权利的继承<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;人或受赠人等相关人员向对方出示经国家权威机关（公证处或使领馆）公证认证的<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;继承或赠与等权利归属证明文件，对方确认后方予协助办理。由此产生的相关税<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费，由主张权利方负责向相关机关申报、缴纳。<br />
+<br />
+<span style="font-weight:bold ;font-size:16px">九、&emsp;争议解决</span><br />
+9.1.&nbsp;&nbsp;&nbsp;&emsp;本协议的效力、解释以及履行适应中华人民共和国的法律。<br />
+9.2.&nbsp;&nbsp;&nbsp;&emsp;本协议各方因本协议履行发生争议的，均应首先通过友好协商的方式解决，协商不成的，<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;任何一方均可把争议提交丙方实际经营所在人民法院诉讼管辖。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管辖。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">十、&emsp;附则</span><br />
+<br />
+10.1.&nbsp;&emsp;本协议附件作为本协议的有效组成部分，与本协议效力一致。<br />
+10.2.&nbsp;&emsp;本协议的电子件、传真件、复印件、扫描件等经双方确认的有效副本的效力于本协议原<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;件效力一致。<br />
+10.3.&nbsp;&emsp;双方确认，本协议的签署、生效和履行以不违反中国的法律法规为前提，如果本协议中<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;的任何一条或多条违反适用的法律法规，则该条将被视为无效，但该无效条款并<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不影响本协议其他条款的效力。<br />
+<br />
+<span style="font-weight:bold;font-size:16px">以下无正文<br />
+请在本业进行签署，并确认已经清楚知晓并了解本合同的所有相关内容。</span><br />
+<br />
+甲方(资金出借方)：<br />
+身份证号：<br />
+<br />
+乙方（资金借入方）：<br />
+身份证号：__________________________________<br />
+<br />
+丙方（服务提供商）：湖北天诚信息服务有限公司 盖章：<br />
+日期：<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<!--end
+
+             --></p>
+
+<p>&nbsp;</p>
+
+<table width="800">
+	<thead>
+		<tr align="center">
+			<td colspan="3"><span style="font-size:16px;font-weight: bold">湖北天诚信息服务有限公司</span></td>
+		</tr>
+		<tr align="center">
+			<td colspan="3"><span style="font-size:16px;font-weight: bold">擦 协议附件：还款明细说明</span></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr align="center">
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		<tr align="left">
+			<td>放款日： 2017-10-30</td>
+			<td>起始日: 2017-10-30</td>
+			<td>终止日：2017-11-15</td>
+		</tr>
+		<tr align="left">
+			<td>借款合同总额： 1000</td>
+			<td>借款期数： 1</td>
+			<td>期还款额： 50</td>
+		</tr>
+		<tr align="left">
+			<td>平台管理服务费总额： 46</td>
+			<td>业务员名字： 湖北天诚信息服务有限公司</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr align="left">
+			<td>放款卡号： 123</td>
+			<td>放款银行： 123</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<div style="margin-left: 40px">
+<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered comtable thcenter" width="700">
+	<thead>
+		<tr align="center">
+			<td style="width: 183px">费用明细</td>
+			<td style="width: 205px">金额</td>
+			<td>日期</td>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+</div>
+
+<p>&nbsp;</p>
+
+<div style="margin-left: 40px">
+<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered comtable thcenter" width="700">
+	<thead>
+		<tr align="center">
+			<td>期数</td>
+			<td>日期</td>
+			<td>期还本金</td>
+			<td>期服务费</td>
+			<td>期还利息</td>
+			<td>期还款总额</td>
+			<td>退还服务费后结清余额</td>
+			<td>提前结清应退服务费</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr align="center">
+			<td>1</td>
+			<td>2017-10-30</td>
+			<td>1000</td>
+			<td>46</td>
+			<td>4</td>
+			<td>1050</td>
+			<td>0</td>
+			<td>-54</td>
+		</tr>
+		<tr align="center">
+			<td>2</td>
+			<td>2017-11-15</td>
+			<td>1000</td>
+			<td>46</td>
+			<td>4</td>
+			<td>1050</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<p>&nbsp;</p>
+
+		</textarea>
+	</fieldset>
+	<embed width="100%" height="100%" name="plugin" id="plugin" src="1" type="application/pdf" internalinstanceid="13" title="">
+	<script src="./lib/plugins/CKEditor/ckeditor.js"></script>
+<script>
+	CKEDITOR.replace( 'editor', {
+		// Define the toolbar: http://docs.ckeditor.com/#!/guide/dev_toolbar
+		// The full preset from CDN which we used as a base provides more features than we need.
+		// Also by default it comes with a 3-line toolbar. Here we put all buttons in a single row.
+		toolbar: [
+			{ name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+			{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+			{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
+			{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+			{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+			{ name: 'links', items: [ 'Link', 'Unlink' ] },
+			{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+			{ name: 'insert', items: [ 'Image', 'Table' ] },
+			{ name: 'tools', items: [ 'Maximize' ] },
+			{ name: 'editing', items: [ 'Scayt' ] }
+		],
+		// Since we define all configuration options here, let's instruct CKEditor to not load config.js which it does by default.
+		// One HTTP request less will result in a faster startup time.
+		// For more information check http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-customConfig
+		customConfig: '',
+		// Sometimes applications that convert HTML to PDF prefer setting image width through attributes instead of CSS styles.
+		// For more information check:
+		//  - About Advanced Content Filter: http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter
+		//  - About Disallowed Content: http://docs.ckeditor.com/#!/guide/dev_disallowed_content
+		//  - About Allowed Content: http://docs.ckeditor.com/#!/guide/dev_allowed_content_rules
+		disallowedContent: 'img{width,height,float}',
+		extraAllowedContent: 'img[width,height,align]',
+		// Enabling extra plugins, available in the full-all preset: http://ckeditor.com/presets-all
+		//extraPlugins: 'tableresize,uploadimage,uploadfile',
+		/*********************** File management support ***********************/
+		// In order to turn on support for file uploads, CKEditor has to be configured to use some server side
+		// solution with file upload/management capabilities, like for example CKFinder.
+		// For more information see http://docs.ckeditor.com/#!/guide/dev_ckfinder_integration
+		// Uncomment and correct these lines after you setup your local CKFinder instance.
+		// filebrowserBrowseUrl: 'http://example.com/ckfinder/ckfinder.html',
+		// filebrowserUploadUrl: 'http://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+		/*********************** File management support ***********************/
+		// Make the editing area bigger than default.
+		height: 800,
+		// An array of stylesheets to style the WYSIWYG area.
+		// Note: it is recommended to keep your own styles in a separate file in order to make future updates painless.
+		//contentsCss: [ 'https://cdn.ckeditor.com/4.7.3/full-all/contents.css', 'mystyles.css' ],
+		// This is optional, but will let us define multiple different styles for multiple editors using the same CSS file.
+		bodyClass: 'document-editor',
+		// Reduce the list of block elements listed in the Format dropdown to the most commonly used.
+		format_tags: 'p;h1;h2;h3;pre',
+		// Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+		removeDialogTabs: 'image:advanced;link:advanced',
+		// Define the list of styles which should be available in the Styles dropdown list.
+		// If the "class" attribute is used to style an element, make sure to define the style for the class in "mystyles.css"
+		// (and on your website so that it rendered in the same way).
+		// Note: by default CKEditor looks for styles.js file. Defining stylesSet inline (as below) stops CKEditor from loading
+		// that file, which means one HTTP request less (and a faster startup).
+		// For more information see http://docs.ckeditor.com/#!/guide/dev_styles
+		stylesSet: [
+			/* Inline Styles */
+			{ name: 'Marker', element: 'span', attributes: { 'class': 'marker' } },
+			{ name: 'Cited Work', element: 'cite' },
+			{ name: 'Inline Quotation', element: 'q' },
+			/* Object Styles */
+			{
+				name: 'Special Container',
+				element: 'div',
+				styles: {
+					padding: '5px 10px',
+					background: '#eee',
+					border: '1px solid #ccc'
+				}
+			},
+			{
+				name: 'Compact table',
+				element: 'table',
+				attributes: {
+					cellpadding: '5',
+					cellspacing: '0',
+					border: '1',
+					bordercolor: '#ccc'
+				},
+				styles: {
+					'border-collapse': 'collapse'
+				}
+			},
+			{ name: 'Borderless Table', element: 'table', styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
+			{ name: 'Square Bulleted List', element: 'ul', styles: { 'list-style-type': 'square' } }
+		]
+	} );
+    var data = CKEDITOR.instances.editor.getData();
+console.log(data)
+</script>
+</body>
+</html>

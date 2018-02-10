@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MyMicroFinance
+Bundle-SymbolicName: MyMicroFinance
+Bundle-Version: 1.0.0.qualifier
+Export-Package: com.mf.dao,
+ com.mf.entity,
+ com.mf.filter,
+ com.mf.servlet,
+ com.mf.test,
+ com.mf.utils

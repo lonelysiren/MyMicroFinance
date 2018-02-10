@@ -35,6 +35,10 @@ public class BaseDao {
 		}
 	}
 
+	public void Close() {
+		jdbcUtil.close();
+	}
+
 	/**
 	 * 根据传过来的json对象 生成添加sql语句
 	 * 
@@ -82,7 +86,7 @@ public class BaseDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int addSql(String column,String table_name, JSONObject parameters) throws SQLException {
+	public int addSql(String column, String table_name, JSONObject parameters) throws SQLException {
 		sql = "INSERT INTO " + table_name;
 		column_name = " (";
 		values = " values(";
@@ -99,8 +103,8 @@ public class BaseDao {
 				values += "?)";
 				continue;
 			}
-				column_name += column+"_"+key + ",";
-				values += "?,";
+			column_name += column + "_" + key + ",";
+			values += "?,";
 		}
 		sql = sql + column_name + values;
 		logger.info(sql);
@@ -108,7 +112,7 @@ public class BaseDao {
 		params.clear();
 		return id;
 	}
-	
+
 	public String delteSql(String table_name, String requirement, String value) throws SQLException {
 
 		sql = "DELETE FROM " + table_name + " WHERE + " + requirement + "= ? ";
@@ -130,10 +134,10 @@ public class BaseDao {
 			if (key.trim().contains("[]")) {
 				key = key.replace("[]", "");
 			}
-			
-			if (key.equals(requirement) ) {
+
+			if (key.equals(requirement)) {
 				req_value = value;
-			}else {
+			} else {
 				params.add(value);
 				column_name = column_name + key + "=?,";
 			}
@@ -142,7 +146,7 @@ public class BaseDao {
 				break;
 			}
 		}
-			params.add(req_value);
+		params.add(req_value);
 		sql = sql + column_name + values;
 		logger.info(sql);
 		logger.info(params.toString());
@@ -150,7 +154,7 @@ public class BaseDao {
 		params.clear();
 		return result ? "success" : "faild";
 	}
-	
+
 	public JSONObject pagingSql(String table_name, int page, int limit, int id) {
 		Map<String, Object> maps = new LinkedHashMap<String, Object>();
 		Map<String, Object> map = new LinkedHashMap<String, Object>();

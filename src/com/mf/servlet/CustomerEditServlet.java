@@ -54,7 +54,6 @@ public class CustomerEditServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		CustomerDao customerDao = new CustomerDao();
 		String parameter = request.getParameter("data");
-		;
 		JSONObject data = JSONObject.fromObject(parameter);
 		JSONObject jresult = new JSONObject();
 		String result = null;

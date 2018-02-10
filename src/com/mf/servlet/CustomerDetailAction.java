@@ -38,6 +38,7 @@ public class CustomerDetailAction extends HttpServlet {
 		int company_id = Integer.parseInt(request.getParameter("company_id"));
 		String customer_id = request.getParameter("customer_id");
 		CustomerDao customerDao = new CustomerDao();
+		UserDao userDao = new UserDao();
 		try {
 			JSONObject customer_detail = customerDao.detail(customer_id);
 			JSONObject customer_info = customer_detail.getJSONObject("customer_info");
@@ -47,7 +48,6 @@ public class CustomerDetailAction extends HttpServlet {
 			JSONArray debt_creditcard =customer_detail.getJSONArray("debt_creditcard");
 			JSONArray debt_lingyong =customer_detail.getJSONArray("debt_lingyong");
 			JSONArray debt_other =customer_detail.getJSONArray("debt_other");
-			UserDao userDao = new UserDao();
 			JSONArray user_list = userDao.findUserByCompany(company_id);
 			request.setAttribute("info", customer_info);
 			request.setAttribute("company", company);
@@ -57,10 +57,13 @@ public class CustomerDetailAction extends HttpServlet {
 			request.setAttribute("debt_lingyong", debt_lingyong);
 			request.setAttribute("debt_other", debt_other);
 			request.setAttribute("user_list", user_list);
-			request.getRequestDispatcher("/lib/temp/edit-product.jsp").forward(request, response);  
+			request.getRequestDispatcher("/lib/temp/detail-customer.jsp").forward(request, response);  
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			customerDao.close();
+			userDao.Close();
 		}
 	}
 
@@ -76,6 +79,8 @@ public class CustomerDetailAction extends HttpServlet {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			customerDao.close();
 		}
 	}
 

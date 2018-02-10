@@ -12,7 +12,7 @@
 		<div class="admin-main">
 			<blockquote class="layui-elem-quote">
 				管理员列表
-				 <button type="button" class="layui-btn layui-btn-small" style="float:right;margin:0;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
+				 <button type="button" class="layui-btn layui-btn-sm" style="float:right;margin:0;" id="add"> <i class="layui-icon">&#xe608;</i> 添加</button>
 				
 			</blockquote>
 			<fieldset class="layui-elem-field">
@@ -29,8 +29,8 @@
 			</div>
 		</div>
 		 <script type="text/html" id="barDemo">
-  <a class="layui-btn layui-btn-mini" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+  <a class="layui-btn layui-btn-sm" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</a>
 </script>
 <script type="text/html" id="stauts">
   {{#  if(d.stauts == 0){ }}
@@ -57,12 +57,12 @@
 		where:{'company_id':company_id},
 		elem:'#admin_list',
 		cols:[[ //标题栏
-		    {field: 'id', title: 'ID', width: 120},
-		    {field: 'username', title: '账号', width: 150},
-		    {field: 'nickname', title: '姓名', width: 150},
-		    {field: 'username',  title: '最后登录时间', width: 200},
-		    {field: 'username',  title: '最后登录IP', width: 200},
-		    {field: 'stauts',templet: '#stauts', title: '状态', width: 150},
+		    {field: 'id', title: 'ID'},
+		    {field: 'username', title: '账号'},
+		    {field: 'nickname', title: '姓名'},
+		    {field: 'username',  title: '最后登录时间'},
+		    {field: 'username',  title: '最后登录IP'},
+		    {field: 'stauts',templet: '#stauts', title: '状态'},
 		    {fixed: 'right',title:'操作', width:150, align:'center', toolbar: '#barDemo'} 
 		  ]],
 		  filter:'admin_list',

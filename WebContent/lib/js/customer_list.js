@@ -75,7 +75,6 @@ function getData(obj,key,length,mode){
 //		data[item.name] = item.value
 //	})
 //	     if(!($.isEmptyObject(data)))  datas[index] = data
-	
 }	  
 
 function loadData(jsonStr,index){
@@ -91,6 +90,9 @@ function loadData(jsonStr,index){
 							$("[data-id="+key+"]").eq(index).append(html);
 						}
 						var ths = $("[name='"+key+"'],[name='"+key+"[]']").eq(index);
+							if(ths.length == 0) {
+								alert(key);
+							}
 							tagName = $(ths)[0].tagName;
 							type = $(ths).attr('type');
 							if(tagName=='INPUT'){
@@ -108,5 +110,4 @@ function loadData(jsonStr,index){
 			        loadData(obj[key],key);
 			      }
 			    }
-		
 		}

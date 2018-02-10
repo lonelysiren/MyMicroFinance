@@ -2,6 +2,7 @@ package com.mf.dao;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +41,6 @@ public class CustomerDao extends BaseDao {
 		String contacData = "{\"contact_content\":\"\",\"Object\":[{\"relationship[]\":\"1\",\"contact_name[]\":\"123\",\"contact_mobile_phone[]\":\"123\",\"contact_company[]\":\"213\"},{\"relationship[]\":\"123\",\"contact_name[]\":\"123\",\"contact_mobile_phone[]\":\"123\",\"contact_company[]\":\"123\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"},{\"relationship[]\":\"\",\"contact_name[]\":\"\",\"contact_mobile_phone[]\":\"\",\"contact_company[]\":\"\"}]}";
 		String debtData = "{\"creditcard\":{\"0\":{\"creditcard_name[]\":\"1\",\"creditcard_limit[]\":\"1\",\"creditcard_used[]\":\"1\"}},\"lingyong\":{\"0\":{\"lingyong_name[]\":\"2\",\"lingyong_amount[]\":\"2\"}},\"other\":{\"0\":{\"other_name[]\":\"3\",\"other_amount[]\":\"3\"}}}";
 		String eData = "{\"creditcard\":{\"0\":{\"creditcard_id[]\":\"15\",\"creditcard_name[]\":\"23\",\"creditcard_limit[]\":\"23\",\"creditcard_used[]\":\"23\"}}}";
-
 		JSONObject data = JSONObject.fromObject(customerData);
 		JSONObject result = new JSONObject();
 		int id = 0;
@@ -49,11 +49,17 @@ public class CustomerDao extends BaseDao {
 		// JSONObject addCustomerContact = customerDao.addCustomerContact(data, "10");
 		// JSONObject result = customerDao.editCustomerDbet(data, "10");
 		// id = customerDao.addCustomer(data);
-		//JSONObject findAll = customerDao.detail("9");
+		// JSONObject findAll = customerDao.detail("9");
 		String arrayData = "[{\"sex\":\"2\"},{\"sex\":\"3\"}]";
 		JSONArray test = JSONArray.fromObject(arrayData);
 		logger.info(test.size());
 		logger.info(test);
+		try {
+			customerDao.editRepayDetail("1");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -150,8 +156,9 @@ public class CustomerDao extends BaseDao {
 		CustomerCpmpany_id = super.addSql("customer_info_company", data);
 		return CustomerCpmpany_id;
 	}
-	
-	public String editCustomerCompany(String table_name, JSONObject parameters, String requirement) throws SQLException {
+
+	public String editCustomerCompany(String table_name, JSONObject parameters, String requirement)
+			throws SQLException {
 		String result = super.editSql(table_name, parameters, requirement);
 		return result;
 	}
@@ -178,7 +185,6 @@ public class CustomerDao extends BaseDao {
 					result.accumulate(key, out_index_set);
 				}
 			}
-
 		}
 		return result;
 	}
@@ -200,9 +206,9 @@ public class CustomerDao extends BaseDao {
 	public JSONObject findAll(int page, int limit, int company_id) {
 		Map<String, Object> maps = new LinkedHashMap<String, Object>();
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		sql = "select manager_name,customer_name,customer_id,idcard_number,stauts,"
-				+ "image1,image2,image3,amount,circle,check_date,check_stauts,customer_contract_id"
-				+ " from customer_list where company_id = ? limit ? , ? ";
+		sql = "select manager_name,customer_name,customer_id,idcard_number,pay_stauts,pay_stauts_name,"
+				+ "image,amount,circle,check_date,check_stauts,stauts_name,contract_stauts,customer_contract_id"
+				+ " from customer_list  where company_id = ? limit ? , ? ";
 		params.add(company_id);
 		if (page == 1) {
 			params.add(0);
@@ -271,7 +277,7 @@ public class CustomerDao extends BaseDao {
 		List<Map<String, Object>> debt_lingyong = jdbcUtil.findModeResult(sql4, params);
 		List<Map<String, Object>> debt_other = jdbcUtil.findModeResult(sql5, params);
 		detail.put("customer_info", customer_info);
-		detail.put("company", company); 
+		detail.put("company", company);
 		detail.put("contacts", contacts);
 		detail.put("contact_other", contact_other);
 		detail.put("debt_creditcard", debt_creditcard);
@@ -295,12 +301,12 @@ public class CustomerDao extends BaseDao {
 				map.put(key, value);
 				break;
 			case "company":
-				 obj = data.getJSONObject(key);
+				obj = data.getJSONObject(key);
 				table_name = table_name + "_" + key;
-				if(obj.has("customer_"+key+"_id")) {
-					String company = super.editSql(table_name, obj, "customer_"+key+"_id");
+				if (obj.has("customer_" + key + "_id")) {
+					String company = super.editSql(table_name, obj, "customer_" + key + "_id");
 					map.put(key, company);
-				}else {
+				} else {
 					obj.accumulate("customer_id", customer_id);
 					int company = super.addSql(table_name, obj);
 					map.put(key, company);
@@ -308,40 +314,143 @@ public class CustomerDao extends BaseDao {
 				;
 				break;
 			case "contact_other":
-				 obj = data.getJSONObject(key);
+				obj = data.getJSONObject(key);
 				table_name = table_name + "_" + key;
-				if(obj.has(key+"_id")) {
-					String contact_other = super.editSql(table_name, obj, key+"_id");
+				if (obj.has(key + "_id")) {
+					String contact_other = super.editSql(table_name, obj, key + "_id");
 					map.put(key, contact_other);
-				}
-				else {
+				} else {
 					obj.accumulate("customer_id", customer_id);
 					int contact_other = super.addSql(table_name, obj);
 					map.put(key, contact_other);
 				}
 				break;
 			default:
-				//contact,debt_other....
+				// contact,debt_other....
 				table_name = table_name + "_" + key;
 				JSONArray jsonArray = data.getJSONArray(key);
-					  for(int i=0;i<jsonArray.size();i++){
-					    JSONObject jsonObj = jsonArray.getJSONObject(i);  // 遍历 jsonarray 数组，把每一个对象转成 json 对象
-					    if(jsonObj.has(key+"_id")) {
-							 String result = super.editSql(table_name, jsonObj, key+"_id");
-							 logger.info(key+":修改成功");
-							 map.put(key+i+"",result);
-						}else {
-							jsonObj.accumulate("customer_id", customer_id);
-							 int result = super.addSql(table_name, jsonObj);
-							 logger.info(key+":添加成功");
-							 map.put(key+i,result);
-						}
-					  }
+				for (int i = 0; i < jsonArray.size(); i++) {
+					JSONObject jsonObj = jsonArray.getJSONObject(i); // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+					if (jsonObj.has(key + "_id")) {
+						String result = super.editSql(table_name, jsonObj, key + "_id");
+						logger.info(key + ":修改成功");
+						map.put(key + i + "", result);
+					} else {
+						jsonObj.accumulate("customer_id", customer_id);
+						int result = super.addSql(table_name, jsonObj);
+						logger.info(key + ":添加成功");
+						map.put(key + i, result);
+					}
+				}
 				break;
 			}
 		}
-		 logger.info(map);
-		return null;
+		logger.info(map);
+		JSONObject result = JSONObject.fromObject(map);
+		return result;
 	}
 
+	public JSONObject verify(String customer_id) throws SQLException {
+		sql = "select customer_contract_id,product_id,amount,circle,next_payday,margin_loans,management_pay,other_pay,check_date,remark from customer_contract where customer_id = ?";
+		params.add(customer_id);
+		Map<String, Object> result = jdbcUtil.findSimpleResult(sql, params);
+		JSONObject detail_verify = JSONObject.fromObject(result);
+		return detail_verify;
+	}
+
+	public String editCustomerContract(JSONObject data) throws SQLException {
+		String result = "failed";
+		if (data.has("customer_contract_id")) {
+			result = super.editSql("customer_contract", data, "customer_contract_id");
+			logger.info(data.get("customer_contract_id") + " 修改结果为:" + result);
+		} else {
+			result = super.addSql("customer_contract", data) + "";
+		}
+		return result;
+	}
+
+	public boolean contractQianding(String customer_id) throws SQLException {
+		params.add(customer_id);
+		sql = "UPDATE customer_contract set contract_stauts = 2 where customer_id = ?";
+		boolean result = jdbcUtil.updateByPreparedStatement(sql, params);
+		return result;
+	}
+
+	public boolean contractFangkuan(String customer_id) throws SQLException, ParseException {
+		params.add(customer_id);
+		sql = "UPDATE customer_contract set contract_stauts = 3, pay_stauts = 1 where customer_id = ?";
+		boolean result = jdbcUtil.updateByPreparedStatement(sql, params);
+		editRepayDetail(customer_id);
+		return result;
+	}
+
+	public void editRepayDetail(String customer_id) throws SQLException, ParseException {
+		sql = "SELECT * from customer_repay_detail where customer_id = ?";
+		params.add(customer_id);
+		Map<String, Object> result = jdbcUtil.findSimpleResult(sql, params);
+		if (result.isEmpty()) {
+			return;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		int product_cycle = Integer.parseInt(result.get("product_cycle").toString());
+		float product_day_rate = Float.parseFloat(result.get("product_day_rate").toString());
+		float amount =  Float.parseFloat(result.get("amount").toString());
+		int circle = Integer.parseInt(result.get("circle").toString());
+		String next_payday = (String) result.get("next_payday");
+		String payday = "";
+		int product_isAdvance =Integer.parseInt(result.get("product_isAdvance").toString());
+		float margin_loans =  Float.parseFloat( result.get("margin_loans").toString());
+		float management_pay =  Float.parseFloat( result.get("management_pay").toString());
+		float other_pay =  Float.parseFloat( result.get("other_pay").toString());
+		float bj = amount / circle;
+		float fee = amount * (product_day_rate - 1.2f) * product_cycle / 1000;
+		float lx = amount * 1.2f * product_cycle / 1000;
+		float allfee = bj +fee + lx;
+		sql = "INSERT INTO customer_repay (customer_id,stauts,bj,fee,lx,allfee,date,num) values (?,?,?,?,?,?,?,?)";
+		params.add(0);
+		params.add(bj);
+		params.add(fee);
+		params.add(lx);
+		for (int i = 0; i < circle; i++) {
+			if (i == 0) {
+				params.add( allfee + (margin_loans * allfee) + management_pay + other_pay);
+				if (product_isAdvance == 1) {
+					String d = sdf.format(new Date());
+					params.add(d);
+				} else {
+					params.add(next_payday.replaceAll(" 00:00:00", ""));
+				}
+				params.add(1);
+			} else {
+				params.set(4, allfee);
+				if (product_isAdvance == 1 && i == 1) {
+					params.set(5, next_payday);
+				} else {
+				date = sdf.parse(next_payday);
+				payday = sdf.format(date.getTime() + product_cycle *i * 24 * 60 * 60 * 1000L);
+					params.set(5, payday);
+				}
+				params.set(6, i + 1);
+			}
+			jdbcUtil.addByPreparedStatement(sql, params);
+		}
+		
+	}
+
+	public JSONObject getRepayDetail(String customer_id) throws SQLException {
+		sql = "SELECT * from customer_repay where customer_id = ?";
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		params.add(customer_id);
+		List<Map<String, Object>> result = jdbcUtil.findModeResult(sql, params);
+		for (Map<String, Object> data : result) {
+			data.replace("date", data.get("date").toString().replaceFirst(" 00:00:00", ""));
+		}
+		map.put("code", 0);
+		map.put("msg", "获取成功");
+		map.put("count", result.size());
+		map.put("data", result);
+		JSONObject jsonObject = JSONObject.fromObject(map);
+		return jsonObject;
+	}
 }

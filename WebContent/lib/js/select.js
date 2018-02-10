@@ -56,6 +56,7 @@ function select(id) {
 			return str
 			break;
 		default:
+			return
 			break;
 		}
 		for (i = 0; i < option_data.length; i++) {

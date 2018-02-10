@@ -138,6 +138,14 @@
     <url-pattern>/customer_detail</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>CustomerVerifyAction</servlet-name>
+    <servlet-class>com.mf.servlet.CustomerVerifyAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomerVerifyAction</servlet-name>
+    <url-pattern>/customer_verify</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>ProductAddAction</servlet-name>
     <servlet-class>com.mf.servlet.ProductAddAction</servlet-class>
   </servlet>

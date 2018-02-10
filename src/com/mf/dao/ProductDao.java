@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.mf.utils.JdbcUtil;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class ProductDao extends BaseDao {
@@ -25,7 +26,6 @@ public class ProductDao extends BaseDao {
 		this.params = super.params;
 	}
 
-
 	public static void main(String[] args) {
 		String product_str = "{\"name\":\"3\",\"cycle\":\"3\",\"day_rate\":\"3\",\"week_rate\":\"3\",\"margin_loans\":\"3\",\"management_pay\":\"3\",\"other_pay\":\"3\",\"payment_method\":\"0\",\"remark\":\"3\",\"company_id\":\"1\"}";
 		JSONObject product = JSONObject.fromObject(product_str);
@@ -37,7 +37,6 @@ public class ProductDao extends BaseDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 	
 	public int add(JSONObject product) throws SQLException {
@@ -45,7 +44,6 @@ public class ProductDao extends BaseDao {
 	//	product.put("week_rate", product.get("week_rate") + "‰");
 		int result = super.addSql("product_info", product);
 		return result;
-
 	}
 
 	public String edit(JSONObject product) throws SQLException {
@@ -95,5 +93,13 @@ public class ProductDao extends BaseDao {
 		params.clear();
 		JSONObject jsonObject = JSONObject.fromObject(maps);
 		return jsonObject;
+	}
+
+	public JSONArray detail(int company_id) throws SQLException {
+		sql = "select product_id,product_name,product_margin_loans,product_management_pay,product_other_pay from product_info where company_id = ?";
+		params.add(company_id);
+		List<Map<String, Object>> result = jdbcUtil.findModeResult(sql, params);
+		JSONArray products = JSONArray.fromObject(result);
+		return products;
 	}
 }
