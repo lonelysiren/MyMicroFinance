@@ -47,6 +47,9 @@
 启用
   {{#  } }}
 </script>
+<script type="text/html" id="repay">
+<a  style="cursor:pointer;color:#0000CD" lay-event="repay">{{=d.date }}</a>
+</script>
 		<script type="text/javascript" src="./lib/plugins/layui2.0/layui.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript"src="./lib/js/jquery.cookie.js"></script>
@@ -63,7 +66,7 @@
 				  where:{'customer_id':1},
 				  cols:[[ //标题栏
 					    {field: 'num', title: '期数',width:90},
-					    {field: 'date', title: '应还日期',width:100},
+					    {field: '', title: '应还日期',width:100,toolbar:'repay'},
 					    {field: 'stauts', title: '状态',width:90},
 					    {field: 'bj',  title: '当期本金',width:100},
 					    {field: 'fee',  title: '当期服务费',width:90},
@@ -87,6 +90,19 @@
 						    console.log(count);
 						  }
 			  })
+			//监听工具条
+			  table.on('tool(repay_detail)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			    var data = obj.data; //获得当前行数据
+			    var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+			    var tr = obj.tr; //获得当前行 tr 的DOM对象
+			   
+			    if(layEvent === 'repay'){ //查看
+			    	 layer.confirm('真的删除行么', function(index){
+					        obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+					        layer.close(index);
+					        //向服务端发送删除指令
+					      });
+			  });
 		})
 		</script>
 	</body>

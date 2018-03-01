@@ -36,6 +36,9 @@
   <a class="layui-btn layui-btn-sm" lay-event="edit">打印</a>
   <a class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">重置</a>
 </script>
+<script type="text/html" id=repay>
+<a style="cursor:pointer;color:#0000CD" lay-event="repay">{{=d.date }}</a>
+</script>
 <script type="text/html" id="stauts">
   {{#  if(d.stauts == 0){ }}
 禁用
@@ -64,13 +67,12 @@
 					    console.log(curr); 
 					    console.log(count);
 					  }
-				 		 
 			  })
 			  table.render({
 				  elem:'#repay_detail',
 				  cols:[[ //标题栏
 					    {field: 'num', title: '期数',width:90},
-					    {field: 'date', title: '应还日期',event:'repay',width:120},
+					    {field: 'date', title: '应还日期',toolbar:'#repay',width:120},
 					    {field: 'stauts', title: '状态',width:90},
 					    {field: 'bj',  title: '当期本金',width:100},
 					    {field: 'fee',  title: '当期服务费',width:90},
@@ -97,7 +99,7 @@
 				  var tr = obj.tr; //获得当前行 tr 的DOM对象
 				  if(layEvent =='repay') {
 					  var load = layer.load(2, {time: 2*1000});
-				  $.get('/duizhang.jsp', {data:${data}}, function(form) {
+				  $.get('./lib/temp/duizhang.jsp', {data:${data}}, function(form) {
 			   			var addBoxIndex = layer.open({
 			   				type: 1,
 			   				title: '对账',
